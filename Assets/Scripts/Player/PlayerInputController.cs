@@ -9,7 +9,7 @@ public class PlayerInputController : MonoBehaviour
     private Vector2 playerLookInput;
     private bool playerJumpInput;
     private bool playerShiftMovementInput;
-
+    private bool playerShootInput;
 
     private void Awake() {
         playerInput = GetComponent<PlayerInput>();
@@ -31,9 +31,14 @@ public class PlayerInputController : MonoBehaviour
         return playerShiftMovementInput;
     }
 
+    public bool GetPlayerShootInput(){
+        return playerShootInput;
+    }
+
     private void Update() {
         RecibeMovementInput();
         RecibeLookInput();
+        RecibeShootInput(); //No deberia estar en update.. xd
     }
 
     private void RecibeMovementInput(){
@@ -61,5 +66,14 @@ public class PlayerInputController : MonoBehaviour
         }; 
     }
 
+    //No funcina con el action por algun motivo xd
+    public void RecibeShootInput(){
+        float leftButtonValue = Mouse.current.leftButton.ReadValue(); //Chapuza hasta solucionarlo 
+        if(leftButtonValue == 0){
+            playerShootInput = false;
+        }else{
+            playerShootInput = true;
+        }
+    }
 
 }
