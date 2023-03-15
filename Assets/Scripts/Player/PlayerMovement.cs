@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         //Valor obtenido el input del ratón, se le multiplica - 1 para invertirlo y se le multiplica por un valor de velocidad. 
         verticalLookValue += (playerInputController.GetPlayerLookInput().y * -1) * playerLookSpeed * Time.deltaTime;
         //Clamp del valor de rotación, minimo de -90º y máximo de 90º
-        verticalLookValue = Mathf.Clamp(verticalLookValue, -90, 90);
+        verticalLookValue = Mathf.Clamp(verticalLookValue, -75, 75);
         //asigna directamente un angulo de rotación en grados en el eje de las X del transform de la cámara en local. 
         cam.transform.localEulerAngles = new Vector3(verticalLookValue,cam.transform.localEulerAngles.y,cam.transform.localEulerAngles.z);
     }
