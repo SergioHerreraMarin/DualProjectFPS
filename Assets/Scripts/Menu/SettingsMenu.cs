@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+// using DG.Tweening;
+
+public class SettingsMenu : MonoBehaviour
+{
+    [SerializeField] private Button backButton;
+    [SerializeField] private CanvasGroup canvasGroup;
+    private MenuMediator mediator;
+
+    private void Awake()
+    {
+        backButton.onClick.AddListener(() => mediator.BackToMainMenu());
+    }
+
+    public void Configure(MenuMediator mediator)
+    {
+        this.mediator = mediator;
+        Debug.Log("Settings Menu: Configure");
+    }
+
+    public void Show()
+    {
+        // canvasGroup.DOFade(1.0f, 0.5f);
+        Debug.Log("Settings Menu: Show");
+    }
+
+    public void Hide()
+    {
+        // canvasGroup.DOFade(0.0f, 0.5f);
+        Debug.Log("Settings Menu: Hide");
+    }
+
+}
