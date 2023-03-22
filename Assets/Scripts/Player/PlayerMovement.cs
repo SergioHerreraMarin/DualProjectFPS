@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,24 +15,36 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera cam;
 
     private PlayerInputController playerInputController;
+    
     private Transform playerTransform;
     private float verticalLookValue = 0;
     private Ray jumpRay;
     private Vector3 jumpDirection;
     private float jumpSpeed;
     private float speed;
+    private PhotonView photonView;
 
     private void Awake() {
         playerInputController = GetComponent<PlayerInputController>();
+        photonView = GetComponent<PhotonView>();
         playerTransform = GetComponent<Transform>();
     }
 
+    private void Start() {
+        if(!photonView.IsMine){
+            cam.gameObject.SetActive(false);
+        }
+    }
 
     private void Update() {
-        Movement();
-        ShiftMovement();
-        Look();
-        Jump();
+
+        if(photonView.IsMine){         
+            Movement();
+            ShiftMovement();
+            Look();
+            Jump();
+        }
+
     }
 
 

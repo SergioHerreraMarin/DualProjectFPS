@@ -1756,6 +1756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03df4475f418544fb4c1e3aef2f7b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  createRoomInputField: {fileID: 904275496}
+  joinRoomInputField: {fileID: 870486946}
+  createRoomButton: {fileID: 1943115788}
+  joinRoomButton: {fileID: 86334353}
 --- !u!4 &1743203256
 Transform:
   m_ObjectHideFlags: 0
