@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// using DG.Tweening;
+using TMPro;
+
 
 /* Menu para loguearse, sera el primero que se muestre, si el login va bien
 nos lleva al menu principal, otra opcion es que vayamos al menu de crearnos un usuario */
@@ -13,8 +14,8 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] private Button loginButton;
     [SerializeField] private Button createAccountButton;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private InputField nameInput;
-    [SerializeField] private InputField passwordInput;
+    [SerializeField] private TMP_InputField nameInput;
+    [SerializeField] private TMP_InputField passwordInput;
     private MenuMediator mediator;
 
     private string nameEntered ="";
@@ -24,7 +25,7 @@ public class LoginMenu : MonoBehaviour
     {
         backButton.interactable = false;
         backButton.onClick.AddListener(() => mediator.OpenProfileMenu());
-        loginButton.onClick.AddListener(() => mediator.CheckLogin(nameEntered, passwordEntered));
+        loginButton.onClick.AddListener(() => Login());
         createAccountButton.onClick.AddListener(() => mediator.OpenCreateAccountMenu());
     }
 
@@ -36,7 +37,7 @@ loginButton.onClick.AddListener(() => Login());*/
         string nameEntered = nameInput.text;
         string passwordEntered = passwordInput.text;
         mediator.CheckLogin(nameEntered, passwordEntered);
-        Debug.Log("LoginMenu: Login");
+        Debug.Log("LoginMenu: Login nameEntered "+nameEntered+" passwordEntered "+passwordEntered);
     }
 
     public void EnableBackButton()
@@ -64,13 +65,13 @@ loginButton.onClick.AddListener(() => Login());*/
 
     public void Show()
     {
-        // canvasGroup.DOFade(1.0f, 0.5f);
+        gameObject.SetActive(true);
         Debug.Log("LoginMenu: Show");
     }
 
     public void Hide()
     {
-        // canvasGroup.DOFade(0.0f, 0.5f);
+        gameObject.SetActive(false);
         Debug.Log("LoginMenu: Hide");
     }
 }

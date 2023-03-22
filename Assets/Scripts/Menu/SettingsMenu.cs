@@ -23,12 +23,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void Show()
     {
+        gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
         Debug.Log("Settings Menu: Show");
     }
 
     public void Hide()
     {
+        gameObject.SetActive(false);
         // canvasGroup.DOFade(0.0f, 0.5f);
         Debug.Log("Settings Menu: Hide");
     }

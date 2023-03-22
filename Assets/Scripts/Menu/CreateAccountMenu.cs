@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 // using DG.Tweening;
@@ -9,9 +10,9 @@ public class CreateAccountMenu : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private Button createButton;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private InputField nameInput;
-    [SerializeField] private InputField passwordInput;
-    [SerializeField] private InputField passwordInputRepeat;
+    [SerializeField] private TMP_InputField nameInput;
+    [SerializeField] private TMP_InputField passwordInput;
+    [SerializeField] private TMP_InputField passwordInputRepeat;
     private MenuMediator mediator;
 
     private string newUserName = "";
@@ -62,12 +63,14 @@ que se activan con el acontecimiento del inspector de Unity */
 
     public void Show()
     {
+        gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
         Debug.Log("CreateAccountMenu: Show");
     }
 
     public void Hide()
     {
+        gameObject.SetActive(false);
         // canvasGroup.DOFade(0.0f, 0.5f);
         Debug.Log("CreateAccountMenu: Hide");
     }

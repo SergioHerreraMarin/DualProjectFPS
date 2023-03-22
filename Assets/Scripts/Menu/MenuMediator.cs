@@ -18,6 +18,7 @@ public class MenuMediator : MonoBehaviour
     [SerializeField] private ProfileMenu profileMenu;
     [SerializeField] private LoginMenu loginMenu;
     [SerializeField] private CreateAccountMenu createAccountMenu;
+    [SerializeField] private CreateRoomMenu createRoomMenu;
 
     /* Aparte de tener los menus, tendra también un objeto de la clase usuario
     que se instancia o bien creando usuario o haciendo login,
@@ -32,12 +33,14 @@ public class MenuMediator : MonoBehaviour
         profileMenu.Configure(this);
         loginMenu.Configure(this);
         createAccountMenu.Configure(this);
+        createRoomMenu.Configure(this);
 
         loginMenu.Show();
         mainMenu.Hide();
         settingsMenu.Hide();
         profileMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
         Debug.Log("Menu Mediator: Awake");
     }
 
@@ -50,6 +53,7 @@ public class MenuMediator : MonoBehaviour
         profileMenu.Hide();
         loginMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Back to Main Menu");
     }
@@ -62,6 +66,7 @@ public class MenuMediator : MonoBehaviour
             profileMenu.Hide();
             loginMenu.Hide();
             createAccountMenu.Hide();
+            createRoomMenu.Hide();
 
             Debug.Log("Menu Mediator: Start Game");
             SceneManager.LoadScene("TestPlayerScene");
@@ -76,6 +81,7 @@ public class MenuMediator : MonoBehaviour
         profileMenu.Hide();
         loginMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Quit Game");
         Application.Quit();
@@ -90,6 +96,7 @@ public class MenuMediator : MonoBehaviour
             settingsMenu.Hide();
             loginMenu.Hide();
             createAccountMenu.Hide();
+            createRoomMenu.Hide();
 
             Debug.Log("Menu Mediator: Open Profile Menu");
         }else{
@@ -105,6 +112,7 @@ public class MenuMediator : MonoBehaviour
         settingsMenu.Show();
         loginMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Settings");
     }
@@ -116,6 +124,7 @@ public class MenuMediator : MonoBehaviour
         settingsMenu.Hide();
         profileMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Login Menu");
     }
@@ -127,8 +136,21 @@ public class MenuMediator : MonoBehaviour
         settingsMenu.Hide();
         loginMenu.Hide();
         createAccountMenu.Show();
+        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Create Account Menu");
+    }
+
+    public void OpenCreateRoomMenu(){
+        createRoomMenu.Show();
+
+        mainMenu.Hide();
+        settingsMenu.Hide();
+        profileMenu.Hide();
+        loginMenu.Hide();
+        createAccountMenu.Hide();
+
+        Debug.Log("Menu Mediator: Open Create Room Menu");
     }
 
     /* Metodos relacionados con la gestion de usuarios, falta la parte de conexión de BBDD */
@@ -152,17 +174,37 @@ public class MenuMediator : MonoBehaviour
     /*Con el nombre de usuario y la contraseña que le pasamos, comprueba si
     existe en la base de datos */
     public void CheckLogin(string username, string password){
-        bool userExists = true;
+        Debug.Log("Menu Mediator: Check Login: Username: " + username + " Password: " + password);
+        bool userExists = false;
 
-        /* Falta codigo de comprovación en BBDD si existe, 
-        si existe, lo establece como usuario, va al menu principal y
-        habilita un boton en el menu de login que estaba inhabilitado */
+        if(username == "" || password == ""){
+            Debug.Log("Menu Mediator: Check Login: Username or Password is empty");
+            return;
+        }else{
+            /* Falta codigo de comprovación en BBDD si existe, 
+            si existe, lo establece como usuario, va al menu principal y
+            habilita un boton en el menu de login que estaba inhabilitado */
+
+            /* De momento admite cualquier nombre y contraseña que no esten vacios */
+            userExists = true;
+        }
 
         if(userExists){
             currentUser = new UserProfile(username, password);
             loginMenu.EnableBackButton();
             BackToMainMenu();
+            profileMenu.setNameValue(username);
         }
+    }
+
+    /* En este metodo crearia una sala de juego con el nombre que ha pasado el jugador */
+    public void NewRoom(string roomRame){
+        Debug.Log("Menu Mediator: New Room");
+    }
+
+    /* Con este metodo, a partir del nombre de sala, comprueba si existe y de ser asi se uniria */
+    public void JoinRoom(string roomName){
+        Debug.Log("Menu Mediator: Join Room");
     }
 
     /* Funcion de testing para no tener que entrar credenciales */

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// using DG.Tweening;
 
 /* Menu principal */
 
@@ -17,7 +16,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        startGameButton.onClick.AddListener(() => mediator.StartGame());
+        startGameButton.onClick.AddListener(() => mediator.OpenCreateRoomMenu());
         settingsButton.onClick.AddListener(() => mediator.OpenSettings());
         profileButton.onClick.AddListener(() => mediator.OpenProfileMenu());
         quitButton.onClick.AddListener(() => mediator.QuitGame());
@@ -31,13 +30,13 @@ public class MainMenu : MonoBehaviour
 
     public void Show()
     {
-        // canvasGroup.DOFade(1.0f, 0.5f);
+        gameObject.SetActive(true);
         Debug.Log("Main Menu: Show");
     }
 
     public void Hide()
     {
-        // canvasGroup.DOFade(0.0f, 0.5f);
+        gameObject.SetActive(false);
         Debug.Log("Main Menu: Hide");
     }
 

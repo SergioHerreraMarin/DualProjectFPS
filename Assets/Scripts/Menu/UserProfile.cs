@@ -5,10 +5,11 @@ using UnityEngine;
 /* Clase con la que manejaremos los usuarios del juego
 estos o bien se crean en el menu CreateAccound
 o bien con un login se cargaria desde la BBDD */
-public class UserProfile : MonoBehaviour
+public class UserProfile 
 {
     private string userName;
     private string userPassword;
+    /* Dato provisional, para probar con persistencia de datos */
     private int userScore;
 
     public string UserName { get => userName; set => userName = value; }
@@ -24,7 +25,7 @@ public class UserProfile : MonoBehaviour
     }
 
     /* Este constructor seria para crear un usuario nuevo */
-        public UserProfile(string userName, string userPassword)
+    public UserProfile(string userName, string userPassword)
     {
         this.userName = userName;
         this.userPassword = userPassword;
