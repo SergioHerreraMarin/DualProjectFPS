@@ -12,7 +12,6 @@ public class ProfileMenu : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private Button changeAccountButton;
     [SerializeField] private TextMeshProUGUI nameValue;
-    [SerializeField] private CanvasGroup canvasGroup;
     private MenuMediator mediator;
 
     private void Awake()

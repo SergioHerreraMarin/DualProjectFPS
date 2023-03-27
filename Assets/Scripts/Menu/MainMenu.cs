@@ -11,7 +11,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button profileButton;
     [SerializeField] private Button quitButton;
-    [SerializeField] private CanvasGroup canvasGroup;
     private MenuMediator mediator;
 
     private void Awake()

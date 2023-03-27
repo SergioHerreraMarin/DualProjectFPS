@@ -13,7 +13,7 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private Button loginButton;
     [SerializeField] private Button createAccountButton;
-    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Button quitButton;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_InputField passwordInput;
     private MenuMediator mediator;
@@ -27,12 +27,9 @@ public class LoginMenu : MonoBehaviour
         backButton.onClick.AddListener(() => mediator.OpenProfileMenu());
         loginButton.onClick.AddListener(() => Login());
         createAccountButton.onClick.AddListener(() => mediator.OpenCreateAccountMenu());
+        quitButton.onClick.AddListener(() => mediator.QuitGame());
     }
 
-/* Si lograra asignar los inputField, podria usar este metodo que lea lo que el usuario
-ha entrado al pulsar el boton y lo mande al mediator, el ual si esta todo ok permitira
-ingresar al menu principal y a todas las opciones, entonces qedaria 
-loginButton.onClick.AddListener(() => Login());*/
     private void Login(){
         string nameEntered = nameInput.text;
         string passwordEntered = passwordInput.text;

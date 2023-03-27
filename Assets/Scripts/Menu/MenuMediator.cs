@@ -19,6 +19,8 @@ public class MenuMediator : MonoBehaviour
     [SerializeField] private LoginMenu loginMenu;
     [SerializeField] private CreateAccountMenu createAccountMenu;
     [SerializeField] private CreateRoomMenu createRoomMenu;
+    [SerializeField] private PanelMessage panelMessage;
+    private DatabaseMediator dbMediator;
 
     /* Aparte de tener los menus, tendra también un objeto de la clase usuario
     que se instancia o bien creando usuario o haciendo login,
@@ -34,6 +36,7 @@ public class MenuMediator : MonoBehaviour
         loginMenu.Configure(this);
         createAccountMenu.Configure(this);
         createRoomMenu.Configure(this);
+        panelMessage.Configure(this);
 
         loginMenu.Show();
         mainMenu.Hide();
@@ -41,7 +44,9 @@ public class MenuMediator : MonoBehaviour
         profileMenu.Hide();
         createAccountMenu.Hide();
         createRoomMenu.Hide();
+        panelMessage.Hide();
         Debug.Log("Menu Mediator: Awake");
+
     }
 
     /* Metodos para movernos entre menus */
@@ -56,6 +61,11 @@ public class MenuMediator : MonoBehaviour
         createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Back to Main Menu");
+    }
+
+    public void showMessagePanel(string message){
+        panelMessage.SetMessage(message);
+        panelMessage.Show();
     }
 
     public void StartGame(){
@@ -158,16 +168,18 @@ public class MenuMediator : MonoBehaviour
     /* Si ninguno de los campos esta vacio, crea un usuario en la BBDD */
     public void CreateAccount(string username, string password){
         if(username == "" || password == ""){
-            Debug.Log("Menu Mediator: Create Account: Username or Password is empty");
+            Debug.Log("MenuMediator: CreateAccount: Username or Password is empty");
             return;
         }else{
-            Debug.Log("Menu Mediator: Create Account: Username: " + username + " Password: " + password);
+            Debug.Log("MenuMediator: CreateAccount: Username: " + username + " Password: " + password);
             
             /* Primero comprueba si existe dicho usuario (username como Primary Key por ejemplo) 
             si no existe, se crea y se establece como el usuario atual,
             que se guarda en la BBDD*/
 
-            currentUser = new UserProfile(username, password);
+            dbMediator = new DatabaseMediator();
+
+            startUser(username, password);
         }
     }
 
@@ -190,11 +202,17 @@ public class MenuMediator : MonoBehaviour
         }
 
         if(userExists){
+            startUser(username, password);
+        }
+    }
+
+/* Cuando logeamos o creamos usuarios, podemos acceder al menu principal y se establece el usuario
+que estara navegando por el menu, podremos ver su nombre en el menu profile */
+    private void startUser(string username, string password){
             currentUser = new UserProfile(username, password);
             loginMenu.EnableBackButton();
             BackToMainMenu();
             profileMenu.setNameValue(username);
-        }
     }
 
     /* En este metodo crearia una sala de juego con el nombre que ha pasado el jugador */

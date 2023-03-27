@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private Button backButton;
-    [SerializeField] private CanvasGroup canvasGroup;
     private MenuMediator mediator;
 
     private void Awake()

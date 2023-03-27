@@ -11,7 +11,6 @@ public class CreateRoomMenu : MonoBehaviour
     [SerializeField] private TMP_InputField searchRoomInput;
     [SerializeField] private Button createRoomButton;
     [SerializeField] private Button searchRoomButton;
-    [SerializeField] private CanvasGroup canvasGroup;
     private MenuMediator mediator;
 
     private string createRoomEntered ="";

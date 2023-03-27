@@ -9,7 +9,6 @@ public class CreateAccountMenu : MonoBehaviour
 {
     [SerializeField] private Button backButton;
     [SerializeField] private Button createButton;
-    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_InputField passwordInput;
     [SerializeField] private TMP_InputField passwordInputRepeat;
@@ -22,13 +21,10 @@ public class CreateAccountMenu : MonoBehaviour
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.OpenLoginMenu());
-        createButton.onClick.AddListener(() => mediator.CreateAccount(newUserName, newUserPassword));
-
+        createButton.onClick.AddListener(() => getNewAccount());
         // backButton.onClick.AddListener(new UnityAction(mediator.BackToMainMenu()));
     }
 
-/* El mismo problema que con el menu Login, de forma provisional uso los metodos set
-que se activan con el acontecimiento del inspector de Unity */
     private void getNewAccount(){
         string newUserName = nameInput.text;
         string newUserPassword = passwordInput.text;
