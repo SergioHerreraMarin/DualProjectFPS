@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPun
 {
     [Header("Player stats")]
     [SerializeField] private float playerSpeed;
@@ -22,23 +22,22 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 jumpDirection;
     private float jumpSpeed;
     private float speed;
-    private PhotonView photonView;
 
     private void Awake() {
         playerInputController = GetComponent<PlayerInputController>();
-        photonView = GetComponent<PhotonView>();
         playerTransform = GetComponent<Transform>();
     }
 
     private void Start() {
-        if(!photonView.IsMine){
+        if(!photonView.IsMine){ //Si no es mi instancia de prefab cliente, desactivo la camera
             cam.gameObject.SetActive(false);
         }
     }
 
     private void Update() {
-
-        if(photonView.IsMine){         
+        
+        //Si es mi instancia de prefab cliente, hace los inputs. 
+        if(photonView.IsMine && PhotonNetwork.IsConnected){         
             Movement();
             ShiftMovement();
             Look();

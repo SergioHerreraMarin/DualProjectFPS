@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
-public class GunWeapon : MonoBehaviour, IShoot
+public class GunWeapon : MonoBehaviourPun, IShoot
 {
     [Header("WEAPON STATS")]
     [SerializeField] private LayerMask weaponLayerMask;
@@ -26,29 +27,31 @@ public class GunWeapon : MonoBehaviour, IShoot
 
     public void Shoot(InputAction.CallbackContext callbackContext)
     {
-        if(callbackContext.started)
+        if(photonView.IsMine)  //Si es mi instancia de prefab cliente, dispara.
         {
-            anim.SetTrigger("Shoot");
-            weaponRay = playerCamera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
+            if(callbackContext.started)
+            {   
+                weaponRay = playerCamera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
 
-            PlayMuzzleGun();
+                PlayMuzzleGun();
 
-            Debug.Log("Entra");
-            if(Physics.Raycast(weaponRay, out rayHit ,weaponRayLength, weaponLayerMask, QueryTriggerInteraction.Ignore))
-            {
-                if(rayHit.transform.gameObject.tag == "Player"){
-                    PlayerHealth playerHealth = rayHit.transform.gameObject.GetComponentInParent<PlayerHealth>();
-                    playerHealth.SetDamage(50);
-                    Debug.Log("Set damage");
+                if(Physics.Raycast(weaponRay, out rayHit ,weaponRayLength, weaponLayerMask, QueryTriggerInteraction.Ignore))
+                {
+                    if(rayHit.transform.gameObject.tag == "Player"){
+                        PlayerHealth playerHealth = rayHit.transform.gameObject.GetComponentInParent<PlayerHealth>();
+                        playerHealth.SetDamage(25);
+                        Debug.Log("Set damage to " + rayHit.transform.gameObject.name);
+                    }
+
+                    Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.green);
+                    Debug.Log(rayHit.transform.name);
+                }else
+                {
+                    Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.red);
                 }
-
-                Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.green);
-                Debug.Log(rayHit.transform.name);
-            }else
-            {
-                Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.red);
             }
         }
+  
     }
 
 
