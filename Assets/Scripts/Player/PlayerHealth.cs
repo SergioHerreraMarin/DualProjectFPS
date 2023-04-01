@@ -18,7 +18,10 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
         this.playerHealth = MAX_HEALTH;
     }
 
-    public void SetDamage(float damage)
+    //Este método es llamado desde weapon para dañar al jugador. 
+    //El atributo [PunRPC] es para que se pueda llamar de forma remota a través de la red de Photon. 
+    [PunRPC]
+    public void TakeDamage(float damage)
     {
         if(this.playerHealth > 0)
         {
@@ -31,7 +34,7 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
                 playerRagdoll.ActiveRagdoll();
             }
 
-            Debug.Log("CurrentHealth: " + this.playerHealth);
+            Debug.Log("Take damage. CurrentHealth: " + this.playerHealth);
         }
     }
 

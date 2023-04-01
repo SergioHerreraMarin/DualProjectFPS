@@ -38,8 +38,10 @@ public class GunWeapon : MonoBehaviourPun, IShoot
                 if(Physics.Raycast(weaponRay, out rayHit ,weaponRayLength, weaponLayerMask, QueryTriggerInteraction.Ignore))
                 {
                     if(rayHit.transform.gameObject.tag == "Player"){
-                        PlayerHealth playerHealth = rayHit.transform.gameObject.GetComponentInParent<PlayerHealth>();
-                        playerHealth.SetDamage(25);
+
+                        //Con RPC se puede llamar a un método en un objeto remoto de la red de Photon.
+                        PhotonView otherPlayer = rayHit.transform.gameObject.GetComponentInParent<PhotonView>();
+                        otherPlayer.RPC("TakeDamage", RpcTarget.All, shootDamage);
                         Debug.Log("Set damage to " + rayHit.transform.gameObject.name);
                     }
 
