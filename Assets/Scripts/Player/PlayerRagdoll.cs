@@ -29,7 +29,8 @@ public class PlayerRagdoll : MonoBehaviour
         foreach(Rigidbody rig in ragdollRigs){
             rig.isKinematic = false;
         }
+
+     
+        
     }
-
-
 }

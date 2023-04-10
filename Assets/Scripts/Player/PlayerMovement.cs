@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviourPun
     private void Update() {
         
         //Si es mi instancia de prefab cliente, hace los inputs. 
-        if(photonView.IsMine && PhotonNetwork.IsConnected){         
+        if(photonView.IsMine){         
             Movement();
             ShiftMovement();
             Look();

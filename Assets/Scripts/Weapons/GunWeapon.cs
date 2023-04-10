@@ -13,12 +13,14 @@ public class GunWeapon : MonoBehaviourPun, IShoot
     [Header("REFERENCES")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject muzzleFlashVfx;
+    [SerializeField] private GameObject bulletImpactVfx;
     [SerializeField] private Animator anim;
 
     private RaycastHit rayHit;
     private Ray weaponRay;
 
     private ParticleSystem[] muzzleFlashParticles;
+    private ParticleSystem[] bulletImpactParticles;
 
 
     private void Start() {
@@ -32,7 +34,7 @@ public class GunWeapon : MonoBehaviourPun, IShoot
             if(callbackContext.started)
             {   
                 weaponRay = playerCamera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
-
+                anim.SetTrigger("Shoot");
                 PlayMuzzleGun();
 
                 if(Physics.Raycast(weaponRay, out rayHit ,weaponRayLength, weaponLayerMask, QueryTriggerInteraction.Ignore))
@@ -43,6 +45,10 @@ public class GunWeapon : MonoBehaviourPun, IShoot
                         PhotonView otherPlayer = rayHit.transform.gameObject.GetComponentInParent<PhotonView>();
                         otherPlayer.RPC("TakeDamage", RpcTarget.All, shootDamage);
                         Debug.Log("Set damage to " + rayHit.transform.gameObject.name);
+
+                    }else
+                    {
+                        InstantiateBulletImpactParticles();
                     }
 
                     Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.green);
@@ -61,6 +67,10 @@ public class GunWeapon : MonoBehaviourPun, IShoot
         foreach(ParticleSystem particle in muzzleFlashParticles){
             particle.Play();
         }
+    }
+
+    private void InstantiateBulletImpactParticles(){
+        GameObject impactParticles = Instantiate(bulletImpactVfx, rayHit.point, Quaternion.FromToRotation(Vector3.forward, rayHit.normal));
     }
 
 

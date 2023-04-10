@@ -2,11 +2,16 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(PlayerRagdoll))]
-public class PlayerHealth : MonoBehaviour, IPunObservable
+public class PlayerHealth : MonoBehaviourPun
 {
     private const int MAX_HEALTH = 100;
     private float playerHealth;
     private PlayerRagdoll playerRagdoll;
+
+
+    //EVENTS
+    public delegate void HealthUpdateDelegate();
+    public event HealthUpdateDelegate HealthUpdateEvent;
 
     private void Awake()
     {
@@ -21,7 +26,7 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
     //Este método es llamado desde weapon para dañar al jugador. 
     //El atributo [PunRPC] es para que se pueda llamar de forma remota a través de la red de Photon. 
     [PunRPC]
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, PhotonMessageInfo info)
     {
         if(this.playerHealth > 0)
         {
@@ -32,11 +37,30 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
                 this.playerHealth = 0;
                 Debug.Log("Jugador muerto:  " + gameObject.name);
                 playerRagdoll.ActiveRagdoll();
+
+                Invoke("InvokeResetHealth", 5); //Chapuza
             }
 
-            Debug.Log("Take damage. CurrentHealth: " + this.playerHealth);
+            HealthUpdateEvent(); //Este evento avisará al HUD de que ha recibido daño. 
+            Debug.Log("Damage by: " + info.Sender + ", " + info.photonView);
         }
     }
+
+
+    private void InvokeResetHealth()
+    {
+        photonView.RPC("ResetHealth", RpcTarget.All);
+    }
+
+
+    [PunRPC]
+    public void ResetHealth()
+    {
+        this.playerHealth = MAX_HEALTH;
+        playerRagdoll.DesactiveRagdoll();
+        HealthUpdateEvent();
+    }
+
 
     public float GetHealth()
     {
@@ -46,17 +70,6 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
     public int GetMaxHealth()
     {
         return MAX_HEALTH;
-    }
-
-    //Para actualizar nuestra vida al resto de players y al revés. 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {   
-        if(stream.IsWriting){
-            stream.SendNext(this.playerHealth);
-        }else
-        {
-            this.playerHealth = (float)stream.ReceiveNext();
-        }
     }
 
 }

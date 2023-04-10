@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using DG.Tweening;
 
-public class PlayerHUD : MonoBehaviourPun, IPunObservable
+public class PlayerHUD : MonoBehaviourPun
 {
     [SerializeField] private Image healthBar;
+    [SerializeField] private Image screenBloodVFX;
+    [SerializeField] private float screenBloodSpeed;
     private GameObject target;
     private PlayerHealth healthRef;
     private int layerOtherUI;
     private float fillAmount;
+    private Tween screenBloodTween;
 
     private void Awake() { //Al ser instanciado, el prefab de HUD se hará hijo del canvas. 
         this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
@@ -16,26 +20,24 @@ public class PlayerHUD : MonoBehaviourPun, IPunObservable
 
     private void Start() {
 
+        DOTween.Init();
         layerOtherUI = LayerMask.NameToLayer("OtherUI");
+        screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,0);
 
         if(!target.GetComponent<PhotonView>().IsMine){
-            // this.gameObject.layer = layerOtherUI;
-            // int childCount = gameObject.transform.childCount;
-
-            // for(int i = 0; i < childCount; i++)
-            // {
-            //     Transform child = gameObject.transform.GetChild(i);
-            //     child.gameObject.layer = layerOtherUI;
-            // }
             gameObject.SetActive(false);
         }
     }
 
     public void setTarget(GameObject target){
         this.target = target;
-        healthRef = this.target.GetComponent<PlayerHealth>();
+        
         if(this.target != null)
-        {
+        {   
+            healthRef = this.target.GetComponent<PlayerHealth>();
+            //Suscripción a eventos
+            healthRef.HealthUpdateEvent += StartScreenBlood;
+            healthRef.HealthUpdateEvent += UpdateHealth;
             Debug.Log("Target HUD added");
         }
     }
@@ -51,9 +53,6 @@ public class PlayerHUD : MonoBehaviourPun, IPunObservable
         if(this.target == null)
         {
             Destroy(this.gameObject);
-        }else
-        {
-            UpdateHealth(); //Chapuza
         }
     }
 
@@ -65,17 +64,16 @@ public class PlayerHUD : MonoBehaviourPun, IPunObservable
     }
 
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
-            
-        if(stream.IsWriting){
-            //Si el objeto stream se está escribiendo, enviamos el valor de la variable a través de la red. 
-            stream.SendNext(fillAmount); 
-        }
-        else{
-            //Si el objeto se está leyendo, recibimos el valor de la variable que se envió a través de la red. 
-            fillAmount = (float)stream.ReceiveNext();
-        }
+    public void StartScreenBlood()
+    {
+        screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,1);
+        screenBloodVFX.DOFade(0, screenBloodSpeed).Restart();
     }
-        
+
+    
+    private void OnDestroy() {
+        healthRef.HealthUpdateEvent -= StartScreenBlood;
+        healthRef.HealthUpdateEvent -= UpdateHealth;
+    }
 
 }

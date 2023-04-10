@@ -15,10 +15,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private RoomOptions roomOptions;
     private const int MAX_ROOM_PLAYERS = 2;
 
-    private void Awake() {
+    private void Awake() 
+    {
+        // Esto hace que, todos los jugadores que estén en una sala, al cargar un nivel con PhotonNetwork.LoadLevel, todos los jugadores carguen la misma escena. 
+        PhotonNetwork.AutomaticallySyncScene = true;
+        roomOptions = new RoomOptions();
+
         createRoomButton.onClick.AddListener(() => CreateRoom());
         joinRoomButton.onClick.AddListener(() => JoinRoom());
-        roomOptions = new RoomOptions();
     }
 
     private void Start() {
@@ -36,12 +40,29 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     }
 
 
-    public override void OnJoinedRoom() //Cuando se ha podido unit a una sala. 
+    //Cuando se ha podido unit a una sala. 
+    public override void OnJoinedRoom() 
     {
-        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room.");
-        PhotonNetwork.LoadLevel("GamePrueba");
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            Debug.Log("<color=yellow>Unido a la sala con éxito :D </color>");
+        }else
+        {
+            Debug.Log("<color=yellow>Unido a la sala con éxito :D esperando 1 jugador... </color>");
+        }   
     }
 
+    
+    //Si ya estás unido a la sala y entra otro jugador, se ejecuta este. 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            PhotonNetwork.LoadLevel("GamePrueba");
+        }
+    }
+
+    
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.LogWarning("No se ha podido unir a la sala " + joinRoomInputField.text);
