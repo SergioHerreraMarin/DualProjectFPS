@@ -34,6 +34,8 @@ public class SpawnPlayer : MonoBehaviour
             {
                 GameObject player;
                 player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPositions[indexToSpawn].position, Quaternion.identity);
+                PhotonView gameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
+                gameManagerRef.RPC("AddPlayersToList", RpcTarget.All, player);
                 positionsDic[indexToSpawn] = false;
                 repeatSpawnRandomIndex = false;
                 Debug.Log("Spawn at point: " + indexToSpawn);

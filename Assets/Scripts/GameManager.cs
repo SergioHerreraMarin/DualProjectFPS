@@ -5,16 +5,22 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun
 {
-    public static Photon.Realtime.Player[] currentPlayersInRoom;
 
-    
+    public List<GameObject> playersInCurrentRoom = new List<GameObject>();
+
     private void Start() 
     {
-        currentPlayersInRoom = PhotonNetwork.PlayerList;
-        Debug.Log("Current players in room: " + currentPlayersInRoom.Length);
-        for(int i = 0; i < currentPlayersInRoom.Length; i++)
+        
+    }
+
+    [PunRPC]
+    public void AddPlayersToList(GameObject player){
+        playersInCurrentRoom.Add(player);
+
+        Debug.Log("Players: ==================================");
+        foreach(GameObject currentPlayer in playersInCurrentRoom)
         {
-            Debug.Log("Player ID: " + currentPlayersInRoom[i].UserId);
+            Debug.Log("Player: " + currentPlayer.name);
         }
     }
 
