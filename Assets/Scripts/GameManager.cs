@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviourPun
 {
 
     public List<GameObject> playersInCurrentRoom = new List<GameObject>();
+    
 
     private void Start() 
     {
