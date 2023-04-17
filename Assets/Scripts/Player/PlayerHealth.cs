@@ -4,6 +4,7 @@ using Photon.Pun;
 [RequireComponent(typeof(PlayerRagdoll))]
 public class PlayerHealth : MonoBehaviourPun
 {
+    [SerializeField] private float timeToResetHealth;
     private const int MAX_HEALTH = 100;
     private float playerHealth;
     private PlayerRagdoll playerRagdoll;
@@ -35,27 +36,34 @@ public class PlayerHealth : MonoBehaviourPun
             if(this.playerHealth <= 0)
             {
                 this.playerHealth = 0;
-                Debug.Log("Jugador muerto:  " + gameObject.name);
+                //Debug.Log("Jugador muerto:  " + gameObject.name);
                 playerRagdoll.ActiveRagdoll();
-
-                Invoke("InvokeResetHealth", 5); //Chapuza
+                Invoke("TellMyDeathToGameManager", timeToResetHealth);
             }
 
             HealthUpdateEvent(); //Este evento avisará al HUD de que ha recibido daño. 
-            Debug.Log("Damage by: " + info.Sender + ", " + info.photonView);
+            //Debug.Log("Damage by: " + info.Sender + ", " + info.photonView);
         }
     }
 
 
-    private void InvokeResetHealth()
+    private void TellMyDeathToGameManager()
     {
-        photonView.RPC("ResetHealth", RpcTarget.All);
+        if(photonView.IsMine) //Para que solo el jugador muerto de uno de los clientes informe y no todos. 
+        {
+            PhotonView gameManagerPhotonView = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
+            if(gameManagerPhotonView != null)
+            {
+                gameManagerPhotonView.RPC("ResetRound", RpcTarget.All);
+            }
+        }
     }
 
 
     [PunRPC]
     public void ResetHealth()
     {
+        Debug.Log("Reset health");
         this.playerHealth = MAX_HEALTH;
         playerRagdoll.DesactiveRagdoll();
         HealthUpdateEvent();

@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviourPun
     private Vector3 jumpDirection;
     private float jumpSpeed;
     private float speed;
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
     private void Awake() {
         playerInputController = GetComponent<PlayerInputController>();
@@ -32,6 +34,9 @@ public class PlayerMovement : MonoBehaviourPun
         if(!photonView.IsMine){ //Si no es mi instancia de prefab cliente, desactivo la camera
             cam.gameObject.SetActive(false);
         }
+
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     private void Update() {
@@ -89,5 +94,14 @@ public class PlayerMovement : MonoBehaviourPun
         playerTransform.Translate(jumpDirection, Space.Self);
         Debug.DrawRay(jumpRay.origin,jumpRay.direction * jumpRayLength, Color.green);
     }
+
+
+    [PunRPC]
+    private void ResetPositionAndRotation()
+    {
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+    }
+
 
 }

@@ -2268,7 +2268,6 @@ GameObject:
   - component: {fileID: 4914246802024014515}
   - component: {fileID: 4914246802024014516}
   - component: {fileID: 4914246802024014509}
-  - component: {fileID: 2544013873257730101}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2519,6 +2518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b11fc914cc54c34c8ceb039e498fb1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToResetHealth: 5
 --- !u!114 &4914246802024014509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2533,18 +2533,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHUDPrefab: {fileID: 8865918356157228288, guid: b424c1c04a7a8874eb80ac0c739b922c,
     type: 3}
---- !u!114 &2544013873257730101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4914246801540591583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 583d508cd8e02b14ab5fc2c9253ef141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4914246801991593532
 GameObject:
   m_ObjectHideFlags: 0
