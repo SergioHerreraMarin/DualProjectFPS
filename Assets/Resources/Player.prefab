@@ -2311,7 +2311,7 @@ MonoBehaviour:
   gravity: 0.1
   jumpForce: 0.05
   jumpRayLength: 0.06
-  playerLookSpeed: 50
+  playerLookSpeed: 17
   cam: {fileID: 4914246800217400761}
 --- !u!114 &4914246801540591582
 MonoBehaviour:

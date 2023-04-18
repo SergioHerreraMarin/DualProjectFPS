@@ -1,8 +1,8 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private int rounds;
     [SerializeField] private GameObject wallA;
@@ -14,13 +14,16 @@ public class GameManager : MonoBehaviourPun
     private PhotonView photonViewWallB;
     private GameObject clientPlayer;
 
+    //EVENTS
+    public delegate void FinishGameDelegate();
+    public event FinishGameDelegate FinishGameEvent;
+
+
     public void SetPlayer(GameObject clientPlayer)
     {
         this.clientPlayer = clientPlayer;
         Debug.Log("Set client player");
     }
-
-
 
 
     private void Start() {
@@ -103,10 +106,18 @@ public class GameManager : MonoBehaviourPun
     }
 
 
-
     private void FinishGame()
     {   
+        FinishGameEvent();
         Debug.Log("<color=yellow>Finish Game</color>");
+    }
+
+
+    //PUN CALLBACKS
+    public override void OnLeftRoom()
+    {   
+        Debug.Log("<color=yellow>Left room</color>");
+        SceneManager.LoadScene(0);
     }
 
 

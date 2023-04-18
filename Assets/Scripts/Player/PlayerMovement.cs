@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviourPun
     [SerializeField] private Camera cam;
 
     private PlayerInputController playerInputController;
+    private PlayerHealth playerHealth;
     
     private Transform playerTransform;
     private float verticalLookValue = 0;
@@ -25,9 +26,14 @@ public class PlayerMovement : MonoBehaviourPun
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
-    private void Awake() {
-        playerInputController = GetComponent<PlayerInputController>();
-        playerTransform = GetComponent<Transform>();
+    private void Awake() 
+    {
+        if(photonView.IsMine)
+        {
+            playerInputController = GetComponent<PlayerInputController>();
+            playerTransform = GetComponent<Transform>();
+            playerHealth = GetComponent<PlayerHealth>();
+        }
     }
 
     private void Start() {
@@ -35,14 +41,18 @@ public class PlayerMovement : MonoBehaviourPun
             cam.gameObject.SetActive(false);
         }
 
-        initialPosition = transform.position;
-        initialRotation = transform.rotation;
+        if(photonView.IsMine)
+        {
+            initialPosition = transform.position;
+            initialRotation = transform.rotation;
+        }
+        
     }
 
     private void Update() {
         
         //Si es mi instancia de prefab cliente, hace los inputs. 
-        if(photonView.IsMine){         
+        if(photonView.IsMine && !playerHealth.GetIsDeath()){         
             Movement();
             ShiftMovement();
             Look();

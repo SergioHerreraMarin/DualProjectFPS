@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviourPun
     private const int MAX_HEALTH = 100;
     private float playerHealth;
     private PlayerRagdoll playerRagdoll;
-
+    private bool isDeath;
 
     //EVENTS
     public delegate void HealthUpdateDelegate();
@@ -22,7 +22,15 @@ public class PlayerHealth : MonoBehaviourPun
     private void Start()
     {
         this.playerHealth = MAX_HEALTH;
+        this.isDeath = false;
     }
+
+
+    public bool GetIsDeath()
+    {   
+        return this.isDeath;
+    }
+
 
     //Este método es llamado desde weapon para dañar al jugador. 
     //El atributo [PunRPC] es para que se pueda llamar de forma remota a través de la red de Photon. 
@@ -37,6 +45,7 @@ public class PlayerHealth : MonoBehaviourPun
             {
                 this.playerHealth = 0;
                 //Debug.Log("Jugador muerto:  " + gameObject.name);
+                this.isDeath = true;
                 playerRagdoll.ActiveRagdoll();
                 Invoke("TellMyDeathToGameManager", timeToResetHealth);
             }
@@ -65,6 +74,7 @@ public class PlayerHealth : MonoBehaviourPun
     {
         Debug.Log("Reset health");
         this.playerHealth = MAX_HEALTH;
+        this.isDeath = false;
         playerRagdoll.DesactiveRagdoll();
         HealthUpdateEvent();
     }
