@@ -42,6 +42,11 @@ public class LoginMenu : MonoBehaviour
         backButton.interactable = true;
     }
 
+    public void DisableBackButton()
+    {
+        backButton.interactable = false;
+    }
+
     public void SetNameEntered(string name)
     {
         nameEntered = name;
@@ -62,13 +67,33 @@ public class LoginMenu : MonoBehaviour
 
     public void Show()
     {
+        // Debug.Log("LoginMenu: Show");
+        enableButtons();
         gameObject.SetActive(true);
-        Debug.Log("LoginMenu: Show");
     }
 
     public void Hide()
     {
+        // Debug.Log("LoginMenu: Hide");
+        nameInput.text = "";
+        passwordInput.text = "";
         gameObject.SetActive(false);
-        Debug.Log("LoginMenu: Hide");
+    }
+
+    public void enableButtons(){
+        // Debug.Log("LoginMenu: enableButtons");
+        backButton.interactable = true;
+        loginButton.interactable = true;
+        createAccountButton.interactable = true;
+        quitButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("LoginMenu: disableButtons");
+        backButton.interactable = false;
+        loginButton.interactable = false;
+        createAccountButton.interactable = false;
+        quitButton.interactable = false;
+        
     }
 }

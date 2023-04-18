@@ -49,19 +49,33 @@ public class CreateRoomMenu : MonoBehaviour
 
     public void Configure(MenuMediator mediator)
     {
+        // Debug.Log("CreateRoomMenu: Configure");
         this.mediator = mediator;
-        Debug.Log("CreateRoomMenu: Configure");
     }
 
     public void Show()
     {
+        // Debug.Log("CreateRoomMenu: Show");
         gameObject.SetActive(true);
-        Debug.Log("CreateRoomMenu: Show");
     }
 
     public void Hide()
     {
+        // Debug.Log("CreateRoomMenu: Hide");
         gameObject.SetActive(false);
-        Debug.Log("CreateRoomMenu: Hide");
+    }
+
+    public void enableButtons(){
+        // Debug.Log("CreateRoomMenu: enableButtons");
+        backButton.interactable = true;
+        createRoomButton.interactable = true;
+        searchRoomButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("CreateRoomMenu: disableButtons");
+        backButton.interactable = false;
+        createRoomButton.interactable = false;
+        searchRoomButton.interactable = false;
     }
 }

@@ -26,14 +26,18 @@ public class CreateAccountMenu : MonoBehaviour
     }
 
     private void getNewAccount(){
+        Debug.Log("Create Account Menu: getNewAccount");
         string newUserName = nameInput.text;
         string newUserPassword = passwordInput.text;
         string newUserPasswordRepeat = passwordInputRepeat.text;
-        Debug.Log("Create Account Menu: getNewAccount");
-        if(newUserPassword == newUserPasswordRepeat){
+        
+        if(newUserName == "" || newUserPassword == "" || newUserPasswordRepeat == ""){
+            mediator.showMessagePanel("You must fulfill all the fields");
+            return;
+        }else if(newUserPassword == newUserPasswordRepeat){
             mediator.CreateAccount(newUserName, newUserPassword);
         }else{
-            Debug.Log("Create Account Menu: getNewAccount !! passwords not equals");
+            mediator.showMessagePanel("Passwords do not match");
         }
     }
 
@@ -53,21 +57,36 @@ public class CreateAccountMenu : MonoBehaviour
     }
 
     public void Configure(MenuMediator mediator){
-        this.mediator = mediator;
         Debug.Log("CreateAccountMenu: Configure");
+        this.mediator = mediator;
     }
 
     public void Show()
     {
+        // Debug.Log("CreateAccountMenu: Show");
         gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
-        Debug.Log("CreateAccountMenu: Show");
     }
 
     public void Hide()
     {
+        // Debug.Log("CreateAccountMenu: Hide");
         gameObject.SetActive(false);
+        nameInput.text = "";
+        passwordInput.text = "";
+        passwordInputRepeat.text = "";
         // canvasGroup.DOFade(0.0f, 0.5f);
-        Debug.Log("CreateAccountMenu: Hide");
+    }
+
+    public void enableButtons(){
+        // Debug.Log("CreateAccountMenu: Enable Buttons");
+        backButton.interactable = true;
+        createButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("CreateAccountMenu: Disable Buttons");
+        backButton.interactable = false;
+        createButton.interactable = false;
     }
 }

@@ -11,6 +11,7 @@ public class ProfileMenu : MonoBehaviour
 {
     [SerializeField] private Button backButton;
     [SerializeField] private Button changeAccountButton;
+    [SerializeField] private Button modifyAccountButton;
     [SerializeField] private TextMeshProUGUI nameValue;
     private MenuMediator mediator;
 
@@ -18,6 +19,7 @@ public class ProfileMenu : MonoBehaviour
     {
         backButton.onClick.AddListener(() => mediator.BackToMainMenu());
         changeAccountButton.onClick.AddListener(() => mediator.OpenLoginMenu());
+        modifyAccountButton.onClick.AddListener(() => mediator.OpenModifyAccountMenu());
 
         // backButton.onClick.AddListener(new UnityAction(mediator.BackToMainMenu()));
     }
@@ -29,20 +31,32 @@ public class ProfileMenu : MonoBehaviour
 
     public void Show()
     {
+        // Debug.Log("Profile Menu: Show");
         gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
-        Debug.Log("Profile Menu: Show");
     }
 
     public void Hide()
     {
+        // Debug.Log("Profile Menu: Hide");
         gameObject.SetActive(false);
         // canvasGroup.DOFade(0.0f, 0.5f);
-        Debug.Log("Profile Menu: Hide");
     }
 
     public void setNameValue(string userName){
         nameValue.text = userName;
         Debug.Log("Profile Menu: setNameValue "+userName);
+    }
+
+    public void enableButtons(){
+        // Debug.Log("Profile Menu: enableButtons");
+        backButton.interactable = true;
+        changeAccountButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("Profile Menu: disableButtons");
+        backButton.interactable = false;
+        changeAccountButton.interactable = false;
     }
 }

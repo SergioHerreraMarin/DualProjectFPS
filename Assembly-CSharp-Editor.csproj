@@ -286,26 +286,17 @@
     <Reference Include="UnityEditor.Graphs">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.WebGL.Extensions">
-        <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Plastic.Newtonsoft.Json">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="K4os.Compression.LZ4">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.dll</HintPath>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="K4os.Compression.LZ4.Streams">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.Streams.dll</HintPath>
+    <Reference Include="K4os.Hash.xxHash">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
@@ -313,14 +304,17 @@
     <Reference Include="Unity.VisualScripting.YamlDotNet">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Burst.Unsafe">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Mdb">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
-    <Reference Include="ZstdNet">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\ZstdNet.dll</HintPath>
+    <Reference Include="K4os.Compression.LZ4.Streams">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.Streams.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.TextureAssets">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
@@ -328,29 +322,32 @@
     <Reference Include="Unity.VisualScripting.IonicZip">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="ZstdNet">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\ZstdNet.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Burst.Cecil.Pdb">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="log4netPlastic">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Burst.Cecil.Rocks">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
-    <Reference Include="K4os.Hash.xxHash">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Hash.xxHash.dll</HintPath>
+    <Reference Include="log4netPlastic">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="BouncyCastle.Crypto">
-        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="MySql.Data">
+        <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="ReportGeneratorMerged">
         <HintPath>D:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.testtools.codecoverage@1.0.1\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>

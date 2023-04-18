@@ -19,8 +19,12 @@ public class MenuMediator : MonoBehaviour
     [SerializeField] private LoginMenu loginMenu;
     [SerializeField] private CreateAccountMenu createAccountMenu;
     [SerializeField] private CreateRoomMenu createRoomMenu;
+    [SerializeField] private ModifyAccountMenu modifyAccountMenu;
     [SerializeField] private PanelMessage panelMessage;
-    private DatabaseMediator dbMediator;
+    [SerializeField] private PanelConfirmation panelConfirmation;
+    [SerializeField] private AudioSource music1;
+    [SerializeField] private AudioSource music2;
+    private DatabaseMediator databaseMediator;
 
     /* Aparte de tener los menus, tendra también un objeto de la clase usuario
     que se instancia o bien creando usuario o haciendo login,
@@ -36,47 +40,64 @@ public class MenuMediator : MonoBehaviour
         loginMenu.Configure(this);
         createAccountMenu.Configure(this);
         createRoomMenu.Configure(this);
+        modifyAccountMenu.Configure(this);
         panelMessage.Configure(this);
+        panelConfirmation.Configure(this);   
 
+        playMusic1();
+
+        hideAll();
         loginMenu.Show();
-        mainMenu.Hide();
-        settingsMenu.Hide();
-        profileMenu.Hide();
-        createAccountMenu.Hide();
-        createRoomMenu.Hide();
-        panelMessage.Hide();
         Debug.Log("Menu Mediator: Awake");
 
+    }
+
+    public void ConfigureDbMediator(DatabaseMediator databaseMediator){
+        this.databaseMediator = databaseMediator;
+        Debug.Log("Medu Mediator: ConfigureDbMediator");
     }
 
     /* Metodos para movernos entre menus */
 
     public void BackToMainMenu(){
+        hideAll();
         mainMenu.Show();
-
-        settingsMenu.Hide();
-        profileMenu.Hide();
-        loginMenu.Hide();
-        createAccountMenu.Hide();
-        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Back to Main Menu");
     }
 
     public void showMessagePanel(string message){
-        panelMessage.SetMessage(message);
-        panelMessage.Show();
+        disableAllButtons();
+
+        panelMessage.Show(message);
+        Debug.Log("Menu Mediator: Show Message Panel");
+    }
+
+    public void hideMessagePanel(){
+        enableAllButtons();
+
+        panelMessage.Hide();
+        Debug.Log("Menu Mediator: Hide Message Panel");
+    }
+
+    public void showConfirmationPanel(string message){
+        disableAllButtons();
+
+        panelConfirmation.Show(message);
+        Debug.Log("Menu Mediator: Show Message Panel");
+    }
+
+    public void hideConfirmationPanel(){
+        enableAllButtons();
+
+        panelConfirmation.Hide();
+        Debug.Log("Menu Mediator: Hide Message Panel");
     }
 
     public void StartGame(){
         if(currentUser != null)
         {
-            mainMenu.Hide();
-            settingsMenu.Hide();
-            profileMenu.Hide();
-            loginMenu.Hide();
-            createAccountMenu.Hide();
-            createRoomMenu.Hide();
+            hideAll();
 
             Debug.Log("Menu Mediator: Start Game");
             SceneManager.LoadScene("TestPlayerScene");
@@ -86,12 +107,7 @@ public class MenuMediator : MonoBehaviour
     }
 
     public void QuitGame(){
-        mainMenu.Hide();
-        settingsMenu.Hide();
-        profileMenu.Hide();
-        loginMenu.Hide();
-        createAccountMenu.Hide();
-        createRoomMenu.Hide();
+        this.hideAll();
 
         Debug.Log("Menu Mediator: Quit Game");
         Application.Quit();
@@ -100,119 +116,203 @@ public class MenuMediator : MonoBehaviour
     public void OpenProfileMenu(){
         if(currentUser != null)
         {
+            this.hideAll();
             profileMenu.Show();
-
-            mainMenu.Hide();
-            settingsMenu.Hide();
-            loginMenu.Hide();
-            createAccountMenu.Hide();
-            createRoomMenu.Hide();
 
             Debug.Log("Menu Mediator: Open Profile Menu");
         }else{
             Debug.Log("Menu Mediator: Open Profile Menu !! No user logged in");
         }
-
     }
 
     public void OpenSettings(){
-        profileMenu.Hide();
-
-        mainMenu.Hide();
+        this.hideAll();
         settingsMenu.Show();
-        loginMenu.Hide();
-        createAccountMenu.Hide();
-        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Settings");
     }
 
     public void OpenLoginMenu(){
+        this.hideAll();
         loginMenu.Show();
-
-        mainMenu.Hide();
-        settingsMenu.Hide();
-        profileMenu.Hide();
-        createAccountMenu.Hide();
-        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Login Menu");
     }
 
     public void OpenCreateAccountMenu(){
-        profileMenu.Hide();
-
-        mainMenu.Hide();
-        settingsMenu.Hide();
-        loginMenu.Hide();
+        this.hideAll();
         createAccountMenu.Show();
-        createRoomMenu.Hide();
 
         Debug.Log("Menu Mediator: Open Create Account Menu");
     }
 
+    public void OpenModifyAccountMenu(){
+        this.hideAll();
+        modifyAccountMenu.Show();
+
+        Debug.Log("Menu Mediator: Open Modify Account Menu");
+    }
+
     public void OpenCreateRoomMenu(){
+        this.hideAll();
         createRoomMenu.Show();
 
+        playMusic2();
+
+        Debug.Log("Menu Mediator: Open Create Room Menu");
+    }
+
+    private void playMusic1(){
+        if(music1.isPlaying == false){
+            music1.Play();
+            music2.Stop();
+            Debug.Log("Menu Mediator: Play Music 1");
+        }
+    }
+
+    private void playMusic2(){
+        if (music2.isPlaying == false)
+        {
+            music2.Play();
+            music1.Stop();
+            Debug.Log("Menu Mediator: Play Music 2");
+        }
+    }
+
+    public void hideAll(){
+        playMusic1();
         mainMenu.Hide();
         settingsMenu.Hide();
         profileMenu.Hide();
         loginMenu.Hide();
         createAccountMenu.Hide();
+        createRoomMenu.Hide();
+        modifyAccountMenu.Hide();
+    }
 
-        Debug.Log("Menu Mediator: Open Create Room Menu");
+    public void enableAllButtons(){
+        mainMenu.enableButtons();
+        settingsMenu.enableButtons();
+        profileMenu.enableButtons();
+        loginMenu.enableButtons();
+        createAccountMenu.enableButtons();
+        createRoomMenu.enableButtons();
+        modifyAccountMenu.enableButtons();
+    }
+
+    public void disableAllButtons(){
+        mainMenu.disableButtons();
+        settingsMenu.disableButtons();
+        profileMenu.disableButtons();
+        loginMenu.disableButtons();
+        createAccountMenu.disableButtons();
+        createRoomMenu.disableButtons();
+        modifyAccountMenu.disableButtons();
     }
 
     /* Metodos relacionados con la gestion de usuarios, falta la parte de conexión de BBDD */
 
     /* Si ninguno de los campos esta vacio, crea un usuario en la BBDD */
     public void CreateAccount(string username, string password){
-        if(username == "" || password == ""){
-            Debug.Log("MenuMediator: CreateAccount: Username or Password is empty");
-            return;
-        }else{
             Debug.Log("MenuMediator: CreateAccount: Username: " + username + " Password: " + password);
             
             /* Primero comprueba si existe dicho usuario (username como Primary Key por ejemplo) 
-            si no existe, se crea y se establece como el usuario atual,
-            que se guarda en la BBDD*/
+            si no existe, se crea en la BBDD y para establecerlo, lo obtiene de la BBDD
+            */
 
-            dbMediator = new DatabaseMediator();
+            bool exists = databaseMediator.checkUserExists(username);
+            if(exists == false){
+                databaseMediator.insertNewUser(username, password, 0);
+                startUser(databaseMediator.retrieveUserByName(username));
+                showMessagePanel("User with name "+username+" created successfully\n and setted as current user");
+            }else{
+                showMessagePanel("User with name "+username+" already exists in the database");
+            }
+    }
 
-            startUser(username, password);
+/* Funcion para modificar nombre y/o contraseña, le pasamos el nuevo nombre y nueva contraseña
+si alguno de estos es nulo, se usara el valor actual (y en la practica no se actualizara, seguira igual) */
+    public void ModifyAccount(string newUsername, string newPassword, string oldName){
+        Debug.Log("MenuMediator: ModifyAccount: New Username: " + newUsername + " New Password: " + newPassword);
+        bool nameExists = false;
+        if(newUsername == ""){
+            newUsername = currentUser.getUserName();
         }
+        if(newPassword == ""){
+            newPassword = currentUser.getUserPassword();
+        }
+        nameExists = databaseMediator.checkUserExists(newUsername);
+        if (nameExists == false || newUsername == oldName){
+            databaseMediator.updateUser(currentUser, newUsername, newPassword, currentUser.getUserScore());
+            startUser(databaseMediator.retrieveUserByName(newUsername));
+            showMessagePanel("User with name "+oldName+" changed to "+newUsername+" successfully");
+        }else{
+            showMessagePanel("The name "+newUsername+" is already registered\n in the database and can't be used");
+        }
+    }
+
+    public void DeleteAccount(){
+        Debug.Log("MenuMediator: DeleteAccount");
+        if(databaseMediator.deleteUser(currentUser)){
+            currentUser = null;
+            hideAll();
+            loginMenu.Show();
+            loginMenu.DisableBackButton();
+            showMessagePanel("User deleted successfully");
+        }else{
+            showMessagePanel("Error deleting the user");
+        }
+        
+
     }
 
     /*Con el nombre de usuario y la contraseña que le pasamos, comprueba si
     existe en la base de datos */
     public void CheckLogin(string username, string password){
         Debug.Log("Menu Mediator: Check Login: Username: " + username + " Password: " + password);
-        bool userExists = false;
 
         if(username == "" || password == ""){
             Debug.Log("Menu Mediator: Check Login: Username or Password is empty");
             return;
         }else{
-            /* Falta codigo de comprovación en BBDD si existe, 
-            si existe, lo establece como usuario, va al menu principal y
+            /* Si existe y contraseña OK, lo establecera como usuario, va al menu principal y
             habilita un boton en el menu de login que estaba inhabilitado */
 
-            /* De momento admite cualquier nombre y contraseña que no esten vacios */
-            userExists = true;
-        }
+           /*  databaseMediator.testDatabase();
+            databaseMediator.sampleQuery(); */
 
-        if(userExists){
-            startUser(username, password);
+            if(databaseMediator.checkUserExists(username) == true){
+                if(databaseMediator.checkUserPassword(username, password) == true){
+                    startUser(databaseMediator.retrieveUserByName(username));
+                    showMessagePanel("Welcome "+username+"!");
+                }else{
+                    Debug.Log("Menu Mediator: Check Login: Password incorrect for this user");
+                    showMessagePanel("Password incorrect for this user");
+                }
+            }else{
+                Debug.Log("Menu Mediator: Check Login: User not found");
+                showMessagePanel("User not found, you can create a user with this name");
+            }
         }
     }
 
-/* Cuando logeamos o creamos usuarios, podemos acceder al menu principal y se establece el usuario
-que estara navegando por el menu, podremos ver su nombre en el menu profile */
-    private void startUser(string username, string password){
-            currentUser = new UserProfile(username, password);
+/* Funcion con la que establecemos que usuario va a ser el currentUser, servira tanto para 
+hacer loguin, como para cuando creamos un usuario nuevo. Si podemos establecer un nuevo usuario, iremos al menu principal
+desbloquearemos el boton dle menu login para ir al menu principal y en el menu de perfil estableceremos los datos de ese nuevo usuario */
+    private void startUser(UserProfile userLogged){
+        if(userLogged != null){
+            currentUser = userLogged;
             loginMenu.EnableBackButton();
             BackToMainMenu();
-            profileMenu.setNameValue(username);
+            profileMenu.setNameValue(currentUser.getUserName());
+        }else{
+            Debug.Log("Menu Mediator: Start User: User is null");
+            showMessagePanel("Something went wrong, user could not be loaded correctly");
+        }
+    }
+
+    public UserProfile getCurrentUser(){
+        return currentUser;
     }
 
     /* En este metodo crearia una sala de juego con el nombre que ha pasado el jugador */
@@ -223,10 +323,5 @@ que estara navegando por el menu, podremos ver su nombre en el menu profile */
     /* Con este metodo, a partir del nombre de sala, comprueba si existe y de ser asi se uniria */
     public void JoinRoom(string roomName){
         Debug.Log("Menu Mediator: Join Room");
-    }
-
-    /* Funcion de testing para no tener que entrar credenciales */
-    public void FastLogin(){
-        currentUser = new UserProfile("test", "test");
     }
 }

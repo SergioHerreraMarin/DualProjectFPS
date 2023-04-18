@@ -16,14 +16,21 @@ public class UserProfile
     private string userPassword;
     /* Dato provisional, para probar con persistencia de datos */
     private string userScore;
+    private int userScore;
 
     public string UserId { get => userId; }
     public string UserName { get => userName; set => userName = value; }
     public string UserPassword { get => userPassword; set => userPassword = value; }
-    public string UserScore { get => userScore; set => userScore = value; }
+    public int UserScore { get => userScore; set => userScore = value; }
 
-    /* Este constructor seria para cargar un usuario desde la BBDD */
-    public UserProfile(string userId, string userName, string userPassword, string userScore)
+    /* Este constructor se usara para cargar un usuario desde la BBDD,
+    para evitar posibles inconsistencias de datos, en nuestro codigo del juego,
+    los objetos usuarios solo se instanciaran a partir de informacion de la BBDD
+    
+    Cuando se crea un usuario en el juego, primero se crea y se guarda en la base de datos y para
+    establecerlo como usuario actual del juego, cogeremos de la BBDD ese usuario recien creado, 
+    de esta forma todo usuario esta respaldado por su presencia previa en la BBDD */
+    public UserProfile(string userId, string userName, string userPassword, int userScore)
     {
         this.userId = userId;
         this.userName = userName;
@@ -31,16 +38,40 @@ public class UserProfile
         this.userScore = userScore;
     }
 
-    /* Este constructor seria para crear un usuario nuevo */
-    public UserProfile(string userName, string userPassword)
-    {
+    //Generate me the setters and getters for this class
+
+    public string getUserId(){
+        return userId;
+    }
+
+    public string getUserName(){
+        return userName;
+    }
+
+    public void setUserName(string userName){
         this.userName = userName;
+    }
+
+    public string getUserPassword(){
+        return userPassword;
+    }
+
+    public void setUserPassword(string userPassword){
         this.userPassword = userPassword;
-        this.userScore = "0";
+    }
+
+    public int getUserScore(){
+        return userScore;
+    }
+
+    public void setUserScore(int userScore){
+        this.userScore = userScore;
     }
 
     public string toString(){
         return "id: "+ userId + "User: " + userName + " Password: " + userPassword + " Score: " + userScore;
     }
+
+
 
 }

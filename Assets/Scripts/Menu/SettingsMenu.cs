@@ -22,16 +22,26 @@ public class SettingsMenu : MonoBehaviour
 
     public void Show()
     {
+        // Debug.Log("Settings Menu: Show");
         gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
-        Debug.Log("Settings Menu: Show");
     }
 
     public void Hide()
     {
+        // Debug.Log("Settings Menu: Hide");
         gameObject.SetActive(false);
         // canvasGroup.DOFade(0.0f, 0.5f);
-        Debug.Log("Settings Menu: Hide");
+    }
+
+    public void enableButtons(){
+        // Debug.Log("Settings Menu: enableButtons");
+        backButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("Settings Menu: disableButtons");
+        backButton.interactable = false;
     }
 
 }

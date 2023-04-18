@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -39,14 +36,26 @@ public class PanelMessage : MonoBehaviour
     }
 
     private void Accept(){
-        this.Hide();
+        mediator.hideMessagePanel();
     }
 
     public void Show(){
+        // Debug.Log("PanelMessage: Show");
+        canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
     }
 
+    public void Show(string message){
+        // Debug.Log("PanelMessage: Show");
+        canvas.gameObject.SetActive(true);
+        gameObject.SetActive(true);
+        this.SetMessage(message);
+    }
+
     public void Hide(){
+        // Debug.Log("PanelMessage: Hide");
+        canvas.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
+
 }

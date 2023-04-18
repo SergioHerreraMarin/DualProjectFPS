@@ -13,90 +13,207 @@ la clase usuario no guardaremos esta id, solo la usara la base de datos
 los scripts i los usuarios que jueguen identificaran las cuentas por el nombre que sera unico*/
 public class DatabaseMediator : MonoBehaviour
 {
+    [SerializeField] private MenuMediator menuMediator;
     MySqlConnection connection;
+    MySqlCommand command;
 
-    // Start is called before the first frame update
-    void Start()
+    // Por si no existiera en la BBDD, crea la tabla de usuarios, profiles, pero esta deberia existir
+    void Awake()
     {
+        menuMediator.ConfigureDbMediator(this);
         connection = new MySqlConnection("Server=localhost;Database=db_dualproject;Uid=root;Pwd=localhost;");
         connection.Open();
+        command = connection.CreateCommand();
+        command.CommandText = "CREATE TABLE IF NOT EXISTS profiles("
+            +"idProfile INTEGER NOT NULL AUTO_INCREMENT,"
+            +"nameProfile VARCHAR(255) UNIQUE,"
+            +"passwordProfile VARCHAR(255),"
+            +"scoreProfile INTEGER,"
+            +"PRIMARY KEY(idProfile));";
+        command.ExecuteNonQuery();
+        connection.Close();
+    }
+
+/* Dos funciones por separado para comprobar que existe el usuario y que dicho nombre de usuario 
+ tiene dicha contraseña asociada
+ se puede hacer una u otra comprovación segun se necesite*/
+    public bool checkUserExists(string userName){
+        Debug.Log("DatabaseMediator: checkUserExists");
+        bool exists= false;
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "SELECT * FROM profiles WHERE nameProfile = '" + userName + "';";
+        MySqlDataReader reader = command.ExecuteReader();
+        if(reader.Read() == true){
+            exists =true;
+        }
+        reader.Close();
+        connection.Close();
+        return exists;
+    }
+
+    public bool checkUserPassword(string userName, string password){
+        Debug.Log("DatabaseMediator: checkUserPassword");
+        bool exists= false;
+        connection.Open();
+        command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM profiles WHERE nameProfile = '" + userName + "' AND passwordProfile = '" + password + "';";
+        MySqlDataReader reader = command.ExecuteReader();
+        if(reader.Read() == true){
+            exists =true;
+        }
+        reader.Close();
+        connection.Close();
+        return exists;
     }
 
 /* Insertar un usuario, sera llamada cuando se cree un usuario */
-    void insertNewUser(UserProfile userToInsert){
-        MySqlCommand command = connection.CreateCommand();
+    public void insertNewUser(UserProfile userToInsert){
+        Debug.Log("DatabaseMediator: insertNewUser");
         string userName = userToInsert.UserName;
         string password = userToInsert.UserPassword;
 
         Debug.Log("We will insert this user: "+userToInsert.toString());
-        command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile) VALUES ('" + userName + "', '" + password + "');";
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, scoreProfile) VALUES ('" + userName + "', '" + password + "', '" + 0 +"');";
         MySqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
             Debug.Log(reader.GetString(0));
         }
         reader.Close(); 
+        connection.Close();
+    }
+    public void insertNewUser(string userName, string userPassword, int userScore){
+        Debug.Log("DatabaseMediator: insertNewUser");
 
+        Debug.Log("We will insert a user with name"+userName+" and password "+userPassword);
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, scoreProfile) VALUES ('" + userName + "', '" + userPassword + "', '" + userScore +"');";
+        int rowsAffected = command.ExecuteNonQuery();
+        Debug.Log(rowsAffected + " row(s) affected.");
+        connection.Close();
     }
 
-/* Para buscar un usuario, se usara para el login, comprobar que existe y de ser asi, darnos la info del usuario */
-    UserProfile retrieveUser(string userName){
+/* Para buscar un usuario, se usara para el login, comprobar que existe y de ser asi, 
+devolvernos el objeto usuario */
+    public UserProfile retrieveUserByName(string userName){
+        Debug.Log("DatabaseMediator: retrieveUserByName");
         UserProfile retrievedUser = null;
-        MySqlCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT nameProfile, passwordProfile, scoreProfile FROM profiles WHERE nameProfile = '" + userName + ";";
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "SELECT * FROM profiles WHERE nameProfile = '" + userName + "';";
         MySqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Debug.Log(reader.GetString(0));
-            retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
+            if (!reader.IsDBNull(0) && !reader.IsDBNull(1) && !reader.IsDBNull(2) && !reader.IsDBNull(3))
+            {
+                Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3));
+                retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+            }else if(reader.IsDBNull(3))
+            {
+                Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+0);
+                retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0);
+            }
         }
         reader.Close(); 
-        Debug.Log("Retrieved user: " + retrievedUser.toString());
+        Debug.Log("Retrieved user: " + retrievedUser?.toString());
+        connection.Close();
+        
+        return retrievedUser;
+    }
+
+    public UserProfile retrieveUserById(string userId){
+        Debug.Log("DatabaseMediator: retrieveUserById");
+        UserProfile retrievedUser = null;
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "SELECT * FROM profiles WHERE idProfile = '" + userId + "';";
+        MySqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            if (!reader.IsDBNull(0) && !reader.IsDBNull(1) && !reader.IsDBNull(2) && !reader.IsDBNull(3))
+            {
+                Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3));
+                retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+            }else if(reader.IsDBNull(3))
+            {
+                Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+0);
+                retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0);
+            }
+        }
+        reader.Close(); 
+        connection.Close();
+        Debug.Log("Retrieved user: " + retrievedUser?.toString());
 
         return retrievedUser;
     }
 
-/* Actualizar un usuario, por ejemplo una nueva puntuación, la contraseña o incluso el nombre */
-    void updateUser(UserProfile userToUpdate){
-        string id = getId(userToUpdate.UserName);
-        string userName = userToUpdate.UserName;
-        string password = userToUpdate.UserPassword;
-        string score = userToUpdate.UserScore;
+/* Actualizar un usuario, por ejemplo una nueva puntuación, la contraseña o incluso el nombre
+Se actualizaran todos los valores, aunque no siempre se quieran cambiar todos,
+en este caso el update se hara con los mismos valores y en la practica no cambiara 
 
-        MySqlCommand command = connection.CreateCommand();
-        command.CommandText = "UPDATE profiles SET nameProfile = '" + userName + "', passwordProfile = '" + password + "', scoreProfile = '" + score + "' WHERE idProfile = '" + id + "';";
+Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo volveria a crear*/
+    public UserProfile updateUser(UserProfile userToUpdate, string newName, string newPassword, int newScore){
+        UserProfile updatedUser = userToUpdate;
+        Debug.Log("DatabaseMediator: updateUser");
+        if(newName == "") newName = userToUpdate.getUserName();
+        if(newPassword == "") newPassword = userToUpdate.getUserPassword();
+        if(newScore == 0) newScore = userToUpdate.getUserScore();
 
-        Debug.Log("We will update this user: "+userToUpdate.toString());
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "UPDATE profiles SET nameProfile = '" + newName + "', passwordProfile = '" + newPassword + "', scoreProfile = '" + newScore 
+        + "' WHERE idProfile = '" + userToUpdate.getUserId() + "' AND nameProfile = '" + userToUpdate.getUserName() + "';";
 
-        MySqlDataReader reader = command.ExecuteReader();
-        while (reader.Read())
-        {
-            Debug.Log(reader.GetString(0));
-        }
-        reader.Close(); 
+        Debug.Log("We will update this user: "+userToUpdate.toString()+" \nwith this new data: "+newName+" "+newPassword+" "+newScore+"");
+
+        int rowsAffected = command.ExecuteNonQuery();
+
+        if (rowsAffected == 0) 
+        { 
+            Debug.Log("User not found at the database, it will be recreated with the udapted information from the game");
+            insertNewUser(newName, newPassword, newScore);
+        } 
+        connection.Close();
+
+        updatedUser = retrieveUserByName(newName);
+        return updatedUser;
     }
 
 /* Eliminar un usuario de la base de datos, de momento el menu no tiene esta opcion */
-    void deleteUser(UserProfile userToDelete){
-        MySqlCommand command = connection.CreateCommand();
+    public bool deleteUser(UserProfile userToDelete){
+        Debug.Log("DatabaseMediator: deleteUser");
         string userName = userToDelete.UserName;
-        string password = userToDelete.UserPassword;
+
+        bool deleted = false;
 
         Debug.Log("We will delete this user: "+userToDelete.toString());
-
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "DELETE FROM profiles WHERE nameProfile = '" + userName  +"';";
         MySqlDataReader reader = command.ExecuteReader();
+        if(reader.RecordsAffected > 0){
+            deleted = true;
+        }
         while (reader.Read())
         {
             Debug.Log(reader.GetString(0));
         }
         reader.Close(); 
+        connection.Close();
+        return deleted;
     }
 
 /* Metodo para obtener la id a partir del nombre */
     private string getId(string userName){
+        Debug.Log("DatabaseMediator: getId");
         string id = "";
-        MySqlCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT idProfile FROM profiles WHERE nameProfile = '" + userName + ";";
+        connection.Open();
+        command = connection.CreateCommand(); 
+        command.CommandText = "SELECT idProfile FROM profiles WHERE nameProfile = '" + userName + "';";
         MySqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
@@ -104,12 +221,15 @@ public class DatabaseMediator : MonoBehaviour
             id = reader.GetString(0);
         }
         reader.Close(); 
+        connection.Close();
         return id;
     }
 
 /* Por si queremos resetear la base de datos */
-    void resetDatabase(){
-        MySqlCommand command = connection.CreateCommand();
+    public void resetDatabase(){
+        Debug.Log("DatabaseMediator: resetDatabase");
+        connection.Open();
+        command = connection.CreateCommand(); 
         command.CommandText = "SET SQL_SAFE_UPDATES = 0;"
                             + "DELETE FROM profiles WHERE 1;"
                             + "SET SQL_SAFE_UPDATES = 1;";
@@ -119,16 +239,19 @@ public class DatabaseMediator : MonoBehaviour
             Debug.Log(reader.GetString(0));
         }
         reader.Close(); 
+        connection.Close();
     }
 
-/* Nos crea de 0 una base de datos de prueba */
-    void testDatabase(){
-        MySqlCommand command = connection.CreateCommand();
+/* Nos crea de 0 la base de datos, con unos valores de prueba */
+    public void testDatabase(){
+        Debug.Log("DatabaseMediator: testDatabase");
+        connection.Open();
+        command = connection.CreateCommand(); 
         command.CommandText = "DROP TABLE IF EXISTS profiles;"
 
                             + "CREATE TABLE profiles(idProfile INTEGER NOT NULL AUTO_INCREMENT,"
-                            + "nameProfile VARCHAR(255) UNIQUE," 
-                            + "passwordProfile VARCHAR(255),"
+                            + "nameProfile VARCHAR(255) UNIQUE NOT NULL," 
+                            + "passwordProfile VARCHAR(255) NOT NULL,"
                             + "scoreProfile INTEGER,"
                             + "PRIMARY KEY(idProfile));"
 
@@ -141,5 +264,6 @@ public class DatabaseMediator : MonoBehaviour
             Debug.Log(reader.GetString(0));
         }
         reader.Close(); 
+        connection.Close();
     }
 }

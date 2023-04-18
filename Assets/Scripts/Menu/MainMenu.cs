@@ -29,14 +29,32 @@ public class MainMenu : MonoBehaviour
 
     public void Show()
     {
-        gameObject.SetActive(true);
         Debug.Log("Main Menu: Show");
+        enableButtons();
+        gameObject.SetActive(true);
+        
     }
 
     public void Hide()
     {
-        gameObject.SetActive(false);
         Debug.Log("Main Menu: Hide");
+        gameObject.SetActive(false);
+    }
+
+    public void enableButtons(){
+        // Debug.Log("Main Menu: Enable Buttons");
+        startGameButton.interactable = true;
+        settingsButton.interactable = true;
+        profileButton.interactable = true;
+        quitButton.interactable = true;
+    }
+
+    public void disableButtons(){
+        // Debug.Log("Main Menu: Disable Buttons");
+        startGameButton.interactable = false;
+        settingsButton.interactable = false;
+        profileButton.interactable = false;
+        quitButton.interactable = false;
     }
 
 }
