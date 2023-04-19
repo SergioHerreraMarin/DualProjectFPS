@@ -6,11 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PruebasOnline/ConnectToServer.unity
-    guid: 0ca16cd76896e9542936d40d7cf1ecc6
-  - enabled: 1
-    path: Assets/Scenes/PruebasOnline/Lobby.unity
-    guid: 86ba170a0eb164846bd9869783511356
+    path: Assets/Scenes/MenuScene.unity
+    guid: 4334c1ed88b40e24cb48bcc0b0878516
   - enabled: 1
     path: Assets/Scenes/PruebasOnline/GamePrueba.unity
     guid: 3bac8b58d2d2738408e5c4a80e871202

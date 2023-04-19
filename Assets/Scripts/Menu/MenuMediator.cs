@@ -24,6 +24,7 @@ public class MenuMediator : MonoBehaviour
     [SerializeField] private PanelConfirmation panelConfirmation;
     [SerializeField] private AudioSource music1;
     [SerializeField] private AudioSource music2;
+
     private DatabaseMediator databaseMediator;
 
     /* Aparte de tener los menus, tendra también un objeto de la clase usuario
@@ -156,9 +157,7 @@ public class MenuMediator : MonoBehaviour
     public void OpenCreateRoomMenu(){
         this.hideAll();
         createRoomMenu.Show();
-
         playMusic2();
-
         Debug.Log("Menu Mediator: Open Create Room Menu");
     }
 

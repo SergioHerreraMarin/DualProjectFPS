@@ -11,11 +11,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button profileButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private ConnectToServer connectToServer;
     private MenuMediator mediator;
 
     private void Awake()
     {
-        startGameButton.onClick.AddListener(() => mediator.OpenCreateRoomMenu());
+        startGameButton.onClick.AddListener(() => ConnectToPhotonServer());
         settingsButton.onClick.AddListener(() => mediator.OpenSettings());
         profileButton.onClick.AddListener(() => mediator.OpenProfileMenu());
         quitButton.onClick.AddListener(() => mediator.QuitGame());
@@ -55,6 +56,11 @@ public class MainMenu : MonoBehaviour
         settingsButton.interactable = false;
         profileButton.interactable = false;
         quitButton.interactable = false;
+    }
+
+    private void ConnectToPhotonServer()
+    {
+        connectToServer.Connect();
     }
 
 }
