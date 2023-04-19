@@ -15,7 +15,6 @@ public class UserProfile
     private string userName;
     private string userPassword;
     /* Dato provisional, para probar con persistencia de datos */
-    private string userScore;
     private int userScore;
 
     public string UserId { get => userId; }
