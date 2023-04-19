@@ -9,8 +9,7 @@ public class PlayerInputController : MonoBehaviour
     private Vector2 playerLookInput;
     private bool playerJumpInput;
     private bool playerShiftMovementInput;
-    private bool playerShootInput;
-
+  
     private void Awake() {
         playerInput = GetComponent<PlayerInput>();
     }
@@ -31,25 +30,17 @@ public class PlayerInputController : MonoBehaviour
         return playerShiftMovementInput;
     }
 
-    public bool GetPlayerShootInput(){
-        return playerShootInput;
-    }
-
     private void Update() {
         RecibeMovementInput();
         RecibeLookInput();
-        RecibeShootInput(); //No deberia estar en update.. xd
     }
 
     private void RecibeMovementInput(){
         playerMovementInput = playerInput.actions["Move"].ReadValue<Vector2>();
-        //Debug.Log("Movement x: " + playerMovementInput.x + ", Movement y: " + playerMovementInput.y);
     }
 
-    private void RecibeLookInput(){ //No funcina con el action por algun motivo xd
-        //playerLookInput = playerInput.actions["Look"].ReadValue<Vector2>();
-        playerLookInput = Mouse.current.delta.ReadValue();
-        //Debug.Log(playerLookInput);
+    private void RecibeLookInput(){ 
+        playerLookInput = playerInput.actions["Look"].ReadValue<Vector2>();
     }
 
 
@@ -66,14 +57,5 @@ public class PlayerInputController : MonoBehaviour
         }; 
     }
 
-    //No funcina con el action por algun motivo xd
-    public void RecibeShootInput(){
-        float leftButtonValue = Mouse.current.leftButton.ReadValue(); //Chapuza hasta solucionarlo 
-        if(leftButtonValue == 0){
-            playerShootInput = false;
-        }else{
-            playerShootInput = true;
-        }
-    }
 
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPun
 {
     [Header("Player stats")]
     [SerializeField] private float playerSpeed;
@@ -14,24 +15,50 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera cam;
 
     private PlayerInputController playerInputController;
+    private PlayerHealth playerHealth;
+    
     private Transform playerTransform;
     private float verticalLookValue = 0;
     private Ray jumpRay;
     private Vector3 jumpDirection;
     private float jumpSpeed;
     private float speed;
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
-    private void Awake() {
-        playerInputController = GetComponent<PlayerInputController>();
-        playerTransform = GetComponent<Transform>();
+    private void Awake() 
+    {
+        if(photonView.IsMine)
+        {
+            playerInputController = GetComponent<PlayerInputController>();
+            playerTransform = GetComponent<Transform>();
+            playerHealth = GetComponent<PlayerHealth>();
+        }
     }
 
+    private void Start() {
+        if(!photonView.IsMine){ //Si no es mi instancia de prefab cliente, desactivo la camera
+            cam.gameObject.SetActive(false);
+        }
+
+        if(photonView.IsMine)
+        {
+            initialPosition = transform.position;
+            initialRotation = transform.rotation;
+        }
+        
+    }
 
     private void Update() {
-        Movement();
-        ShiftMovement();
-        Look();
-        Jump();
+        
+        //Si es mi instancia de prefab cliente, hace los inputs. 
+        if(photonView.IsMine && !playerHealth.GetIsDeath()){         
+            Movement();
+            ShiftMovement();
+            Look();
+            Jump();
+        }
+
     }
 
 
@@ -55,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         //Valor obtenido el input del ratón, se le multiplica - 1 para invertirlo y se le multiplica por un valor de velocidad. 
         verticalLookValue += (playerInputController.GetPlayerLookInput().y * -1) * playerLookSpeed * Time.deltaTime;
         //Clamp del valor de rotación, minimo de -90º y máximo de 90º
-        verticalLookValue = Mathf.Clamp(verticalLookValue, -90, 90);
+        verticalLookValue = Mathf.Clamp(verticalLookValue, -75, 75);
         //asigna directamente un angulo de rotación en grados en el eje de las X del transform de la cámara en local. 
         cam.transform.localEulerAngles = new Vector3(verticalLookValue,cam.transform.localEulerAngles.y,cam.transform.localEulerAngles.z);
     }
@@ -77,5 +104,14 @@ public class PlayerMovement : MonoBehaviour
         playerTransform.Translate(jumpDirection, Space.Self);
         Debug.DrawRay(jumpRay.origin,jumpRay.direction * jumpRayLength, Color.green);
     }
+
+
+    [PunRPC]
+    private void ResetPositionAndRotation()
+    {
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+    }
+
 
 }
