@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 // using DG.Tweening;
 
 public class MenuMediator : MonoBehaviour
@@ -63,7 +64,7 @@ public class MenuMediator : MonoBehaviour
     public void BackToMainMenu(){
         hideAll();
         mainMenu.Show();
-
+        PhotonNetwork.Disconnect(); //Desconectar del server al salir del menú. 
         Debug.Log("Menu Mediator: Back to Main Menu");
     }
 

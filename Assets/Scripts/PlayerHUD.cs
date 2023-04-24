@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using DG.Tweening;
+using TMPro;
 
 public class PlayerHUD : MonoBehaviourPun
 {
@@ -10,6 +11,7 @@ public class PlayerHUD : MonoBehaviourPun
     [SerializeField] private GameObject finishGamePanel;
     [SerializeField] private float screenBloodSpeed;
     [SerializeField] private Button leaveGameButton;
+    [SerializeField] private TextMeshProUGUI roundLabel;
     private GameObject target;
     private PlayerHealth healthRef;
     private GameManager gameManagerRef;
@@ -36,8 +38,10 @@ public class PlayerHUD : MonoBehaviourPun
 
         gameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         if(gameManagerRef != null)
-        {
+        {   
+            gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
             gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
+            UpdateRoundLabel();
         }else
         {
             Debug.LogError("No se encontró el game manager.");
@@ -70,6 +74,13 @@ public class PlayerHUD : MonoBehaviourPun
             Destroy(this.gameObject);
         }
     }
+
+
+    private void UpdateRoundLabel()
+    {
+        roundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() + "/" + gameManagerRef.GetRounds();
+    }
+
 
     private void UpdateHealth()
     {
@@ -104,6 +115,7 @@ public class PlayerHUD : MonoBehaviourPun
         healthRef.HealthUpdateEvent -= StartScreenBlood;
         healthRef.HealthUpdateEvent -= UpdateHealth;
         gameManagerRef.FinishGameEvent -= OpenFinishGamePanel;
+        gameManagerRef.ChangeRoundEvent -= UpdateRoundLabel;
     }
 
 }

@@ -14,6 +14,7 @@ public class GunWeapon : MonoBehaviourPun, IShoot
     [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject muzzleFlashVfx;
     [SerializeField] private GameObject bulletImpactVfx;
+    [SerializeField] private GameObject bloodImpactVfx;
     [SerializeField] private Animator anim;
 
     private RaycastHit rayHit;
@@ -45,6 +46,7 @@ public class GunWeapon : MonoBehaviourPun, IShoot
                         PhotonView otherPlayer = rayHit.transform.gameObject.GetComponentInParent<PhotonView>();
                         otherPlayer.RPC("TakeDamage", RpcTarget.All, shootDamage);
                         Debug.Log("Set damage to " + rayHit.transform.gameObject.name);
+                        InstantiateBloodParticles();
 
                     }else
                     {
@@ -63,14 +65,21 @@ public class GunWeapon : MonoBehaviourPun, IShoot
     }
 
 
-    private void PlayMuzzleGun(){
+    private void PlayMuzzleGun()
+    {
         foreach(ParticleSystem particle in muzzleFlashParticles){
             particle.Play();
         }
     }
 
-    private void InstantiateBulletImpactParticles(){
+    private void InstantiateBulletImpactParticles()
+    {
         GameObject impactParticles = Instantiate(bulletImpactVfx, rayHit.point, Quaternion.FromToRotation(Vector3.forward, rayHit.normal));
+    }
+
+    private void InstantiateBloodParticles()
+    {
+        GameObject bloodParticles = Instantiate(bloodImpactVfx, rayHit.point, Quaternion.FromToRotation(Vector3.forward, rayHit.normal));
     }
 
 

@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     //EVENTS
     public delegate void FinishGameDelegate();
     public event FinishGameDelegate FinishGameEvent;
-
+    public delegate void ChangeRoundDelegate();
+    public event ChangeRoundDelegate ChangeRoundEvent;
 
     public void SetPlayer(GameObject clientPlayer)
     {
@@ -26,7 +27,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
 
-    private void Start() {
+    public int GetRounds()
+    {
+        return this.rounds;
+    }
+
+    public int GetCurrentRound()
+    {
+        return this.currentRound;
+    }
+
+
+    private void Start() 
+    {
         if(PhotonNetwork.IsMasterClient)
         {
             photonViewWallA = wallA.GetComponent<PhotonView>();
@@ -50,6 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         
         inRound = true;
         currentRound++;
+        ChangeRoundEvent();
         Debug.Log("<color=orange>In round " + currentRound + "/" + rounds + "</color>");
         
     }
