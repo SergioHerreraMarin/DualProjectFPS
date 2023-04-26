@@ -48,6 +48,12 @@ public class PlayerHealth : MonoBehaviourPun
                 this.isDeath = true;
                 playerRagdoll.ActiveRagdoll();
                 Invoke("TellMyDeathToGameManager", timeToResetHealth);
+                
+                PhotonView gameManagerPhotonView = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
+                if(gameManagerPhotonView != null)
+                {
+                    gameManagerPhotonView.RPC("UpdatePlayerPoints", RpcTarget.All, PhotonNetwork.NickName);
+                }
             }
 
             HealthUpdateEvent(); //Este evento avisará al HUD de que ha recibido daño. 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -7,30 +6,19 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] private MenuMediator menuMediator;
-    private bool connectedToServer;
-    
-
-    private void Start() {
-        connectedToServer = false;
-    }
-
-    public bool GetConnectedToServer()
-    {
-        return this.connectedToServer;
-    }
 
 
     //Callbacks
     public override void OnConnectedToMaster() //Si se ha podido conectar, hacemos join al Lobby. 
     {
-        connectedToServer = true;
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.NickName = menuMediator.getCurrentUser().getUserName();
         Debug.Log("<color=green>Connectado al server</color>");
+        Debug.Log("<color=green>Nickname: " + PhotonNetwork.NickName +"</color>");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        connectedToServer = false;
         Debug.LogWarning("No se ha podido conectar al servidor master, causa: " + cause.ToString());
     }
 

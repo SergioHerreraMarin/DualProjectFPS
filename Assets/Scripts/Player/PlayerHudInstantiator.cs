@@ -8,8 +8,11 @@ public class PlayerHudInstantiator : MonoBehaviourPun
     private void Start() 
     {           
         InstantiatePlayerHUD();
-        GameManager gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        gameManager.SetPlayer(this.gameObject); //Chapuza
+        if(PhotonNetwork.IsConnected)
+        {
+            GameManager gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+            gameManager.SetPlayer(this.gameObject); //Chapuza
+        } 
     }
 
     private void InstantiatePlayerHUD()

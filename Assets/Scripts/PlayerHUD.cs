@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using Photon.Pun;
 using DG.Tweening;
@@ -12,6 +14,8 @@ public class PlayerHUD : MonoBehaviourPun
     [SerializeField] private float screenBloodSpeed;
     [SerializeField] private Button leaveGameButton;
     [SerializeField] private TextMeshProUGUI roundLabel;
+    [SerializeField] private TextMeshProUGUI masterClientPointsLabel;
+    [SerializeField] private TextMeshProUGUI secondClientPointsLabel;
     private GameObject target;
     private PlayerHealth healthRef;
     private GameManager gameManagerRef;
@@ -36,16 +40,24 @@ public class PlayerHUD : MonoBehaviourPun
         screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,0);
         finishGamePanel.SetActive(false);
 
-        gameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        if(gameManagerRef != null)
-        {   
-            gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
-            gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
-            UpdateRoundLabel();
-        }else
+        if(PhotonNetwork.IsConnected)
         {
-            Debug.LogError("No se encontró el game manager.");
+            gameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+            if(gameManagerRef != null)
+            {   
+                gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
+                gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
+                gameManagerRef.UpdateMasterClientPointsEvent += UpdateMasterClientPointsLabel;
+                gameManagerRef.UpdateSecondClientPointsEvent += UpdateSecondClientPointsLabel;
+                UpdateRoundLabel();
+            }else
+            {
+                Debug.LogError("No se encontró el game manager.");
+            }
+
+            InitializeFinishGamePanelLabels();
         }
+        
     }
 
     public void setTarget(GameObject target){
@@ -80,8 +92,22 @@ public class PlayerHUD : MonoBehaviourPun
     {
         roundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() + "/" + gameManagerRef.GetRounds();
     }
+    
+    public void UpdateMasterClientPointsLabel()
+    {   
+        ExitGames.Client.Photon.Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
+        
+        Debug.Log("Update master client");
+        masterClientPointsLabel.text = PhotonNetwork.NickName + ": " + gameManagerRef.GetPlayerPoints(); 
+    }
 
+    public void UpdateSecondClientPointsLabel()
+    {
+        Debug.Log("Update second client");
+        secondClientPointsLabel.text = PhotonNetwork.NickName + ": " + gameManagerRef.GetPlayerPoints(); 
+    }
 
+    [PunRPC]
     private void UpdateHealth()
     {
         fillAmount = this.healthRef.GetHealth() / this.healthRef.GetMaxHealth();
@@ -89,7 +115,7 @@ public class PlayerHUD : MonoBehaviourPun
         Debug.Log("Fill amount health: " + this.healthBar.fillAmount + ", Player health: " + this.healthRef.GetHealth());
     }
 
-
+    [PunRPC]
     public void StartScreenBlood()
     {
         screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,1);
@@ -100,6 +126,23 @@ public class PlayerHUD : MonoBehaviourPun
     {
         Cursor.visible = true;
         finishGamePanel.SetActive(true);
+    }
+
+
+    private void InitializeFinishGamePanelLabels()
+    {
+        for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            if(PhotonNetwork.PlayerList[i].IsMasterClient)
+            {
+                masterClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + gameManagerRef.GetPlayerPoints();
+                Debug.Log("Master client: " + PhotonNetwork.PlayerList[i].NickName);
+            }else
+            {
+                secondClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + gameManagerRef.GetPlayerPoints();
+                Debug.Log("Second client: " + PhotonNetwork.PlayerList[i].NickName);
+            }
+        }
     }
 
 
@@ -116,6 +159,8 @@ public class PlayerHUD : MonoBehaviourPun
         healthRef.HealthUpdateEvent -= UpdateHealth;
         gameManagerRef.FinishGameEvent -= OpenFinishGamePanel;
         gameManagerRef.ChangeRoundEvent -= UpdateRoundLabel;
+        gameManagerRef.UpdateMasterClientPointsEvent -= UpdateMasterClientPointsLabel;
+        gameManagerRef.UpdateSecondClientPointsEvent -= UpdateSecondClientPointsLabel;
     }
 
 }

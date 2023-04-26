@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
@@ -14,11 +17,18 @@ public class GameManager : MonoBehaviourPunCallbacks
     private PhotonView photonViewWallB;
     private GameObject clientPlayer;
 
+    private const int INITIAL_PLAYER_POINTS = 3;
+    private Dictionary<string, int> playerPointsDic = new Dictionary<string, int>();
+
     //EVENTS
     public delegate void FinishGameDelegate();
     public event FinishGameDelegate FinishGameEvent;
     public delegate void ChangeRoundDelegate();
     public event ChangeRoundDelegate ChangeRoundEvent;
+    public delegate void UpdateMasterClientPoints();
+    public event UpdateMasterClientPoints UpdateMasterClientPointsEvent;
+    public delegate void UpdateSecondClientPoints();
+    public event UpdateMasterClientPoints UpdateSecondClientPointsEvent;
 
     public void SetPlayer(GameObject clientPlayer)
     {
@@ -37,11 +47,21 @@ public class GameManager : MonoBehaviourPunCallbacks
         return this.currentRound;
     }
 
+    public int GetPlayerPoints()
+    {
+        return 0;
+    }
 
     private void Start() 
     {
         if(PhotonNetwork.IsMasterClient)
         {
+            //Set initial player points. 
+            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                playerPointsDic.Add(PhotonNetwork.PlayerList[i].NickName, INITIAL_PLAYER_POINTS);
+            }
+
             photonViewWallA = wallA.GetComponent<PhotonView>();
             photonViewWallB = wallB.GetComponent<PhotonView>();
             ActiveWalls();
@@ -124,6 +144,23 @@ public class GameManager : MonoBehaviourPunCallbacks
     {   
         FinishGameEvent();
         Debug.Log("<color=yellow>Finish Game</color>");
+    }
+
+    [PunRPC]
+    public void UpdatePlayerPoints(string nickname)
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+
+            foreach(KeyValuePair<string, int> kvp in playerPointsDic) 
+            {
+                properties.Add(kvp.Key, kvp.Value);
+            }
+
+            PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+        }
+        
     }
 
 
