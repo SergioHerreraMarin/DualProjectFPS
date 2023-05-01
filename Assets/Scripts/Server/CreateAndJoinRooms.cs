@@ -76,6 +76,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private void ConfigureRoomOptions()
     {
         roomOptions.MaxPlayers = MAX_ROOM_PLAYERS;
+        roomOptions.PublishUserId = true;
     }
 
 }

@@ -21,7 +21,7 @@ public class DatabaseMediator : MonoBehaviour
     void Awake()
     {
         menuMediator.ConfigureDbMediator(this);
-        connection = new MySqlConnection("Server=localhost;Database=db_dualproject;Uid=root;Pwd=p@ssw0rd;");
+        connection = new MySqlConnection("Server=localhost;Database=db_dualproject;Uid=root;Pwd=sergiodluffy21;");
         connection.Open();
         command = connection.CreateCommand();
         command.CommandText = "CREATE TABLE IF NOT EXISTS profiles("

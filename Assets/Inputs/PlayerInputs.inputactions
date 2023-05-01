@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponZoom",
+                    "type": "Button",
+                    "id": "2fddc5da-85da-4c09-8a17-ca8c3e0f44fc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -148,6 +157,17 @@
                     "processors": "",
                     "groups": "KeyboardControl",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79486d67-d3b6-41af-8aa9-02868b47eac7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardControl",
+                    "action": "WeaponZoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

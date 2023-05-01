@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using ExitGames.Client.Photon;
 
 [RequireComponent(typeof(PlayerRagdoll))]
 public class PlayerHealth : MonoBehaviourPun
@@ -49,10 +50,15 @@ public class PlayerHealth : MonoBehaviourPun
                 playerRagdoll.ActiveRagdoll();
                 Invoke("TellMyDeathToGameManager", timeToResetHealth);
                 
-                PhotonView gameManagerPhotonView = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
-                if(gameManagerPhotonView != null)
+                //Update Ppoints --------------------------------------------------------------------
+                if(photonView.IsMine)
                 {
-                    gameManagerPhotonView.RPC("UpdatePlayerPoints", RpcTarget.All, PhotonNetwork.NickName);
+                    string currentPlayerId = PhotonNetwork.LocalPlayer.UserId;
+                    PhotonView gameManagerPhotonView = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
+                    if(gameManagerPhotonView != null)
+                    {
+                        gameManagerPhotonView.RPC("UpdatePlayerPoints", RpcTarget.All, currentPlayerId);
+                    }
                 }
             }
 

@@ -1,6 +1,6 @@
-using System;
+using ExitGames.Client.Photon;
 using System.Collections;
-using System.Collections.Generic;
+using Photon.Realtime;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private PhotonView photonViewWallB;
     private GameObject clientPlayer;
 
-    private const int INITIAL_PLAYER_POINTS = 3;
-    private Dictionary<string, int> playerPointsDic = new Dictionary<string, int>();
+    private const int INITIAL_PLAYER_SCORE = 3;
+
 
     //EVENTS
     public delegate void FinishGameDelegate();
@@ -27,8 +27,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public event ChangeRoundDelegate ChangeRoundEvent;
     public delegate void UpdateMasterClientPoints();
     public event UpdateMasterClientPoints UpdateMasterClientPointsEvent;
-    public delegate void UpdateSecondClientPoints();
-    public event UpdateMasterClientPoints UpdateSecondClientPointsEvent;
 
     public void SetPlayer(GameObject clientPlayer)
     {
@@ -56,21 +54,38 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.IsMasterClient)
         {
-            //Set initial player points. 
-            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-                playerPointsDic.Add(PhotonNetwork.PlayerList[i].NickName, INITIAL_PLAYER_POINTS);
-            }
-
             photonViewWallA = wallA.GetComponent<PhotonView>();
             photonViewWallB = wallB.GetComponent<PhotonView>();
             ActiveWalls();
+
+            
+
         }
+
+        StartCoroutine(Prueba());
 
         inRound = false;
         currentRound = 0;
         Invoke("ActiveRound", timeToActiveRound);
-        
+
+    }
+
+
+    IEnumerator Prueba()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        Debug.Log("Current users: " + PhotonNetwork.PlayerList.Length);
+
+        //El master client asigna una puntuación inicial a todos los jugadores de la sala. 
+        ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable();
+
+        foreach(Player player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log("Añadido: " + player.UserId + ", " + INITIAL_PLAYER_SCORE);
+            roomProperties.Add(player.UserId, INITIAL_PLAYER_SCORE);
+        }
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
     }
 
 
@@ -146,21 +161,24 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log("<color=yellow>Finish Game</color>");
     }
 
+
     [PunRPC]
-    public void UpdatePlayerPoints(string nickname)
+    public void UpdatePlayerPoints(string playerId)
     {
-        if(PhotonNetwork.IsMasterClient)
-        {
-            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+        ExitGames.Client.Photon.Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        Debug.Log("<color=red>PUNTOSGM: " + ((int)roomProperties[playerId] - 1) + "</color>");
+        roomProperties[playerId] = (int)roomProperties[playerId] - 1;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+        UpdateMasterClientPointsEvent();
 
-            foreach(KeyValuePair<string, int> kvp in playerPointsDic) 
-            {
-                properties.Add(kvp.Key, kvp.Value);
-            }
-
-            PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+        //Log
+        foreach(Player player in PhotonNetwork.PlayerList)
+        {   
+            ExitGames.Client.Photon.Hashtable hash = PhotonNetwork.CurrentRoom.CustomProperties;
+            int playerScore = (int)hash[player.UserId];
+            Debug.Log("ID PLAYER: " + player.UserId + ", POINTS: " + playerScore);
         }
-        
+    
     }
 
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using UnityEngine.UI;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using DG.Tweening;
 using TMPro;
@@ -47,8 +47,7 @@ public class PlayerHUD : MonoBehaviourPun
             {   
                 gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
                 gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
-                gameManagerRef.UpdateMasterClientPointsEvent += UpdateMasterClientPointsLabel;
-                gameManagerRef.UpdateSecondClientPointsEvent += UpdateSecondClientPointsLabel;
+                gameManagerRef.UpdateMasterClientPointsEvent += UpdatePointsLabel;
                 UpdateRoundLabel();
             }else
             {
@@ -93,19 +92,31 @@ public class PlayerHUD : MonoBehaviourPun
         roundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() + "/" + gameManagerRef.GetRounds();
     }
     
-    public void UpdateMasterClientPointsLabel()
-    {   
-        ExitGames.Client.Photon.Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
-        
-        Debug.Log("Update master client");
-        masterClientPointsLabel.text = PhotonNetwork.NickName + ": " + gameManagerRef.GetPlayerPoints(); 
+
+
+    public void UpdatePointsLabel()
+    {  
+        Debug.Log("Update points");
+        for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+
+            if(PhotonNetwork.PlayerList[i].IsMasterClient)
+            {
+                Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+                int playerScore = (int)roomProperties[PhotonNetwork.PlayerList[i].UserId];
+                Debug.Log("<color=red>PLAYER SCORE: " + playerScore + "</color>");
+                masterClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + playerScore;
+            }else{
+
+                Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+                int playerScore = (int)roomProperties[PhotonNetwork.PlayerList[i].UserId];
+                secondClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + playerScore;
+            }
+
+        }
+
     }
 
-    public void UpdateSecondClientPointsLabel()
-    {
-        Debug.Log("Update second client");
-        secondClientPointsLabel.text = PhotonNetwork.NickName + ": " + gameManagerRef.GetPlayerPoints(); 
-    }
 
     [PunRPC]
     private void UpdateHealth()
@@ -159,8 +170,7 @@ public class PlayerHUD : MonoBehaviourPun
         healthRef.HealthUpdateEvent -= UpdateHealth;
         gameManagerRef.FinishGameEvent -= OpenFinishGamePanel;
         gameManagerRef.ChangeRoundEvent -= UpdateRoundLabel;
-        gameManagerRef.UpdateMasterClientPointsEvent -= UpdateMasterClientPointsLabel;
-        gameManagerRef.UpdateSecondClientPointsEvent -= UpdateSecondClientPointsLabel;
+        gameManagerRef.UpdateMasterClientPointsEvent -= UpdatePointsLabel;
     }
 
 }

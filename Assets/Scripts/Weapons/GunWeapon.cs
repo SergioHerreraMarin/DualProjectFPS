@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
+using DG.Tweening;
 
 public class GunWeapon : MonoBehaviourPun, IShoot
 {
@@ -26,6 +27,7 @@ public class GunWeapon : MonoBehaviourPun, IShoot
 
     private void Start() {
         muzzleFlashParticles = muzzleFlashVfx.GetComponentsInChildren<ParticleSystem>();
+        DOTween.Init();
     }
 
     public void Shoot(InputAction.CallbackContext callbackContext)
@@ -63,6 +65,36 @@ public class GunWeapon : MonoBehaviourPun, IShoot
         }
   
     }
+
+
+
+    public void WeaponZoom(InputAction.CallbackContext callbackContext)
+    {
+        if(photonView.IsMine)
+        {
+            if(callbackContext.started)
+            {
+                playerCamera.DOFieldOfView(50, 0.2f);
+                playerCamera.transform.DOLocalMoveX(0.153f, 0.2f); //1.395
+                anim.SetBool("InZoom", true);
+                anim.SetBool("WeaponZoom", true);
+                
+
+            }else if(callbackContext.canceled)
+            {
+                playerCamera.DOFieldOfView(80, 0.3f);
+                playerCamera.transform.DOLocalMoveX(-0.13f, 0.2f); //1.495
+                anim.SetBool("InZoom", false);
+                anim.SetBool("WeaponZoom", false);
+
+            }
+
+        }
+        
+    }
+
+
+
 
 
     private void PlayMuzzleGun()
