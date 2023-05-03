@@ -32,12 +32,12 @@ public class CreateAccountMenu : MonoBehaviour
         string newUserPasswordRepeat = passwordInputRepeat.text;
         
         if(newUserName == "" || newUserPassword == "" || newUserPasswordRepeat == ""){
-            mediator.showMessagePanel("You must fulfill all the fields");
+            mediator.ShowMessagePanel("You must fulfill all the fields");
             return;
         }else if(newUserPassword == newUserPasswordRepeat){
             mediator.CreateAccount(newUserName, newUserPassword);
         }else{
-            mediator.showMessagePanel("Passwords do not match");
+            mediator.ShowMessagePanel("Passwords do not match");
         }
     }
 

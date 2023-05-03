@@ -19,8 +19,8 @@ public class PanelConfirmation : MonoBehaviour
     [SerializeField] private TMP_InputField confirmationInput;
     [SerializeField] private TextMeshProUGUI inputLabel;
     private MenuMediator mediator;
-    private bool accepted = false;
     private string contentInput = "";
+    private bool confirmationSubmitted = false;
 
     private void Awake(){
         canvas.sortingOrder = 1;
@@ -47,50 +47,80 @@ public class PanelConfirmation : MonoBehaviour
         messageText.text = message;
     }
 
+    public bool isSubmitted(){
+        return this.confirmationSubmitted;
+    }
+
     private void Accept(){
-        accepted = true;
+        Debug.Log("PanelConfirmation: Accept");
+        contentInput ="";
+        confirmationSubmitted = true;
         if(confirmationInput.gameObject.activeSelf){
             contentInput = confirmationInput.text;
+            confirmationInput.text = "";
         }
+        mediator.setConfirmationAccepted(true);
         mediator.hideConfirmationPanel();
     }
 
     private void Reject(){
-        accepted = false;
+        Debug.Log("PanelConfirmation: Reject");
+        confirmationSubmitted = true;
+        confirmationInput.text = "";
+        mediator.setConfirmationAccepted(false);
         mediator.hideConfirmationPanel();
     }
 
-    public void Show(){
-        // Debug.Log("PanelMessage: Show");
+    public void Show(bool askInput){
+        Debug.Log("PanelConfirmation: Show");
+        confirmationSubmitted = false;
         canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
+        if(askInput){
+            confirmationInput.gameObject.SetActive(true);
+        }else{
+            confirmationInput.gameObject.SetActive(false);
+        }
+        buttonAccept.gameObject.SetActive(true);
+        buttonReject.gameObject.SetActive(true);
     }
 
-    public void Show(string message){
-        // Debug.Log("PanelMessage: Show");
+    public void Show(bool askInput, string message){
+        Debug.Log("PanelConfirmation: Show");
+        confirmationSubmitted = false;
         canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
         this.SetMessage(message);
-        confirmationInput.gameObject.SetActive(false);
+        if(askInput){
+            confirmationInput.gameObject.SetActive(true);
+        }else{
+            confirmationInput.gameObject.SetActive(false);
+        }
+        buttonAccept.gameObject.SetActive(true);
+        buttonReject.gameObject.SetActive(true);
     }
 
-    public void Show(string message, string labelContent){
-        // Debug.Log("PanelMessage: Show");
+    public void Show(bool askInput, string message, string labelContent){
+        Debug.Log("PanelConfirmation: Show");;
+        confirmationSubmitted = false;
         canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
         this.SetMessage(message);
         this.inputLabel.text = labelContent;
-        confirmationInput.gameObject.SetActive(true);
+        if(askInput){
+            confirmationInput.gameObject.SetActive(true);
+        }else{
+            confirmationInput.gameObject.SetActive(false);
+        }
     }
 
     public void Hide(){
-        // Debug.Log("PanelMessage: Hide");
+        Debug.Log("PanelConfirmation: Hide");
         canvas.gameObject.SetActive(false);
         gameObject.SetActive(false);
         this.SetMessage("");
         this.inputLabel.text = "";
         confirmationInput.gameObject.SetActive(false);
     }
-
- 
 }
+ 

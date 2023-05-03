@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Threading;
+
 // using DG.Tweening;
 
 public class MenuMediator : MonoBehaviour
@@ -20,10 +22,16 @@ public class MenuMediator : MonoBehaviour
     [SerializeField] private CreateAccountMenu createAccountMenu;
     [SerializeField] private CreateRoomMenu createRoomMenu;
     [SerializeField] private ModifyAccountMenu modifyAccountMenu;
+    [SerializeField] private RankingMenu rankingMenu;
     [SerializeField] private PanelMessage panelMessage;
     [SerializeField] private PanelConfirmation panelConfirmation;
+
     [SerializeField] private AudioSource music1;
     [SerializeField] private AudioSource music2;
+    [SerializeField] private AudioSource backButtonSound;
+    [SerializeField] private AudioSource buttonSound;
+    [SerializeField] private AudioSource inputSound;
+    [SerializeField] private AudioSource exitSound;
 
     private DatabaseMediator databaseMediator;
 
@@ -31,6 +39,8 @@ public class MenuMediator : MonoBehaviour
     que se instancia o bien creando usuario o haciendo login,
     este es el usuario que jugara, o bien se obtiene con un login o se crea */
     private UserProfile currentUser= null;
+
+    private bool confirmationAccepted = false;
 
     /* Metodo de inicio, primero se vera el menu de Login */
 
@@ -44,18 +54,14 @@ public class MenuMediator : MonoBehaviour
         modifyAccountMenu.Configure(this);
         panelMessage.Configure(this);
         panelConfirmation.Configure(this);   
+        rankingMenu.Configure(this);
 
-        playMusic1();
+        PlayMusic1();
 
         hideAll();
         loginMenu.Show();
         Debug.Log("Menu Mediator: Awake");
 
-    }
-
-    public void ConfigureDbMediator(DatabaseMediator databaseMediator){
-        this.databaseMediator = databaseMediator;
-        Debug.Log("Medu Mediator: ConfigureDbMediator");
     }
 
     /* Metodos para movernos entre menus */
@@ -67,7 +73,7 @@ public class MenuMediator : MonoBehaviour
         Debug.Log("Menu Mediator: Back to Main Menu");
     }
 
-    public void showMessagePanel(string message){
+    public void ShowMessagePanel(string message){
         disableAllButtons();
 
         panelMessage.Show(message);
@@ -81,11 +87,12 @@ public class MenuMediator : MonoBehaviour
         Debug.Log("Menu Mediator: Hide Message Panel");
     }
 
-    public void showConfirmationPanel(string message){
-        disableAllButtons();
+    //Codigo relacionado con el panel de confirmacion, este requiere esperar que el usuario acepte o rechaze
 
-        panelConfirmation.Show(message);
-        Debug.Log("Menu Mediator: Show Message Panel");
+    public void showConfirmationPanel(bool inputActive, string message){
+        Debug.Log("Menu Mediator: Show Confirmation Panel");
+        disableAllButtons();
+        panelConfirmation.Show(inputActive, message);
     }
 
     public void hideConfirmationPanel(){
@@ -93,6 +100,22 @@ public class MenuMediator : MonoBehaviour
 
         panelConfirmation.Hide();
         Debug.Log("Menu Mediator: Hide Message Panel");
+    }
+
+    public void setConfirmationAccepted(bool accepted){
+        Debug.Log("Menu Mediator: Set Confirmation Accepted to " + accepted.ToString() + "");
+        this.confirmationAccepted = accepted;
+    }
+
+    public bool getConfirmationAccepted(){
+        return this.confirmationAccepted;
+    }
+
+    //Fin mtodos relacionados con el panel de confirmacion
+
+    public void ConfigureDbMediator(DatabaseMediator databaseMediator){
+        this.databaseMediator = databaseMediator;
+        Debug.Log("Medu Mediator: ConfigureDbMediator");
     }
 
     public void StartGame(){
@@ -110,7 +133,10 @@ public class MenuMediator : MonoBehaviour
     public void QuitGame(){
         this.hideAll();
 
+        databaseMediator.SetUserLoggedOut(currentUser.getUserName());
         Debug.Log("Menu Mediator: Quit Game");
+        music1.Stop();
+        music2.Stop();
         Application.Quit();
     }
 
@@ -154,14 +180,28 @@ public class MenuMediator : MonoBehaviour
         Debug.Log("Menu Mediator: Open Modify Account Menu");
     }
 
+    public void OpenModifyAccountMenu(bool fromRanking){
+        this.hideAll();
+        modifyAccountMenu.Show(fromRanking);
+
+        Debug.Log("Menu Mediator: Open Modify Account Menu");
+    }
+
     public void OpenCreateRoomMenu(){
         this.hideAll();
         createRoomMenu.Show();
-        playMusic2();
+        PlayMusic2();
         Debug.Log("Menu Mediator: Open Create Room Menu");
     }
 
-    private void playMusic1(){
+    public void OpenRankingMenu(){
+        this.hideAll();
+        rankingMenu.Show();
+
+        Debug.Log("Menu Mediator: Open Ranking Menu");
+    }
+
+    private void PlayMusic1(){
         if(music1.isPlaying == false){
             music1.Play();
             music2.Stop();
@@ -169,7 +209,7 @@ public class MenuMediator : MonoBehaviour
         }
     }
 
-    private void playMusic2(){
+    private void PlayMusic2(){
         if (music2.isPlaying == false)
         {
             music2.Play();
@@ -178,8 +218,22 @@ public class MenuMediator : MonoBehaviour
         }
     }
 
+    public void SetMusicVolume(float volume){
+        music1.volume = volume;
+        music2.volume = volume;
+        Debug.Log("Menu Mediator: Set Music Volume");
+    }
+
+    public void SetSoundsVolume(float volume){
+        backButtonSound.volume = volume;
+        buttonSound.volume = volume;
+        inputSound.volume = volume;
+        exitSound.volume = volume;
+        Debug.Log("Menu Mediator: Set Sounds Volume");
+    }
+
     public void hideAll(){
-        playMusic1();
+        PlayMusic1();
         mainMenu.Hide();
         settingsMenu.Hide();
         profileMenu.Hide();
@@ -187,6 +241,7 @@ public class MenuMediator : MonoBehaviour
         createAccountMenu.Hide();
         createRoomMenu.Hide();
         modifyAccountMenu.Hide();
+        rankingMenu.Hide();
     }
 
     public void enableAllButtons(){
@@ -197,6 +252,7 @@ public class MenuMediator : MonoBehaviour
         createAccountMenu.enableButtons();
         createRoomMenu.enableButtons();
         modifyAccountMenu.enableButtons();
+        rankingMenu.enableButtons();
     }
 
     public void disableAllButtons(){
@@ -207,6 +263,7 @@ public class MenuMediator : MonoBehaviour
         createAccountMenu.disableButtons();
         createRoomMenu.disableButtons();
         modifyAccountMenu.disableButtons();
+        rankingMenu.disableButtons();
     }
 
     /* Metodos relacionados con la gestion de usuarios, falta la parte de conexión de BBDD */
@@ -221,11 +278,11 @@ public class MenuMediator : MonoBehaviour
 
             bool exists = databaseMediator.checkUserExists(username);
             if(exists == false){
-                databaseMediator.insertNewUser(username, password, 0);
-                startUser(databaseMediator.retrieveUserByName(username));
-                showMessagePanel("User with name "+username+" created successfully\n and setted as current user");
+                databaseMediator.insertNewUser(username, password, false, 0);
+                startUser(databaseMediator.retrieveUserByName(false, username));
+                ShowMessagePanel("User with name "+username+" created successfully\n and setted as current user");
             }else{
-                showMessagePanel("User with name "+username+" already exists in the database");
+                ShowMessagePanel("User with name "+username+" already exists in the database");
             }
     }
 
@@ -243,26 +300,40 @@ si alguno de estos es nulo, se usara el valor actual (y en la practica no se act
         nameExists = databaseMediator.checkUserExists(newUsername);
         if (nameExists == false || newUsername == oldName){
             databaseMediator.updateUser(currentUser, newUsername, newPassword, currentUser.getUserScore());
-            startUser(databaseMediator.retrieveUserByName(newUsername));
-            showMessagePanel("User with name "+oldName+" changed to "+newUsername+" successfully");
+            startUser(databaseMediator.retrieveUserByName(false, newUsername));
+            ShowMessagePanel("User with name "+oldName+" modified successfully");
         }else{
-            showMessagePanel("The name "+newUsername+" is already registered\n in the database and can't be used");
+            ShowMessagePanel("The name "+newUsername+" is already registered\n in the database and can't be used");
         }
     }
 
+/* Emplea esta funcion asincrona porque eliminar un jugador requiere que se abra un cuadro que espera confirmacion
+del usuario, este puede decir OK, borralo, o echarse para atras*/
     public void DeleteAccount(){
         Debug.Log("MenuMediator: DeleteAccount");
-        if(databaseMediator.deleteUser(currentUser)){
-            currentUser = null;
-            hideAll();
-            loginMenu.Show();
-            loginMenu.DisableBackButton();
-            showMessagePanel("User deleted successfully");
-        }else{
-            showMessagePanel("Error deleting the user");
-        }
-        
+        showConfirmationPanel(false, "Do you want to delete this account?");
+        StartCoroutine(waitToDeleteAccount());
+    }
 
+/* con el while, espera a que desde el panel de cofnirmación de decida OK o REJECT,
+si la confirmación es OK, entonces tenemos que llevar a cabo la accion de borrar el usuario */
+    public IEnumerator waitToDeleteAccount(){
+        Debug.Log("MenuMediator: waitToDeleteAccount");
+        while(panelConfirmation.isSubmitted() == false){
+            yield return null;
+        }
+        Debug.Log("confirmationAccepted: " + confirmationAccepted);
+        if(confirmationAccepted == true){
+            if(databaseMediator.deleteUser(currentUser)){
+                currentUser = null;
+                hideAll();
+                loginMenu.Show();
+                loginMenu.DisableBackButton();
+                ShowMessagePanel("User deleted successfully");
+            }else{
+                ShowMessagePanel("Error deleting the user");
+            }
+        }
     }
 
     /*Con el nombre de usuario y la contraseña que le pasamos, comprueba si
@@ -277,20 +348,23 @@ si alguno de estos es nulo, se usara el valor actual (y en la practica no se act
             /* Si existe y contraseña OK, lo establecera como usuario, va al menu principal y
             habilita un boton en el menu de login que estaba inhabilitado */
 
-           /*  databaseMediator.testDatabase();
-            databaseMediator.sampleQuery(); */
-
             if(databaseMediator.checkUserExists(username) == true){
                 if(databaseMediator.checkUserPassword(username, password) == true){
-                    startUser(databaseMediator.retrieveUserByName(username));
-                    showMessagePanel("Welcome "+username+"!");
+                    if(currentUser != null){
+                        /*Si hace esto cuando ya se ha logeado previamente, es decir cambio de usuario,
+                         vamos a indicar que el antiguo usuario ya no esta logeado */
+                        databaseMediator.SetUserLoggedOut(currentUser.getUserName());
+                    }
+                    if(startUser(databaseMediator.retrieveUserByName(true, username))){
+                        ShowMessagePanel("Welcome "+username+"!");
+                    }
                 }else{
                     Debug.Log("Menu Mediator: Check Login: Password incorrect for this user");
-                    showMessagePanel("Password incorrect for this user");
+                    ShowMessagePanel("Password incorrect for this user");
                 }
             }else{
                 Debug.Log("Menu Mediator: Check Login: User not found");
-                showMessagePanel("User not found, you can create a user with this name");
+                ShowMessagePanel("User not found, you can create a user with this name");
             }
         }
     }
@@ -298,16 +372,19 @@ si alguno de estos es nulo, se usara el valor actual (y en la practica no se act
 /* Funcion con la que establecemos que usuario va a ser el currentUser, servira tanto para 
 hacer loguin, como para cuando creamos un usuario nuevo. Si podemos establecer un nuevo usuario, iremos al menu principal
 desbloquearemos el boton dle menu login para ir al menu principal y en el menu de perfil estableceremos los datos de ese nuevo usuario */
-    private void startUser(UserProfile userLogged){
+    private bool startUser(UserProfile userLogged){
+        bool startedCorrectly = false;
         if(userLogged != null){
             currentUser = userLogged;
             loginMenu.EnableBackButton();
             BackToMainMenu();
             profileMenu.setNameValue(currentUser.getUserName());
+            startedCorrectly = true;
         }else{
             Debug.Log("Menu Mediator: Start User: User is null");
-            showMessagePanel("Something went wrong, user could not be loaded correctly");
+            // ShowMessagePanel("Something went wrong, user could not be loaded correctly");
         }
+        return startedCorrectly;
     }
 
     public UserProfile getCurrentUser(){

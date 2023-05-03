@@ -32,6 +32,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     {
         connectedToServer = false;
         Debug.LogWarning("No se ha podido conectar al servidor master, causa: " + cause.ToString());
+        menuMediator.ShowMessagePanel("No se ha podido conectar al servidor");
     }
 
 

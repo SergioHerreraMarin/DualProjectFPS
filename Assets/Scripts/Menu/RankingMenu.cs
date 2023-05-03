@@ -4,48 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/* Menu para ver datos del perfil i estadisticas,
-Aqui tenemos la posibilidad de canviar nuestra cuenta volviendo a Login */
-
-public class ProfileMenu : MonoBehaviour
+public class RankingMenu : MonoBehaviour
 {
     [SerializeField] private Button backButton;
     [SerializeField] private Button changeAccountButton;
     [SerializeField] private Button modifyAccountButton;
-    [SerializeField] private TextMeshProUGUI nameValue;
     private MenuMediator mediator;
 
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.BackToMainMenu());
         changeAccountButton.onClick.AddListener(() => mediator.OpenLoginMenu());
-        modifyAccountButton.onClick.AddListener(() => mediator.OpenModifyAccountMenu(false));
+        modifyAccountButton.onClick.AddListener(() => mediator.OpenModifyAccountMenu(true));
 
         // backButton.onClick.AddListener(new UnityAction(mediator.BackToMainMenu()));
     }
 
     public void Configure(MenuMediator mediator){
         this.mediator = mediator;
-        Debug.Log("Profile Menu: Configure");
+        Debug.Log("Ranking Menu: Configure");
     }
 
     public void Show()
     {
-        // Debug.Log("Profile Menu: Show");
+        // Debug.Log("Ranking Menu: Show");
         gameObject.SetActive(true);
         // canvasGroup.DOFade(1.0f, 0.5f);
     }
 
     public void Hide()
     {
-        // Debug.Log("Profile Menu: Hide");
+        // Debug.Log("Ranking Menu: Hide");
         gameObject.SetActive(false);
         // canvasGroup.DOFade(0.0f, 0.5f);
-    }
-
-    public void setNameValue(string userName){
-        nameValue.text = userName;
-        Debug.Log("Profile Menu: setNameValue "+userName);
     }
 
     public void enableButtons(){

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 /* Menu para loguearse, sera el primero que se muestre, si el login va bien
 nos lleva al menu principal, otra opcion es que vayamos al menu de crearnos un usuario */
 

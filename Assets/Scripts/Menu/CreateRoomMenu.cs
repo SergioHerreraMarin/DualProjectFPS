@@ -27,12 +27,14 @@ public class CreateRoomMenu : MonoBehaviour
         string createRoomEntered = createRoomInput.text;
         mediator.NewRoom(createRoomEntered);
         Debug.Log("CreateRoomMenu: CreateRoom createdRoom "+createRoomEntered);
+        mediator.ShowMessagePanel("Room with name "+createRoomEntered+" created!");
     }
 
     private void SearchRoom(){
         string searchRoomEntered = searchRoomInput.text;
         mediator.JoinRoom(searchRoomEntered);
         Debug.Log("CreateRoomMenu: SearchRoom room to search: "+searchRoomEntered);
+        mediator.ShowMessagePanel("Searching for a room named "+createRoomEntered);
     }
 
     public void SetCreateRoomEntered(string createRoom)

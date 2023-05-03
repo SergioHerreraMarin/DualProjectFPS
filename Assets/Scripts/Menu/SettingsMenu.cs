@@ -7,11 +7,15 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private Button backButton;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider soundsSlider;
     private MenuMediator mediator;
 
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.BackToMainMenu());
+        musicSlider.onValueChanged.AddListener((value) => mediator.SetMusicVolume(value));
+        soundsSlider.onValueChanged.AddListener((value) => mediator.SetSoundsVolume(value));
     }
 
     public void Configure(MenuMediator mediator)
