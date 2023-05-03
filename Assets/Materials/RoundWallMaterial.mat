@@ -45,7 +45,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _Alpha: 0.5
+    - _Alpha: 0.53
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
@@ -55,6 +55,7 @@ Material:
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 0
     - _CullModeForward: 0
+    - _Density: 0.43
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
@@ -62,7 +63,8 @@ Material:
     - _DstBlend: 10
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
-    - _HologramSpeed: 0.5
+    - _HologramSpeed: 0.94
+    - _NoiseSpeed: 0.5
     - _OpaqueCullMode: 2
     - _RenderQueueType: 4
     - _SrcBlend: 1
@@ -91,6 +93,8 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.44459766, g: 0.8361607, b: 0.9150943, a: 1}
+    - _ColorA: {r: 0.44459766, g: 0.8361607, b: 0.9150943, a: 1}
+    - _ColorB: {r: 0.351722, g: 0.6212452, b: 0.679, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

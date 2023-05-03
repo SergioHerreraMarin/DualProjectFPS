@@ -58,8 +58,8 @@ public class PlayerMovement : MonoBehaviourPun
             Look();
             Jump();
         }
-
     }
+
 
 
     private void Movement(){
@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviourPun
         }else{
             jumpDirection.y -= gravity * Time.deltaTime; //Si no detecta suelo, disminuye la posición en las Y. 
         }
-
+        
         playerTransform.Translate(jumpDirection, Space.Self);
         Debug.DrawRay(jumpRay.origin,jumpRay.direction * jumpRayLength, Color.green);
     }

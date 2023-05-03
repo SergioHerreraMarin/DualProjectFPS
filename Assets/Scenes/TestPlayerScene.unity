@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.54, g: 2264.5703, b: 3287.6094, a: 1}
+  m_IndirectSpecularColor: {r: 2159.5537, g: 2263.3438, b: 3286.3984, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 303684813}
   - component: {fileID: 303684812}
   - component: {fileID: 303684811}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -729,7 +729,7 @@ GameObject:
   - component: {fileID: 1144398144}
   - component: {fileID: 1144398143}
   - component: {fileID: 1144398142}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -814,6 +814,29 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1144398140}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1726277924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4914246801540591583, guid: e59a2b4233160d848ae549fbf20e4f2b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4914246802024014507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1726277935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726277924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba84682f48633914c96bd45c1ad8f707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rayLength: 1
+  rayUpPosition: 1
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1
@@ -1048,6 +1071,16 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4914246800217400761, guid: e59a2b4233160d848ae549fbf20e4f2b,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 63
+      objectReference: {fileID: 0}
+    - target: {fileID: 4914246801540591569, guid: e59a2b4233160d848ae549fbf20e4f2b,
+        type: 3}
+      propertyPath: collisionDetection
+      value: 
+      objectReference: {fileID: 1726277935}
     - target: {fileID: 4914246801540591571, guid: e59a2b4233160d848ae549fbf20e4f2b,
         type: 3}
       propertyPath: m_RootOrder
@@ -1102,6 +1135,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4914246801540591580, guid: e59a2b4233160d848ae549fbf20e4f2b,
+        type: 3}
+      propertyPath: playerSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4914246801540591580, guid: e59a2b4233160d848ae549fbf20e4f2b,
+        type: 3}
+      propertyPath: playerShiftSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4914246801540591583, guid: e59a2b4233160d848ae549fbf20e4f2b,
         type: 3}
