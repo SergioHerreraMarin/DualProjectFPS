@@ -2032,7 +2032,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 63
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2268,6 +2268,7 @@ GameObject:
   - component: {fileID: 4914246802024014515}
   - component: {fileID: 4914246802024014516}
   - component: {fileID: 4914246802024014509}
+  - component: {fileID: 1726277935}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2306,8 +2307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3694a4eacb6005e4c85d6dbc36440827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 10
-  playerShiftSpeed: 5
+  playerSpeed: 6
+  playerShiftSpeed: 2
   gravity: 0.05
   jumpForce: 0.03
   jumpRayLength: 0.08
@@ -2428,6 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bc3759b51f4bf4d8f6415b13840063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionDetection: {fileID: 1726277935}
 --- !u!114 &4914246801540591568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2551,6 +2553,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHUDPrefab: {fileID: 8865918356157228288, guid: b424c1c04a7a8874eb80ac0c739b922c,
     type: 3}
+--- !u!114 &1726277935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4914246801540591583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba84682f48633914c96bd45c1ad8f707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rayLength: 1
+  rayUpPosition: 1
 --- !u!1 &4914246801991593532
 GameObject:
   m_ObjectHideFlags: 0

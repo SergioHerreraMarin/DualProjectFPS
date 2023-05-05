@@ -49,6 +49,7 @@ Material:
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
+    - _AlphaThreshold: 1
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
     - _BlendMode: 0
@@ -93,7 +94,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.44459766, g: 0.8361607, b: 0.9150943, a: 1}
-    - _ColorA: {r: 0.44459766, g: 0.8361607, b: 0.9150943, a: 1}
+    - _ColorA: {r: 0.525, g: 0.9208333, b: 1, a: 1}
     - _ColorB: {r: 0.351722, g: 0.6212452, b: 0.679, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

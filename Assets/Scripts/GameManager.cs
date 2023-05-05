@@ -13,10 +13,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private int timeToActiveRound;
     private bool inRound;
     private int currentRound;
+    private int currentCountdown = -1;
     private PhotonView photonViewWallA;
     private PhotonView photonViewWallB;
     private GameObject clientPlayer;
 
+    private int currentTime;
     private const int INITIAL_PLAYER_SCORE = 3;
 
 
@@ -27,6 +29,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     public event ChangeRoundDelegate ChangeRoundEvent;
     public delegate void UpdateMasterClientPoints();
     public event UpdateMasterClientPoints UpdateMasterClientPointsEvent;
+    public delegate void UpdateCountdownTime();
+    public event UpdateCountdownTime UpdateCountdownTimeEvent;
+    public delegate void CompleteRoundDelegate();
+    public event CompleteRoundDelegate CompleteRoundEvent;
+    public delegate void ResetRoundDelegate();
+    public event ResetRoundDelegate ResetRoundEvent;
+
 
     public void SetPlayer(GameObject clientPlayer)
     {
@@ -43,6 +52,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int GetCurrentRound()
     {
         return this.currentRound;
+    }
+
+    public int GetCurrentCountdown()
+    {
+        return this.currentCountdown;
     }
 
     public int GetPlayerPoints()
@@ -62,16 +76,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         }
 
-        StartCoroutine(Prueba());
+        StartCoroutine(AddUsersToProperties());
 
         inRound = false;
         currentRound = 0;
         Invoke("ActiveRound", timeToActiveRound);
-
+        StartCoroutine(countDown());
     }
 
 
-    IEnumerator Prueba()
+    IEnumerator AddUsersToProperties()
     {
         yield return new WaitForSeconds(1.0f);
 
@@ -105,8 +119,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     [PunRPC]
+    private void CompleteRound()
+    {
+        CompleteRoundEvent();
+        Invoke("ResetRound", 5);
+    }
+
+
     private void ResetRound() //Llamado desde un jugador cuando muere. 
     {   
+        ResetRoundEvent();
+
         if(currentRound < rounds)
         {
             //Cada uno en su cliente. 
@@ -132,9 +155,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             
             Invoke("ActiveRound", timeToActiveRound);
+            StartCoroutine(countDown());
             inRound = false;            
             
-
         }else
         {
             FinishGame();
@@ -180,6 +203,28 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     
     }
+
+
+    IEnumerator countDown()
+    {  
+        int time = timeToActiveRound;
+        currentCountdown = time;
+
+        while(time >= 0)
+        {
+            if(time <= 3){
+                currentCountdown = time;
+                UpdateCountdownTimeEvent();
+            }
+
+            time--;
+            yield return new WaitForSeconds(1);
+        }
+        currentCountdown = -1;
+        UpdateCountdownTimeEvent();
+    }
+
+
 
 
     //PUN CALLBACKS

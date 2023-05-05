@@ -11,11 +11,14 @@ public class PlayerHUD : MonoBehaviourPun
     [SerializeField] private Image healthBar;
     [SerializeField] private Image screenBloodVFX;
     [SerializeField] private GameObject finishGamePanel;
+    [SerializeField] private GameObject completeRoundPanel;
     [SerializeField] private float screenBloodSpeed;
     [SerializeField] private Button leaveGameButton;
     [SerializeField] private TextMeshProUGUI roundLabel;
     [SerializeField] private TextMeshProUGUI masterClientPointsLabel;
     [SerializeField] private TextMeshProUGUI secondClientPointsLabel;
+    [SerializeField] private TextMeshProUGUI countdownLabel;
+    [SerializeField] private TextMeshProUGUI completeRoundLabel;
     private GameObject target;
     private PlayerHealth healthRef;
     private GameManager gameManagerRef;
@@ -39,6 +42,7 @@ public class PlayerHUD : MonoBehaviourPun
         layerOtherUI = LayerMask.NameToLayer("OtherUI");
         screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,0);
         finishGamePanel.SetActive(false);
+        countdownLabel.text = "";
 
         if(PhotonNetwork.IsConnected)
         {
@@ -48,6 +52,9 @@ public class PlayerHUD : MonoBehaviourPun
                 gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
                 gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
                 gameManagerRef.UpdateMasterClientPointsEvent += UpdatePointsLabel;
+                gameManagerRef.UpdateCountdownTimeEvent += UpdateCountdownLabel;
+                gameManagerRef.CompleteRoundEvent += ShowCompleteRoundLabel;
+                gameManagerRef.ResetRoundEvent += HideCompleteRoundLael;
                 UpdateRoundLabel();
             }else
             {
@@ -92,6 +99,27 @@ public class PlayerHUD : MonoBehaviourPun
         roundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() + "/" + gameManagerRef.GetRounds();
     }
     
+
+    private void UpdateCountdownLabel()
+    {
+        if(gameManagerRef.GetCurrentCountdown() != -1)
+        {
+            countdownLabel.text = "ROUND STARTS IN " + gameManagerRef.GetCurrentCountdown().ToString();
+        }else{
+            countdownLabel.text = "";
+        }
+    }
+
+    private void ShowCompleteRoundLabel()
+    {
+        completeRoundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() +" COMPLETE";
+        completeRoundPanel.SetActive(true);
+    }
+
+    private void HideCompleteRoundLael()
+    {
+        completeRoundPanel.SetActive(false);
+    }
 
 
     public void UpdatePointsLabel()
@@ -171,6 +199,9 @@ public class PlayerHUD : MonoBehaviourPun
         gameManagerRef.FinishGameEvent -= OpenFinishGamePanel;
         gameManagerRef.ChangeRoundEvent -= UpdateRoundLabel;
         gameManagerRef.UpdateMasterClientPointsEvent -= UpdatePointsLabel;
+        gameManagerRef.UpdateCountdownTimeEvent -= UpdateCountdownLabel;
+        gameManagerRef.CompleteRoundEvent -= ShowCompleteRoundLabel;
+        gameManagerRef.ResetRoundEvent -= HideCompleteRoundLael;
     }
 
 }

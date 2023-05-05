@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviourPun
         
     }
 
+
     private void Update() {
         
         //Si es mi instancia de prefab cliente, hace los inputs. 

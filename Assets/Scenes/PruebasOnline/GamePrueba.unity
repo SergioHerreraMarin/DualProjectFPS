@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2158.1904, g: 2263.1953, b: 3288.5273, a: 1}
+  m_IndirectSpecularColor: {r: 2158.7197, g: 2263.3613, b: 3286.8164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1877,7 +1877,7 @@ MonoBehaviour:
   rounds: 3
   wallA: {fileID: 1285134207}
   wallB: {fileID: 565272723}
-  timeToActiveRound: 5
+  timeToActiveRound: 10
 --- !u!114 &1703451418
 MonoBehaviour:
   m_ObjectHideFlags: 0

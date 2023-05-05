@@ -75,7 +75,7 @@ public class PlayerHealth : MonoBehaviourPun
             PhotonView gameManagerPhotonView = GameObject.FindWithTag("GameManager").GetComponent<PhotonView>();
             if(gameManagerPhotonView != null)
             {
-                gameManagerPhotonView.RPC("ResetRound", RpcTarget.All);
+                gameManagerPhotonView.RPC("CompleteRound", RpcTarget.All);
             }
         }
     }
