@@ -38,7 +38,15 @@ public class GunWeapon : MonoBehaviourPun, IShoot
             {   
                 weaponRay = playerCamera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
                 anim.SetTrigger("Shoot");
-                photonView.RPC("PlayMuzzleGun", RpcTarget.All); 
+
+                if(PhotonNetwork.IsConnected)
+                {
+                    photonView.RPC("PlayMuzzleGun", RpcTarget.All);
+                }else
+                {
+                    PlayMuzzleGun();
+                }         
+                 
 
                 if(Physics.Raycast(weaponRay, out rayHit ,weaponRayLength, weaponLayerMask, QueryTriggerInteraction.Ignore))
                 {
@@ -52,7 +60,14 @@ public class GunWeapon : MonoBehaviourPun, IShoot
 
                     }else
                     {
-                        photonView.RPC("InstantiateBulletImpactParticles", RpcTarget.All);
+                        if(PhotonNetwork.IsConnected)
+                        {
+                            photonView.RPC("InstantiateBulletImpactParticles", RpcTarget.All);
+                        }else
+                        {
+                            InstantiateBulletImpactParticles();
+                        }
+                        
                     }
 
                     Debug.DrawRay(weaponRay.origin, weaponRay.direction * weaponRayLength, Color.green);
