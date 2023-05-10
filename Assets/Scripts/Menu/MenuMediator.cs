@@ -386,6 +386,11 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
             loginMenu.EnableBackButton();
             BackToMainMenu();
             profileMenu.setNameValue(currentUser.GetUserName());
+            profileMenu.setMatchesWonValue(currentUser.GetMatchesWon());
+            profileMenu.setMatchesLostValue(currentUser.GetMatchesLost());
+            profileMenu.setEnemiesKilledValue(currentUser.GetEnemiesKilled());
+            profileMenu.setDeathsValue(currentUser.GetDeaths());
+
             startedCorrectly = true;
         }else{
             Debug.Log("Menu Mediator: Start User: User is null");
@@ -396,6 +401,36 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
 
     public UserProfile GetCurrentUser(){
         return currentUser;
+    }
+
+    public List<UserProfile> RetrieveRanking(string parameter){
+        List<UserProfile> usersRanking = databaseMediator.getRankingProfiles(parameter);
+        return usersRanking;
+    }
+
+    /* Metodos para actualizar datos cuando termine una partida */
+    public void increaseMatchesWon(){
+        currentUser.SetMatchesWon(currentUser.GetMatchesWon() + 1);
+        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
+        profileMenu.setMatchesWonValue(currentUser.GetMatchesWon());
+    }
+
+    public void increaseMatchesLost(){
+        currentUser.SetMatchesLost(currentUser.GetMatchesLost() + 1);
+        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
+        profileMenu.setMatchesLostValue(currentUser.GetMatchesLost());
+    }
+
+    public void increaseEnemiesKilled(){
+        currentUser.SetEnemiesKilled(currentUser.GetEnemiesKilled() + 1);
+        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
+        profileMenu.setEnemiesKilledValue(currentUser.GetEnemiesKilled());
+    }
+
+    public void increaseDeaths(){
+        currentUser.SetDeaths(currentUser.GetDeaths() + 1);
+        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
+        profileMenu.setDeathsValue(currentUser.GetDeaths());
     }
 
     /* En este metodo crearia una sala de juego con el nombre que ha pasado el jugador */

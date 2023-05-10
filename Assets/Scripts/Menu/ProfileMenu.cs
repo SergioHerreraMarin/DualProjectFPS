@@ -52,22 +52,22 @@ public class ProfileMenu : MonoBehaviour
         Debug.Log("Profile Menu: setNameValue "+userName);
     }
 
-    public void setMatchesWon(int matchesWon){
+    public void setMatchesWonValue(int matchesWon){
         matchesWonValue.text = matchesWon.ToString();
         Debug.Log("Profile Menu: setMatchesWon "+matchesWon);
     }
 
-    public void setMatchesLost(int matchesLost){
+    public void setMatchesLostValue(int matchesLost){
         matchesLostValue.text = matchesLost.ToString();
         Debug.Log("Profile Menu: setMatchesLost "+matchesLost);
     }
 
-    public void setEnemiesKilled(int enemiesKilled){
+    public void setEnemiesKilledValue(int enemiesKilled){
         enemiesKilledValue.text = enemiesKilled.ToString();
         Debug.Log("Profile Menu: setEnemiesKilled "+enemiesKilled);
     }
 
-    public void setDeaths(int deaths){
+    public void setDeathsValue(int deaths){
         deathsValue.text = deaths.ToString();
         Debug.Log("Profile Menu: setDeaths "+deaths);
     }

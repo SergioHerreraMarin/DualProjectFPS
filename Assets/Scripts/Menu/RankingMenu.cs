@@ -9,15 +9,53 @@ public class RankingMenu : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private Button changeAccountButton;
     [SerializeField] private Button modifyAccountButton;
+    [SerializeField] private Dropdown dropdownRanking;
     private MenuMediator mediator;
+    private List<UserProfile> usersRanking;
 
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.BackToMainMenu());
         changeAccountButton.onClick.AddListener(() => mediator.OpenLoginMenu(true));
         modifyAccountButton.onClick.AddListener(() => mediator.OpenModifyAccountMenu(true));
+        dropdownRanking.onValueChanged.AddListener(delegate {DropdownItemSelected(dropdownRanking);});
 
         // backButton.onClick.AddListener(new UnityAction(mediator.BackToMainMenu()));
+    }
+
+    public void DropdownItemSelected(Dropdown dropdown)
+    {
+        int index = dropdown.value;
+        switch (index)
+        {
+        case 0:
+            Debug.Log("Matches Won selected");
+            retrieveRankingList("matchesWon");
+            break;
+        case 1:
+            Debug.Log("Matches Lost selectes");
+            retrieveRankingList("matchesLost");
+            break;
+        case 2:
+            Debug.Log("Enemies Killes selected");
+            retrieveRankingList("enemiesKilled");
+            break;
+        case 3:
+            Debug.Log("Deaths selected");
+            retrieveRankingList("deaths");
+            break;
+        default:
+            break;
+        }
+    }
+
+    /* Pedira a la BBDD el ranking de usuarios */
+    public void retrieveRankingList(string parameter){
+        Debug.Log("Ranking Menu: retrieveRankingList");
+        usersRanking= mediator.RetrieveRanking(parameter);
+        foreach(UserProfile u in usersRanking){
+            Debug.Log("User retrieve:"+ u.ToString());
+        }
     }
 
     public void Configure(MenuMediator mediator){

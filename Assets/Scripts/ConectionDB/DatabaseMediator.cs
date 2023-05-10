@@ -146,10 +146,14 @@ public class DatabaseMediator : MonoBehaviour
         Debug.Log("DatabaseMediator: insertNewUser");
 
         try{
+            int valueLogged =0;
+            if(loggedIn == true){
+                valueLogged = 1;
+            }
             Debug.Log("We will insert a user with name"+userName+" and password "+userPassword);
             connection.Open();
             command = connection.CreateCommand(); 
-            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, isLogged, matchesWon, matchesLost, enemiesKilled, deaths) VALUES ('" + userName + "', '" + userPassword + "', '" + loggedIn + "', '" + matchesWon +"', '"+matchesLost +"', '"+enemiesKilled +"', '"+deaths+"');";
+            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, isLogged, matchesWon, matchesLost, enemiesKilled, deaths) VALUES ('" + userName + "', '" + userPassword + "', '" + valueLogged + "', '" + matchesWon +"', '"+matchesLost +"', '"+enemiesKilled +"', '"+deaths+"');";
             int rowsAffected = command.ExecuteNonQuery();
             Debug.Log(rowsAffected + " row(s) affected.");
         }catch(Exception e){
@@ -392,7 +396,81 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
         }
     }
 
-    // public 
+    public void setMatchesWon(int matchesWon){
+        Debug.Log("DatabaseMediator: setMatchesWon");
+        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        try{
+            connection.Open();
+            command = connection.CreateCommand();
+            command.CommandText = "UPDATE profiles SET matchesWon = '" + matchesWon+"' WHERE nameProfile = '" + nameProfile + "';";
+            command.ExecuteNonQuery();
+        }catch(Exception e){
+            Debug.Log("ERROR: DatabaseMediator: setMatchesWon: "+e);
+            menuMediator.ShowMessagePanel("There has been an error updating the matches won in the database");
+        }
+        finally{
+            if(connection != null){
+            connection.Close();
+            }
+        }
+    }
+
+    public void setMatchesLost(int matchesLost){
+        Debug.Log("DatabaseMediator: setMatchesLost");
+        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        try{
+            connection.Open();
+            command = connection.CreateCommand();
+            command.CommandText = "UPDATE profiles SET matchesLost = '" + matchesLost+"' WHERE nameProfile = '" + nameProfile + "';";
+            command.ExecuteNonQuery();
+        }catch(Exception e){
+            Debug.Log("ERROR: DatabaseMediator: setMatchesLost: "+e);
+            menuMediator.ShowMessagePanel("There has been an error updating the matches lost in the database");
+        }
+        finally{
+            if(connection != null){
+            connection.Close();
+            }
+        }
+    }
+
+    public void setEnemiesKilled(int enemiesKilled){
+        Debug.Log("DatabaseMediator: setEnemiesKilled");
+        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        try{
+            connection.Open();
+            command = connection.CreateCommand();
+            command.CommandText = "UPDATE profiles SET enemiesKilled = '" + enemiesKilled+"' WHERE nameProfile = '" + nameProfile + "';";
+            command.ExecuteNonQuery();
+        }catch(Exception e){
+            Debug.Log("ERROR: DatabaseMediator: setEnemiesKilled: "+e);
+            menuMediator.ShowMessagePanel("There has been an error updating the enemies killed in the database");
+        }
+        finally{
+            if(connection != null){
+            connection.Close();
+            }
+        }
+    }
+
+    public void setDeathsValue(int deaths){
+        Debug.Log("DatabaseMediator: setDeathsValue");
+        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        try{
+            connection.Open();
+            command = connection.CreateCommand();
+            command.CommandText = "UPDATE profiles SET deaths = '" + deaths+"' WHERE nameProfile = '" + nameProfile + "';";
+            command.ExecuteNonQuery();
+        }catch(Exception e){
+            Debug.Log("ERROR: DatabaseMediator: setDeathsValue: "+e);
+            menuMediator.ShowMessagePanel("There has been an error updating the deaths in the database");
+        }
+        finally{
+            if(connection != null){
+            connection.Close();
+            }
+        }
+    }
 
 /* Metodo para obtener la id a partir del nombre */
     private string getId(string userName){
@@ -419,6 +497,52 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
             }
         }
         return id;
+    }
+
+    public List<UserProfile> getRankingProfiles(string statistic){
+        Debug.Log("DatabaseMediator: getRankingProfiles");
+        List<UserProfile> usersRanking = new List<UserProfile>();
+        string parameterOrder = "";
+        try{
+            switch (statistic){
+                case "matchesWon":
+                    parameterOrder = "ORDER BY matchesWon DESC";
+                    break;
+                case "matchesLost":
+                    parameterOrder = "ORDER BY matchesLost DESC";
+                    break;
+                case "enemiesKilled":
+                    parameterOrder = "ORDER BY enemiesKilled DESC";
+                    break;
+                case "deaths":
+                    parameterOrder = "ORDER BY deaths DESC";
+                    break;
+                default:
+                    parameterOrder = "ORDER BY matchesWon DESC";
+                    break;
+            }
+            connection.Open();
+            command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM profiles "+parameterOrder+";";
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                UserProfile user = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
+                Debug.Log("Charged user:" +user.GetUserName());
+                usersRanking.Add(user);
+            }
+
+        }catch(Exception e){
+            Debug.Log("ERROR: DatabaseMediator: getRankingProfiles: "+e);
+            menuMediator.ShowMessagePanel("There has been an error connecting to the database");
+        }
+        finally{
+            if(connection != null){
+            connection.Close();
+            }
+        }
+        return usersRanking;
     }
 
 /* Por si queremos resetear la base de datos */
