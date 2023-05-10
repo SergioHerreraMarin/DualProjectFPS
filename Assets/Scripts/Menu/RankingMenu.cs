@@ -14,7 +14,7 @@ public class RankingMenu : MonoBehaviour
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.BackToMainMenu());
-        changeAccountButton.onClick.AddListener(() => mediator.OpenLoginMenu());
+        changeAccountButton.onClick.AddListener(() => mediator.OpenLoginMenu(true));
         modifyAccountButton.onClick.AddListener(() => mediator.OpenModifyAccountMenu(true));
 
         // backButton.onClick.AddListener(new UnityAction(mediator.BackToMainMenu()));

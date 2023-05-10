@@ -13,6 +13,10 @@ public class ProfileMenu : MonoBehaviour
     [SerializeField] private Button changeAccountButton;
     [SerializeField] private Button modifyAccountButton;
     [SerializeField] private TextMeshProUGUI nameValue;
+    [SerializeField] private TextMeshProUGUI matchesWonValue;
+    [SerializeField] private TextMeshProUGUI matchesLostValue;
+    [SerializeField] private TextMeshProUGUI enemiesKilledValue;
+    [SerializeField] private TextMeshProUGUI deathsValue;
     private MenuMediator mediator;
 
     private void Awake()
@@ -46,6 +50,26 @@ public class ProfileMenu : MonoBehaviour
     public void setNameValue(string userName){
         nameValue.text = userName;
         Debug.Log("Profile Menu: setNameValue "+userName);
+    }
+
+    public void setMatchesWon(int matchesWon){
+        matchesWonValue.text = matchesWon.ToString();
+        Debug.Log("Profile Menu: setMatchesWon "+matchesWon);
+    }
+
+    public void setMatchesLost(int matchesLost){
+        matchesLostValue.text = matchesLost.ToString();
+        Debug.Log("Profile Menu: setMatchesLost "+matchesLost);
+    }
+
+    public void setEnemiesKilled(int enemiesKilled){
+        enemiesKilledValue.text = enemiesKilled.ToString();
+        Debug.Log("Profile Menu: setEnemiesKilled "+enemiesKilled);
+    }
+
+    public void setDeaths(int deaths){
+        deathsValue.text = deaths.ToString();
+        Debug.Log("Profile Menu: setDeaths "+deaths);
     }
 
     public void enableButtons(){

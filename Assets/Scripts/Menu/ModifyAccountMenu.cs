@@ -32,7 +32,7 @@ public class ModifyAccountMenu : MonoBehaviour
         enableNameButton.onClick.AddListener(() => buttonNamePressed());
         enablePasswordButton.onClick.AddListener(() => buttonPasswordPressed());
         deleteAccountButton.onClick.AddListener(() => deleteAccount());
-        newNameInput.text = mediator.getCurrentUser().getUserName();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
         DisableNameModification();
         DisablePasswordModification();
     }
@@ -46,11 +46,11 @@ public class ModifyAccountMenu : MonoBehaviour
     }
 
     private void confirmModify(){
-        string oldName = mediator.getCurrentUser().getUserName();
+        string oldName = mediator.GetCurrentUser().GetUserName();
         Debug.Log("ModifyAccountMenu: ConfirmModify");
-        newUserName = mediator.getCurrentUser().getUserName();
-        newUserPassword = mediator.getCurrentUser().getUserPassword();
-        if(oldPasswordInput.text == mediator.getCurrentUser().getUserPassword()){
+        newUserName = mediator.GetCurrentUser().GetUserName();
+        newUserPassword = mediator.GetCurrentUser().GetUserPassword();
+        if(oldPasswordInput.text == mediator.GetCurrentUser().GetUserPassword()){
             if(modifyingName){
                 newUserName = newNameInput.text;
             }
@@ -137,7 +137,7 @@ public class ModifyAccountMenu : MonoBehaviour
     public void Show(){
         // Debug.Log("Modify Account Menu: Show");
         enableButtons();
-        newNameInput.text = mediator.getCurrentUser().getUserName();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
         gameObject.SetActive(true);
     }
 
@@ -145,7 +145,7 @@ public class ModifyAccountMenu : MonoBehaviour
         // Debug.Log("Modify Account Menu: Show");
         this.fromRanking = fromRanking;
         enableButtons();
-        newNameInput.text = mediator.getCurrentUser().getUserName();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
         gameObject.SetActive(true);
     }
 

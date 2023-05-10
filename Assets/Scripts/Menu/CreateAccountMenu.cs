@@ -18,6 +18,7 @@ public class CreateAccountMenu : MonoBehaviour
     private string newUserPassword = "";
     private string newUserPasswordRepeat = "";
 
+
     private void Awake()
     {
         backButton.onClick.AddListener(() => mediator.OpenLoginMenu());

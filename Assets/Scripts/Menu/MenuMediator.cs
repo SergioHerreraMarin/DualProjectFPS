@@ -133,7 +133,7 @@ public class MenuMediator : MonoBehaviour
     public void QuitGame(){
         this.hideAll();
 
-        databaseMediator.SetUserLoggedOut(currentUser.getUserName());
+        databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
         Debug.Log("Menu Mediator: Quit Game");
         music1.Stop();
         music2.Stop();
@@ -162,6 +162,13 @@ public class MenuMediator : MonoBehaviour
     public void OpenLoginMenu(){
         this.hideAll();
         loginMenu.Show();
+
+        Debug.Log("Menu Mediator: Open Login Menu");
+    }
+
+    public void OpenLoginMenu(bool fromRanking){
+        this.hideAll();
+        loginMenu.Show(fromRanking);
 
         Debug.Log("Menu Mediator: Open Login Menu");
     }
@@ -276,9 +283,9 @@ public class MenuMediator : MonoBehaviour
             si no existe, se crea en la BBDD y para establecerlo, lo obtiene de la BBDD
             */
 
-            bool exists = databaseMediator.checkUserExists(username);
+            bool exists = databaseMediator.CheckUserExists(username);
             if(exists == false){
-                databaseMediator.insertNewUser(username, password, false, 0);
+                databaseMediator.insertNewUser(username, password, false, 0, 0, 0, 0);
                 startUser(databaseMediator.retrieveUserByName(false, username));
                 ShowMessagePanel("User with name "+username+" created successfully\n and setted as current user");
             }else{
@@ -292,14 +299,14 @@ si alguno de estos es nulo, se usara el valor actual (y en la practica no se act
         Debug.Log("MenuMediator: ModifyAccount: New Username: " + newUsername + " New Password: " + newPassword);
         bool nameExists = false;
         if(newUsername == ""){
-            newUsername = currentUser.getUserName();
+            newUsername = currentUser.GetUserName();
         }
         if(newPassword == ""){
-            newPassword = currentUser.getUserPassword();
+            newPassword = currentUser.GetUserPassword();
         }
-        nameExists = databaseMediator.checkUserExists(newUsername);
+        nameExists = databaseMediator.CheckUserExists(newUsername);
         if (nameExists == false || newUsername == oldName){
-            databaseMediator.updateUser(currentUser, newUsername, newPassword, currentUser.getUserScore());
+            databaseMediator.updateUser(currentUser, newUsername, newPassword, currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
             startUser(databaseMediator.retrieveUserByName(false, newUsername));
             ShowMessagePanel("User with name "+oldName+" modified successfully");
         }else{
@@ -348,12 +355,12 @@ si la confirmación es OK, entonces tenemos que llevar a cabo la accion de borra
             /* Si existe y contraseña OK, lo establecera como usuario, va al menu principal y
             habilita un boton en el menu de login que estaba inhabilitado */
 
-            if(databaseMediator.checkUserExists(username) == true){
-                if(databaseMediator.checkUserPassword(username, password) == true){
+            if(databaseMediator.CheckUserExists(username) == true){
+                if(databaseMediator.CheckUserPassword(username, password) == true){
                     if(currentUser != null){
                         /*Si hace esto cuando ya se ha logeado previamente, es decir cambio de usuario,
                          vamos a indicar que el antiguo usuario ya no esta logeado */
-                        databaseMediator.SetUserLoggedOut(currentUser.getUserName());
+                        databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
                     }
                     if(startUser(databaseMediator.retrieveUserByName(true, username))){
                         ShowMessagePanel("Welcome "+username+"!");
@@ -378,7 +385,7 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
             currentUser = userLogged;
             loginMenu.EnableBackButton();
             BackToMainMenu();
-            profileMenu.setNameValue(currentUser.getUserName());
+            profileMenu.setNameValue(currentUser.GetUserName());
             startedCorrectly = true;
         }else{
             Debug.Log("Menu Mediator: Start User: User is null");
@@ -387,7 +394,7 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
         return startedCorrectly;
     }
 
-    public UserProfile getCurrentUser(){
+    public UserProfile GetCurrentUser(){
         return currentUser;
     }
 

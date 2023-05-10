@@ -15,7 +15,6 @@ los scripts i los usuarios que jueguen identificaran las cuentas por el nombre q
 public class DatabaseMediator : MonoBehaviour
 {
     [SerializeField] private MenuMediator menuMediator;
-    [SerializeField] private PostUtils postUtils;
     MySqlConnection connection;
     MySqlCommand command;
 
@@ -47,7 +46,7 @@ public class DatabaseMediator : MonoBehaviour
             // command.ExecuteNonQuery();
 
             Debug.Log("DatabaseMediator: Awake: Will try to send a post request to the server");
-            postUtils.SendPostRequest();
+            // postUtils.SendPostRequest();
         }
         catch(Exception e)
         {
@@ -64,8 +63,8 @@ public class DatabaseMediator : MonoBehaviour
 /* Dos funciones por separado para comprobar que existe el usuario y que dicho nombre de usuario 
  tiene dicha contraseña asociada
  se puede hacer una u otra comprovación segun se necesite*/
-    public bool checkUserExists(string userName){
-        Debug.Log("DatabaseMediator: checkUserExists");
+    public bool CheckUserExists(string userName){
+        Debug.Log("DatabaseMediator: CheckUserExists");
         bool exists= false;
         try{
             connection.Open();
@@ -78,8 +77,8 @@ public class DatabaseMediator : MonoBehaviour
             reader.Close();
         }
         catch(Exception e){
-            Debug.Log("ERROR: DatabaseMediator: checkUserExists: "+e);
-            menuMediator.ShowMessagePanel("There has been an error connecting to the database to check if the user exists");
+            Debug.Log("ERROR: DatabaseMediator: CheckUserExists: "+e);
+            menuMediator.ShowMessagePanel("There has been an error connecting to the database to Check if the user exists");
         }
         finally{
             if(connection != null){
@@ -90,8 +89,8 @@ public class DatabaseMediator : MonoBehaviour
         return exists;
     }
 
-    public bool checkUserPassword(string userName, string password){
-        Debug.Log("DatabaseMediator: checkUserPassword");
+    public bool CheckUserPassword(string userName, string password){
+        Debug.Log("DatabaseMediator: CheckUserPassword");
                 bool exists= false;
         try{
             connection.Open();
@@ -103,8 +102,8 @@ public class DatabaseMediator : MonoBehaviour
             }
             reader.Close();
         }catch(Exception e){
-            Debug.Log("ERROR: DatabaseMediator: checkUserPassword: "+e);
-            menuMediator.ShowMessagePanel("There has been an error connecting to the database to check the user password");
+            Debug.Log("ERROR: DatabaseMediator: CheckUserPassword: "+e);
+            menuMediator.ShowMessagePanel("There has been an error connecting to the database to Check the user password");
         }
         finally{
             if(connection != null){
@@ -118,13 +117,14 @@ public class DatabaseMediator : MonoBehaviour
     public void insertNewUser(UserProfile userToInsert){
         Debug.Log("DatabaseMediator: insertNewUser");
         try{
-            string userName = userToInsert.UserName;
-            string password = userToInsert.UserPassword;
+            string userName = userToInsert.GetUserName();
+            string password = userToInsert.GetUserPassword();
 
-            Debug.Log("We will insert this user: "+userToInsert.toString());
+            Debug.Log("We will insert this user: "+userToInsert.ToString());
             connection.Open();
             command = connection.CreateCommand(); 
-            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, scoreProfile) VALUES ('" + userName + "', '" + password + "', '" + 0 +"');";
+            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, isLogged, matchesWon, matchesLost, enemiesKilled, deaths) VALUES ('" + userName + "', '" + password + "',0 , 0, 0, 0, 0);"
+;
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -142,14 +142,14 @@ public class DatabaseMediator : MonoBehaviour
         }
     }
 
-    public void insertNewUser(string userName, string userPassword, bool loggedIn, int userScore){
+    public void insertNewUser(string userName, string userPassword, bool loggedIn, int matchesWon, int matchesLost, int enemiesKilled, int deaths){
         Debug.Log("DatabaseMediator: insertNewUser");
 
         try{
             Debug.Log("We will insert a user with name"+userName+" and password "+userPassword);
             connection.Open();
             command = connection.CreateCommand(); 
-            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, isLogged, scoreProfile) VALUES ('" + userName + "', '" + userPassword + "', '" + loggedIn + "', '" + userScore +"');";
+            command.CommandText = "INSERT INTO profiles (nameProfile, passwordProfile, isLogged, matchesWon, matchesLost, enemiesKilled, deaths) VALUES ('" + userName + "', '" + userPassword + "', '" + loggedIn + "', '" + matchesWon +"', '"+matchesLost +"', '"+enemiesKilled +"', '"+deaths+"');";
             int rowsAffected = command.ExecuteNonQuery();
             Debug.Log(rowsAffected + " row(s) affected.");
         }catch(Exception e){
@@ -179,28 +179,29 @@ reader.IsDBNull(4) se refiere a la columna provisional de puntuaciones*/
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                if (!reader.IsDBNull(0) && !reader.IsDBNull(1) && !reader.IsDBNull(2) && !reader.IsDBNull(4))
+                if (!reader.IsDBNull(0) && !reader.IsDBNull(1) && !reader.IsDBNull(2) && !reader.IsDBNull(4) && !reader.IsDBNull(5) && !reader.IsDBNull(6) && !reader.IsDBNull(7))
                 {
-                    Debug.Log("****"+reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3) +" "+reader.GetString(4));
+                    Debug.Log("****"+reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3) +" "+reader.GetString(4) +" "+reader.GetString(5) +" "+reader.GetString(6) +" "+reader.GetString(7));
+                    /* Puede que queramos info de un usuario para hacer login o no, si es para login hay que comprobar si esta logueado */
                     if(login == true)
                     {
                         if(reader.GetString(3) == "False"){
-                            retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                            retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
                         }else{
                             Debug.Log("You can't logg with this user, it is already logged in");
                             menuMediator.ShowMessagePanel("You can't logg with this user, it is already logged in");
                         }
                     }else{
-                        retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4));
+                        retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
                     }
-                }else if(reader.IsDBNull(4))
+                }else if(reader.IsDBNull(4) && reader.IsDBNull(5) && reader.IsDBNull(6) && reader.IsDBNull(7))
                 {
-                    Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+0);
-                    retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0);
+                    Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3) +" "+reader.GetString(4) +" "+reader.GetString(5) +" "+reader.GetString(6) +" "+reader.GetString(7));
+                    retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0, 0, 0, 0);
                 }
             }
             reader.Close(); 
-            Debug.Log("Retrieved user: " + retrievedUser?.toString());
+            Debug.Log("Retrieved user: " + retrievedUser?.ToString());
         }catch(Exception e){
             Debug.Log("ERROR: DatabaseMediator: retrieveUserByName: "+e);
             menuMediator.ShowMessagePanel("There has been an error getting the user information from the database");
@@ -214,7 +215,7 @@ reader.IsDBNull(4) se refiere a la columna provisional de puntuaciones*/
         if(login == true)
         {
             if(retrievedUser != null)
-            SetUserLogged(retrievedUser.getUserName());
+            SetUserLogged(retrievedUser.GetUserName());
         }
         
         return retrievedUser;
@@ -233,22 +234,22 @@ reader.IsDBNull(4) se refiere a la columna provisional de puntuaciones*/
             {
                 if (!reader.IsDBNull(0) && !reader.IsDBNull(1) && !reader.IsDBNull(2) && !reader.IsDBNull(4))
                 {
-                    Debug.Log("****"+reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3) +" "+reader.GetString(4));
+                    Debug.Log("****"+reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+reader.GetString(3) +" "+reader.GetString(4) +" "+reader.GetString(5) +" "+reader.GetString(6) +" "+reader.GetString(7));
                     if(login == true)
                     {
                         if(reader.GetString(3) == "False"){
-                            retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                            retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
                         }else{
                             Debug.Log("You can't logg with this user, it is already logged in");
                             menuMediator.ShowMessagePanel("You can't logg with this user, it is already logged in");
                         }
                     }else{
-                        retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4));
+                        retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
                     }
                 }else if(reader.IsDBNull(4))
                 {
                     Debug.Log(reader.GetString(0)+" "+ reader.GetString(1) +" "+reader.GetString(2) +" "+0);
-                    retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0);
+                    retrievedUser = new UserProfile(reader.GetString(0), reader.GetString(1), reader.GetString(2), 0, 0, 0, 0);
                 }
             }
             reader.Close(); 
@@ -263,11 +264,11 @@ reader.IsDBNull(4) se refiere a la columna provisional de puntuaciones*/
             }
         }
 
-        Debug.Log("Retrieved user: " + retrievedUser?.toString());
+        Debug.Log("Retrieved user: " + retrievedUser?.ToString());
         if(login == true)
         {
             if(retrievedUser != null)
-            SetUserLogged(retrievedUser.getUserName());
+            SetUserLogged(retrievedUser.GetUserName());
         }
 
         return retrievedUser;
@@ -278,21 +279,24 @@ Se actualizaran todos los valores, aunque no siempre se quieran cambiar todos,
 en este caso el update se hara con los mismos valores y en la practica no cambiara 
 
 Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo volveria a crear*/
-    public UserProfile updateUser(UserProfile userToUpdate, string newName, string newPassword, int newScore){
+    public UserProfile updateUser(UserProfile userToUpdate, string newName, string newPassword, int newMatchesWon, int newMatchesLost, int newEnemiesKilled, int newDeaths){
         bool recreateUser = false;
         UserProfile updatedUser = userToUpdate;
         Debug.Log("DatabaseMediator: updateUser");
         try{
-            if(newName == "") newName = userToUpdate.getUserName();
-            if(newPassword == "") newPassword = userToUpdate.getUserPassword();
-            if(newScore == 0) newScore = userToUpdate.getUserScore();
+            if(newName == "") newName = userToUpdate.GetUserName();
+            if(newPassword == "") newPassword = userToUpdate.GetUserPassword();
+            if(newMatchesWon== 0) newMatchesWon = userToUpdate.GetMatchesWon();
+            if(newMatchesLost == 0) newMatchesLost = userToUpdate.GetMatchesLost();
+            if(newEnemiesKilled == 0) newEnemiesKilled = userToUpdate.GetEnemiesKilled();
+            if(newDeaths == 0) newDeaths = userToUpdate.GetDeaths();
 
             connection.Open();
             command = connection.CreateCommand(); 
-            command.CommandText = "UPDATE profiles SET nameProfile = '" + newName + "', passwordProfile = '" + newPassword + "', scoreProfile = '" + newScore 
-            + "' WHERE idProfile = '" + userToUpdate.getUserId() + "' AND nameProfile = '" + userToUpdate.getUserName() + "';";
+            command.CommandText = "UPDATE profiles SET nameProfile = '" + newName + "', passwordProfile = '" + newPassword + "', matchesWon = '" + newMatchesWon + "', matchesLost = '" + newMatchesLost + "', enemiesKilled = '" + newEnemiesKilled + "', deaths = '" + newDeaths 
+            + "' WHERE idProfile = '" + userToUpdate.GetUserId() + "' AND nameProfile = '" + userToUpdate.GetUserName() + "';";
 
-            Debug.Log("We will update this user: "+userToUpdate.toString()+" \nwith this new data: "+newName+" "+newPassword+" "+newScore+"");
+            Debug.Log("We will update this user: "+userToUpdate.ToString()+" \nwith this new data: "+newName+" "+newPassword+" "+newMatchesWon+" "+newMatchesLost+" "+newEnemiesKilled+" "+newDeaths);
 
             int rowsAffected = command.ExecuteNonQuery();
 
@@ -313,7 +317,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
         }
 
         if(recreateUser){
-            insertNewUser(newName, newPassword, true, newScore);
+            insertNewUser(newName, newPassword, true, newMatchesWon, newMatchesLost, newEnemiesKilled, newDeaths);
         }
 
         updatedUser = retrieveUserByName(false, newName);
@@ -323,10 +327,10 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
 /* Eliminar un usuario de la base de datos, de momento el menu no tiene esta opcion */
     public bool deleteUser(UserProfile userToDelete){
         Debug.Log("DatabaseMediator: deleteUser");
-        string userName = userToDelete.UserName;
+        string userName = userToDelete.GetUserName();
         bool deleted = false;
         try{
-            Debug.Log("We will delete this user: "+userToDelete.toString());
+            Debug.Log("We will delete this user: "+userToDelete.ToString());
             connection.Open();
             command = connection.CreateCommand(); 
             command.CommandText = "DELETE FROM profiles WHERE nameProfile = '" + userName  +"';";
@@ -387,6 +391,8 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
             }
         }
     }
+
+    // public 
 
 /* Metodo para obtener la id a partir del nombre */
     private string getId(string userName){
@@ -455,9 +461,8 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
                                 + "scoreProfile INTEGER,"
                                 + "PRIMARY KEY(idProfile));"
 
-                                + "Insert Into profiles (nameProfile, passwordProfile, scoreProfile) Values ('test', 'test', '10');" 
-                                + "Insert Into profiles (nameProfile, passwordProfile, scoreProfile) Values ('test2', 'test2', '25');"
-                                + "Insert Into profiles (nameProfile, passwordProfile, scoreProfile) Values ('test3', 'test3', '15');";
+                                + "Insert Into profiles (nameProfile, passwordProfile, matchesWon, matchesLost, enemiesKilled, deaths) Values ('player1', 'test', '5', '4', '13', '12');" 
+                                + "Insert Into profiles (nameProfile, passwordProfile, matchesWon, matchesLost, enemiesKilled, deaths) Values ('player2', 'test2', '4', '5', '12', '13');";
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {

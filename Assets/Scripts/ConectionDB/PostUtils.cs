@@ -8,31 +8,30 @@ public class PostUtils : MonoBehaviour
     // Set the URL of your Node.js server here
     private static string protocol = "https";
     private static int port = 443;
-    private static string endPoint = "/api/testQuery";
+    // private static string endPoint = "/api/testQuery";
     private static string domain = "nodejsdualproject-production.up.railway.app";
 
-    private string serverUrl = protocol + "://" + domain + ":" + port + endPoint;
+    private string serverUrl = protocol + "://" + domain + ":" + port;
 
 
     // url to connect in local
     // private string serverUrl = "http://localhost:3000/api/testQuery";
 
     // Call this function to send the POST request
-    public void SendPostRequest()
+    public void SendPostRequest(string endPoint, string jsonInput)
     {
         Debug.Log("PostUtils: SendPostRequest to " + serverUrl + "");
-        StartCoroutine(PostRequestCoroutine());
+        StartCoroutine(PostRequestCoroutine(endPoint, jsonInput));
     }
 
-    IEnumerator PostRequestCoroutine()
+    IEnumerator PostRequestCoroutine(string endPoint, string jsonInput)
     {
         // Create the form data to send in the request
         WWWForm form = new WWWForm();
-        form.AddField("someField", "someValue");
-        form.AddField("anotherField", "anotherValue");
+        form.AddField("jsonInput", jsonInput);
 
         // Send the request
-        UnityWebRequest request = UnityWebRequest.Post(serverUrl, form);
+        UnityWebRequest request = UnityWebRequest.Post(serverUrl + endPoint, form);
         yield return request.SendWebRequest();
 
         // Check for errors
