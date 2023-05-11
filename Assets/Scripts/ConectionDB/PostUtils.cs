@@ -18,10 +18,12 @@ public class PostUtils : MonoBehaviour
     // private string serverUrl = "http://localhost:3000/api/testQuery";
 
     // Call this function to send the POST request
-    public void SendPostRequest(string endPoint, string jsonInput)
+    public string SendPostRequest(string endPoint, string jsonInput)
     {
         Debug.Log("PostUtils: SendPostRequest to " + serverUrl + "");
-        StartCoroutine(PostRequestCoroutine(endPoint, jsonInput));
+        Debug.Log(StartCoroutine(PostRequestCoroutine(endPoint, jsonInput)));
+        // Debug.Log("PostUtils: SendPostRequest: returned: " + returnedString);
+        return "returnedString";
     }
 
     IEnumerator PostRequestCoroutine(string endPoint, string jsonInput)
@@ -44,6 +46,7 @@ public class PostUtils : MonoBehaviour
         {
             // Print the response from the server
             Debug.Log(request.downloadHandler.text);
+            yield return request.downloadHandler.text;
         }
     }
 }

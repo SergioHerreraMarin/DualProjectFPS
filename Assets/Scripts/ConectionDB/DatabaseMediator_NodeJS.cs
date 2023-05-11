@@ -27,12 +27,14 @@ public class DatabaseMediator_NodeJS : MonoBehaviour
     }
 
     /* Dos funciones por separado para comprobar que existe el usuario y que dicho nombre de usuario 
- tiene dicha contraseña asociada
- se puede hacer una u otra comprovación segun se necesite*/
-public bool CheckUserExists(string userName)
-{
-    return false;
-}
+    tiene dicha contraseña asociada
+    se puede hacer una u otra comprovación segun se necesite*/
+    public bool CheckUserExists(string userName)
+    {
+        Debug.Log("DatabaseMediator_NodeJS: CheckUserExists");
+        postUtils.SendPostRequest("/api/checkUserExists", userName);
+        return false;
+    }
 
 
     public bool checkUserPassword(string userName, string password){
@@ -121,7 +123,7 @@ Se actualizaran todos los valores, aunque no siempre se quieran cambiar todos,
 en este caso el update se hara con los mismos valores y en la practica no cambiara 
 
 Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo volveria a crear*/
-    public UserProfile updateUser(UserProfile userToUpdate, string newName, string newPassword, int newScore){
+    public UserProfile updateUser(UserProfile userToUpdate, string newName, string newPassword, int newMatchesWon, int newMatchesLost, int newEnemiesKilled, int newDeaths){
         bool recreateUser = false;
         UserProfile updatedUser = userToUpdate;
         Debug.Log("DatabaseMediator_NodeJS: updateUser");
@@ -133,7 +135,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
         }
 
         if(recreateUser){
-            insertNewUser(newName, newPassword, true, newScore);
+            // insertNewUser(newName, newPassword, true, newScore);
         }
 
         updatedUser = retrieveUserByName(false, newName);
@@ -175,6 +177,22 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
         }
     }
 
+    public void setMatchesWon(int matchesWon){
+        Debug.Log("DatabaseMediator_NodeJS: setMatchesWon");
+    }
+
+    public void setMatchesLost(int matchesLost){
+        Debug.Log("DatabaseMediator_NodeJS: setMatchesLost");
+    }
+
+    public void setEnemiesKilled(int enemiesKilled){
+        Debug.Log("DatabaseMediator_NodeJS: setEnemiesKilled");
+    }
+
+    public void setDeathsValue(int deaths){
+        Debug.Log("DatabaseMediator_NodeJS: setDeathsValue");
+    }
+
 /* Metodo para obtener la id a partir del nombre */
     private string getId(string userName){
         Debug.Log("DatabaseMediator_NodeJS: getId");
@@ -186,6 +204,12 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
         finally{
         }
         return id;
+    }
+
+    public List<UserProfile> getRankingProfiles(string statistic){
+        Debug.Log("DatabaseMediator_NodeJS: getRankingProfiles");
+        List<UserProfile> usersRanking = new List<UserProfile>();
+        return usersRanking;
     }
 
 /* Por si queremos resetear la base de datos */
@@ -211,48 +235,5 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
     }
 }
 
-[Serializable]
-public class JsonRequestClass
-{
-    public int idProfile { get; set; }
-    public string nameProfile { get; set; }
-    public string passwordProfile { get; set; }
-    public bool isLogged { get; set; }
-    public int scoreProfile { get; set; }
-    public bool boolRequest { get; set; }
 
-    public JsonRequestClass(int idProfile, string nameProfile, string passwordProfile, bool isLogged, int scoreProfile, bool boolRequest)
-    {
-
-        this.idProfile = idProfile;
-        this.nameProfile = nameProfile;
-        this.passwordProfile = passwordProfile;
-        this.isLogged = isLogged;
-        this.scoreProfile = scoreProfile;
-        this.boolRequest = boolRequest;
-    }
-
-    public JsonRequestClass(){
-    }
-}
-
-[Serializable]
-public class JsonResponseClass
-{
-    public string status { get; set; }
-    public string message { get; set; }
-    public string result { get; set; }
-    public bool responseBool { get; set; }
-
-    public JsonResponseClass(string status, string message, string result, bool responseBool)
-    {
-        this.status = status;
-        this.message = message;
-        this.result = result;
-        this.responseBool = responseBool;
-    }
-
-    public JsonResponseClass(){
-    }
-}
 

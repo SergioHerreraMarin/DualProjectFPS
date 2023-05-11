@@ -30,12 +30,12 @@ public class DatabaseMediator : MonoBehaviour
             string password = "localhost";
 
             //Data to connect to a remote server
-            // string server = "mysql://root:5GsN2AKe60gIUrZroezw@containers-us-west-110.railway.app:6058/railway";
-            // string server= "containers-us-west-110.railway.app";
-            // string dns_srv =";dns-srv=true";
-            // string database = "railway";
-            // string uid = "root";
-            // string password = "5GsN2AKe60gIUrZroezw";
+            // string server = "mysql://root:DC6X6YXA9TtDnhmtaXM1@containers-us-west-95.railway.app:7525/railway";
+            string server= "containers-us-west-95.railway.app";
+            string dns_srv =";dns-srv=true";
+            string database = "railway";
+            string uid = "root";
+            string password = "DC6X6YXA9TtDnhmtaXM1";
 
             menuMediator.ConfigureDbMediator(this);
             connection = new MySqlConnection("Server=" +server +dns_srv+";Database="+database +";Uid="+uid +";Pwd="+password+";");
