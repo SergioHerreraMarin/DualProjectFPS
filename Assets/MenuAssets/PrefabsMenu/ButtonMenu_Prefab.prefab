@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 899913850259790816}
   - component: {fileID: 6925860339545489448}
   - component: {fileID: 6024723630268395760}
+  - component: {fileID: 1004188618018110444}
   m_Layer: 5
   m_Name: ButtonMenu_Prefab
   m_TagString: Untagged
@@ -122,6 +123,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1004188618018110444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7746707878913412315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703115ae87629804f9a649f48e8f34b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: {fileID: 0}
 --- !u!1001 &4186091902251052972
 PrefabInstance:
   m_ObjectHideFlags: 0

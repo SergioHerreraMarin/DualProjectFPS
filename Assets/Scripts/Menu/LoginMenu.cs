@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 /* Menu para loguearse, sera el primero que se muestre, si el login va bien
 nos lleva al menu principal, otra opcion es que vayamos al menu de crearnos un usuario */
 
@@ -21,13 +20,23 @@ public class LoginMenu : MonoBehaviour
     private string nameEntered ="";
     private string passwordEntered="";
 
+    private bool fromRanking = false;
+
     private void Awake()
     {
         backButton.interactable = false;
-        backButton.onClick.AddListener(() => mediator.OpenProfileMenu());
+        backButton.onClick.AddListener(() => getBack());
         loginButton.onClick.AddListener(() => Login());
         createAccountButton.onClick.AddListener(() => mediator.OpenCreateAccountMenu());
         quitButton.onClick.AddListener(() => mediator.QuitGame());
+    }
+
+    private void getBack(){
+        if(fromRanking){
+            mediator.OpenRankingMenu();
+        }else{
+            mediator.OpenProfileMenu();
+        }
     }
 
     private void Login(){
@@ -68,6 +77,14 @@ public class LoginMenu : MonoBehaviour
     public void Show()
     {
         // Debug.Log("LoginMenu: Show");
+        enableButtons();
+        gameObject.SetActive(true);
+    }
+
+    public void Show(bool fromRanking)
+    {
+        // Debug.Log("LoginMenu: Show");
+        this.fromRanking = fromRanking;
         enableButtons();
         gameObject.SetActive(true);
     }

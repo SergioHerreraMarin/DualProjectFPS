@@ -24,23 +24,33 @@ public class ModifyAccountMenu : MonoBehaviour
     private bool modifyingName = false;
     private bool modifyingPassword = false;
 
+    private bool fromRanking = false;
+
     private void Awake(){
-        backButton.onClick.AddListener(() => mediator.OpenProfileMenu());
+        backButton.onClick.AddListener(() => getBack());
         modifyButton.onClick.AddListener(() => confirmModify());
         enableNameButton.onClick.AddListener(() => buttonNamePressed());
         enablePasswordButton.onClick.AddListener(() => buttonPasswordPressed());
         deleteAccountButton.onClick.AddListener(() => deleteAccount());
-        newNameInput.text = mediator.getCurrentUser().getUserName();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
         DisableNameModification();
         DisablePasswordModification();
     }
 
+    private void getBack(){
+        if(fromRanking){
+            mediator.OpenRankingMenu();
+        }else{
+            mediator.OpenProfileMenu();
+        }
+    }
+
     private void confirmModify(){
-        string oldName = mediator.getCurrentUser().getUserName();
+        string oldName = mediator.GetCurrentUser().GetUserName();
         Debug.Log("ModifyAccountMenu: ConfirmModify");
-        newUserName = mediator.getCurrentUser().getUserName();
-        newUserPassword = mediator.getCurrentUser().getUserPassword();
-        if(oldPasswordInput.text == mediator.getCurrentUser().getUserPassword()){
+        newUserName = mediator.GetCurrentUser().GetUserName();
+        newUserPassword = mediator.GetCurrentUser().GetUserPassword();
+        if(oldPasswordInput.text == mediator.GetCurrentUser().GetUserPassword()){
             if(modifyingName){
                 newUserName = newNameInput.text;
             }
@@ -48,7 +58,7 @@ public class ModifyAccountMenu : MonoBehaviour
                 if(newPasswordInput.text == newPasswordRepeatInput.text){
                     newUserPassword = newPasswordInput.text;
                 }else{
-                    mediator.showMessagePanel("the new passwords don't match");
+                    mediator.ShowMessagePanel("the new passwords don't match");
                     return;
                 }
             }
@@ -59,9 +69,9 @@ public class ModifyAccountMenu : MonoBehaviour
         }else{
             if(modifyingPassword || modifyingName)
             {
-                mediator.showMessagePanel("Current password incorrect");
+                mediator.ShowMessagePanel("Current password incorrect");
             }else{
-                mediator.showMessagePanel("No field seleted to modify");
+                mediator.ShowMessagePanel("No field seleted to modify");
             }
             
         }
@@ -127,7 +137,15 @@ public class ModifyAccountMenu : MonoBehaviour
     public void Show(){
         // Debug.Log("Modify Account Menu: Show");
         enableButtons();
-        newNameInput.text = mediator.getCurrentUser().getUserName();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
+        gameObject.SetActive(true);
+    }
+
+    public void Show(bool fromRanking){
+        // Debug.Log("Modify Account Menu: Show");
+        this.fromRanking = fromRanking;
+        enableButtons();
+        newNameInput.text = mediator.GetCurrentUser().GetUserName();
         gameObject.SetActive(true);
     }
 
@@ -145,6 +163,7 @@ public class ModifyAccountMenu : MonoBehaviour
         modifyButton.interactable = true;
         enableNameButton.interactable = true;
         enablePasswordButton.interactable = true;
+        deleteAccountButton.interactable = true;
     }
 
     public void disableButtons(){
@@ -153,6 +172,7 @@ public class ModifyAccountMenu : MonoBehaviour
         modifyButton.interactable = false;
         enableNameButton.interactable = false;
         enablePasswordButton.interactable = false;
+        deleteAccountButton.interactable = false;
     }
 
 }

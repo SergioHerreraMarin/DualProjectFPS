@@ -40,20 +40,20 @@ public class PanelMessage : MonoBehaviour
     }
 
     public void Show(){
-        // Debug.Log("PanelMessage: Show");
+        Debug.Log("PanelMessage: Show");
         canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
     }
 
     public void Show(string message){
-        // Debug.Log("PanelMessage: Show");
+        Debug.Log("PanelMessage: Show: "+message);
         canvas.gameObject.SetActive(true);
         gameObject.SetActive(true);
         this.SetMessage(message);
     }
 
     public void Hide(){
-        // Debug.Log("PanelMessage: Hide");
+        Debug.Log("PanelMessage: Hide");
         canvas.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }

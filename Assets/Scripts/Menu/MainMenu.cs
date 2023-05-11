@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button profileButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button rankingButton;
     [SerializeField] private ConnectToServer connectToServer;
     private MenuMediator mediator;
 
@@ -20,6 +21,7 @@ public class MainMenu : MonoBehaviour
         settingsButton.onClick.AddListener(() => mediator.OpenSettings());
         profileButton.onClick.AddListener(() => mediator.OpenProfileMenu());
         quitButton.onClick.AddListener(() => mediator.QuitGame());
+        rankingButton.onClick.AddListener(() => mediator.OpenRankingMenu());
     }
 
     public void Configure(MenuMediator mediator)
