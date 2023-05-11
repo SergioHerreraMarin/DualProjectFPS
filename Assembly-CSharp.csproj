@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\Server\CreateAndJoinRooms.cs" />
      <Compile Include="Assets\Scripts\Menu\UserProfile.cs" />
      <Compile Include="Assets\Scripts\RoundWalls.cs" />
+     <Compile Include="Assets\Scripts\ConectionDB\JsonRequestClass.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
      <Compile Include="Assets\Scripts\Menu\LoginMenu.cs" />
      <Compile Include="Assets\Scripts\ConectionDB\Test1.cs" />
@@ -74,10 +75,12 @@
      <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
      <Compile Include="Assets\Scripts\GameFrameLimiter.cs" />
      <Compile Include="Assets\Scripts\Weapons\GunWeapon.cs" />
+     <Compile Include="Assets\Scripts\ConectionDB\JsonResponseClass.cs" />
      <Compile Include="Assets\UnitySettings\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\Scripts\Menu\ControlsScripts\SoundButtonScript.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\IgnoreUiRaycastWhenInactive.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
+     <Compile Include="Assets\Scripts\PruebaPeticion.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerInputController.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
      <Compile Include="Assets\Scripts\Menu\CreateRoomMenu.cs" />
@@ -85,7 +88,6 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerHudInstantiator.cs" />
-     <Compile Include="Assets\Scripts\PruebaPeticion.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -359,61 +361,67 @@
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\Google.Protobuf.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="K4os.Hash.xxHash">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Hash.xxHash.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.Unsafe.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Mdb">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="K4os.Compression.LZ4.Streams">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.Streams.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.Streams.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="ZstdNet">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\ZstdNet.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\ZstdNet.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\BouncyCastle.Crypto.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Pdb">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="K4os.Compression.LZ4">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\K4os.Compression.LZ4.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Cecil.Rocks">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.burst@1.6.6\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.visualscripting@1.7.8\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Assets\Plugins\MySql.Data.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Assets\Plugins\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="ReportGeneratorMerged">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.testtools.codecoverage@1.0.1\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.testtools.codecoverage@1.0.1\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Android.Types">
+        <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Android.Gradle">
+        <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Gradle.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\mscorlib.dll</HintPath>
@@ -791,154 +799,154 @@
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.9f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Searcher.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProBuilder">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.EditorCoroutines.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ShaderGraph.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Config.Runtime.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Config.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProGrids">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProGrids.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProGrids.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Animation.Rigging.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualEffectGraph.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualEffectGraph.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualEffectGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProBuilder.AddOns.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.AddOns.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualEffectGraph.Runtime">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualEffectGraph.Runtime.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualEffectGraph.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Core.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.HighDefinition.Runtime">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.HighDefinition.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.HighDefinition.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProBuilder.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PlasticSCM.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProGrids.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProGrids.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProGrids.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Services.Core">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Core">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Animation.Rigging">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Services.Core.Analytics">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Shared.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Services.Core.Environments">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Editor">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
-        <HintPath>E:\Arxius Actuals DAM\Projectes\Projecte_MDual\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
+        <HintPath>C:\Users\Sergio97\Desktop\DualProjectFPS\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster() //Si se ha podido conectar, hacemos join al Lobby. 
     {
         PhotonNetwork.JoinLobby();
-        PhotonNetwork.NickName = menuMediator.getCurrentUser().getUserName();
+        PhotonNetwork.NickName = menuMediator.GetCurrentUser().GetUserName();
         Debug.Log("<color=green>Connectado al server</color>");
         Debug.Log("<color=green>Nickname: " + PhotonNetwork.NickName +"</color>");
     }
