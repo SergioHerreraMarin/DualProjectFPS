@@ -121,7 +121,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void CompleteRound()
     {
-        CompleteRoundEvent();
+        if(currentRound < rounds)
+        {
+            CompleteRoundEvent();
+        }
+        
         Invoke("ResetRound", 5);
     }
 

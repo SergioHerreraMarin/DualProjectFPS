@@ -48,7 +48,7 @@ public class PlayerHealth : MonoBehaviourPun
                 //Debug.Log("Jugador muerto:  " + gameObject.name);
                 this.isDeath = true;
                 playerRagdoll.ActiveRagdoll();
-                Invoke("TellMyDeathToGameManager", timeToResetHealth);
+                Invoke("TellMyDeathToGameManager", 1f);
                 
                 //Update Ppoints --------------------------------------------------------------------
                 if(photonView.IsMine)

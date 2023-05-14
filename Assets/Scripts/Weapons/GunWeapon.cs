@@ -16,14 +16,17 @@ public class GunWeapon : MonoBehaviourPun, IShoot
     [SerializeField] private GameObject muzzleFlashVfx;
     [SerializeField] private GameObject bulletImpactVfx;
     [SerializeField] private GameObject bloodImpactVfx;
-    [SerializeField] private Animator anim;
+    [SerializeField] private ParticleSystem bulletTrailVfx;
+    [SerializeField] private Animator playerAnim;
+    [SerializeField] private Animator gunAnim;
+    [SerializeField] private GunAdioController gunAudioController;
 
     private RaycastHit rayHit;
     private Ray weaponRay;
 
     private ParticleSystem[] muzzleFlashParticles;
     private ParticleSystem[] bulletImpactParticles;
-
+    
 
     private void Start() {
         muzzleFlashParticles = muzzleFlashVfx.GetComponentsInChildren<ParticleSystem>();
@@ -37,14 +40,18 @@ public class GunWeapon : MonoBehaviourPun, IShoot
             if(callbackContext.started)
             {   
                 weaponRay = playerCamera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
-                anim.SetTrigger("Shoot");
+                playerAnim.SetTrigger("Shoot");
+                gunAnim.SetTrigger("Shoot");
+                gunAudioController.PlayGunAudio();
 
                 if(PhotonNetwork.IsConnected)
                 {
                     photonView.RPC("PlayMuzzleGun", RpcTarget.All);
+                    photonView.RPC("PlayBulletTrail", RpcTarget.All);
                 }else
                 {
                     PlayMuzzleGun();
+                    PlayBulletTrail();
                 }         
                  
 
@@ -91,16 +98,16 @@ public class GunWeapon : MonoBehaviourPun, IShoot
             {
                 playerCamera.DOFieldOfView(50, 0.2f);
                 playerCamera.transform.DOLocalMoveX(0.153f, 0.2f); //1.395
-                anim.SetBool("InZoom", true);
-                anim.SetBool("WeaponZoom", true);
+                playerAnim.SetBool("InZoom", true);
+                playerAnim.SetBool("WeaponZoom", true);
                 
 
             }else if(callbackContext.canceled)
             {
-                playerCamera.DOFieldOfView(80, 0.3f);
-                playerCamera.transform.DOLocalMoveX(-0.13f, 0.2f); //1.495
-                anim.SetBool("InZoom", false);
-                anim.SetBool("WeaponZoom", false);
+                playerCamera.DOFieldOfView(85, 0.3f);
+                playerCamera.transform.DOLocalMoveX(-0.04f, 0.2f); //1.495
+                playerAnim.SetBool("InZoom", false);
+                playerAnim.SetBool("WeaponZoom", false);
 
             }
 
@@ -110,13 +117,17 @@ public class GunWeapon : MonoBehaviourPun, IShoot
 
 
 
-
     [PunRPC]
     private void PlayMuzzleGun()
     {
         foreach(ParticleSystem particle in muzzleFlashParticles){
             particle.Play();
         }
+    }
+
+    [PunRPC]    
+    private void PlayBulletTrail(){
+        bulletTrailVfx.Play();
     }
 
     [PunRPC]

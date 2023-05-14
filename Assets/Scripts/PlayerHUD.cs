@@ -10,8 +10,8 @@ public class PlayerHUD : MonoBehaviourPun
 {
     [SerializeField] private Image healthBar;
     [SerializeField] private Image screenBloodVFX;
-    [SerializeField] private GameObject finishGamePanel;
     [SerializeField] private GameObject completeRoundPanel;
+    [SerializeField] private GameObject finishGamePanelDone;
     [SerializeField] private float screenBloodSpeed;
     [SerializeField] private Button leaveGameButton;
     [SerializeField] private TextMeshProUGUI roundLabel;
@@ -19,12 +19,20 @@ public class PlayerHUD : MonoBehaviourPun
     [SerializeField] private TextMeshProUGUI secondClientPointsLabel;
     [SerializeField] private TextMeshProUGUI countdownLabel;
     [SerializeField] private TextMeshProUGUI completeRoundLabel;
+    [SerializeField] private TextMeshProUGUI healthAmount;
+    [SerializeField] private TextMeshProUGUI finishGamePanelTitle;
+    [SerializeField] private Color victoryLabelColor;
+    [SerializeField] private Color defeatLabelColor;
+    [SerializeField] private CanvasGroup finishPanelCanvasGroup;
+    [SerializeField] private CanvasGroup completeRoundCanvasGroup;
     private GameObject target;
     private PlayerHealth healthRef;
     private GameManager gameManagerRef;
     private int layerOtherUI;
     private float fillAmount;
     private Tween screenBloodTween;
+    private int masterClientPoints;
+    private int secondClientPoints;
 
     private void Awake() { //Al ser instanciado, el prefab de HUD se hará hijo del canvas. 
         this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
@@ -41,8 +49,10 @@ public class PlayerHUD : MonoBehaviourPun
         DOTween.Init();
         layerOtherUI = LayerMask.NameToLayer("OtherUI");
         screenBloodVFX.color = new Color(screenBloodVFX.color.r,screenBloodVFX.color.g,screenBloodVFX.color.b,0);
-        finishGamePanel.SetActive(false);
+        finishGamePanelDone.SetActive(false);
         countdownLabel.text = "";
+        finishPanelCanvasGroup.alpha = 0;
+        completeRoundCanvasGroup.alpha = 0;
 
         if(PhotonNetwork.IsConnected)
         {
@@ -50,7 +60,7 @@ public class PlayerHUD : MonoBehaviourPun
             if(gameManagerRef != null)
             {   
                 gameManagerRef.ChangeRoundEvent += UpdateRoundLabel;
-                gameManagerRef.FinishGameEvent += OpenFinishGamePanel;
+                gameManagerRef.FinishGameEvent += ViewCursor;
                 gameManagerRef.UpdateMasterClientPointsEvent += UpdatePointsLabel;
                 gameManagerRef.UpdateCountdownTimeEvent += UpdateCountdownLabel;
                 gameManagerRef.CompleteRoundEvent += ShowCompleteRoundLabel;
@@ -81,6 +91,7 @@ public class PlayerHUD : MonoBehaviourPun
 
 
     public void SetHealthBarValue(float health){
+        healthAmount.text = health.ToString();
         fillAmount = health / 100; //Contando que el máximo de vida sea 100 
         healthBar.fillAmount = fillAmount;
     }
@@ -112,12 +123,15 @@ public class PlayerHUD : MonoBehaviourPun
 
     private void ShowCompleteRoundLabel()
     {
+        
         completeRoundLabel.text = "ROUND " + gameManagerRef.GetCurrentRound() +" COMPLETE";
         completeRoundPanel.SetActive(true);
+        completeRoundCanvasGroup.DOFade(1,3);
     }
 
     private void HideCompleteRoundLael()
     {
+        completeRoundCanvasGroup.alpha = 0;
         completeRoundPanel.SetActive(false);
     }
 
@@ -134,13 +148,44 @@ public class PlayerHUD : MonoBehaviourPun
                 int playerScore = (int)roomProperties[PhotonNetwork.PlayerList[i].UserId];
                 Debug.Log("<color=red>PLAYER SCORE: " + playerScore + "</color>");
                 masterClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + playerScore;
+                masterClientPoints = playerScore;
             }else{
 
                 Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
                 int playerScore = (int)roomProperties[PhotonNetwork.PlayerList[i].UserId];
                 secondClientPointsLabel.text = PhotonNetwork.PlayerList[i].NickName + ": " + playerScore;
+                secondClientPoints = playerScore;
             }
+        }
 
+        if(gameManagerRef.GetCurrentRound() == gameManagerRef.GetRounds()){
+
+            finishGamePanelDone.SetActive(true);
+            finishPanelCanvasGroup.DOFade(1, 3f);
+
+            if(masterClientPoints > secondClientPoints){
+                if(PhotonNetwork.IsMasterClient){
+                    finishGamePanelTitle.color = victoryLabelColor;
+                    finishGamePanelTitle.text = "VICTORY";
+                    Debug.Log("Deberia de Ganar");
+                }else{
+                    finishGamePanelTitle.color = defeatLabelColor;
+                    finishGamePanelTitle.text = "DEFEAT";
+                    Debug.Log("Deberia de Perder");
+                }
+            }else{
+                if(PhotonNetwork.IsMasterClient){
+                    finishGamePanelTitle.color = defeatLabelColor;
+                    finishGamePanelTitle.text = "DEFEAT";
+                    Debug.Log("Deberia de Ganar");
+                }else{
+                    finishGamePanelTitle.color = victoryLabelColor;
+                    finishGamePanelTitle.text = "VICTORY";
+                    Debug.Log("Deberia de Perder");
+                }
+
+            }
+            Cursor.visible = true;
         }
 
     }
@@ -150,6 +195,7 @@ public class PlayerHUD : MonoBehaviourPun
     private void UpdateHealth()
     {
         fillAmount = this.healthRef.GetHealth() / this.healthRef.GetMaxHealth();
+        healthAmount.text = this.healthRef.GetHealth().ToString();
         this.healthBar.fillAmount = fillAmount;
         Debug.Log("Fill amount health: " + this.healthBar.fillAmount + ", Player health: " + this.healthRef.GetHealth());
     }
@@ -161,10 +207,10 @@ public class PlayerHUD : MonoBehaviourPun
         screenBloodVFX.DOFade(0, screenBloodSpeed).Restart();
     }
 
-    public void OpenFinishGamePanel()
+    public void ViewCursor()
     {
         Cursor.visible = true;
-        finishGamePanel.SetActive(true);
+        //finishGamePanel.SetActive(true);
     }
 
 
@@ -196,7 +242,7 @@ public class PlayerHUD : MonoBehaviourPun
     {
         healthRef.HealthUpdateEvent -= StartScreenBlood;
         healthRef.HealthUpdateEvent -= UpdateHealth;
-        gameManagerRef.FinishGameEvent -= OpenFinishGamePanel;
+        gameManagerRef.FinishGameEvent -= ViewCursor;
         gameManagerRef.ChangeRoundEvent -= UpdateRoundLabel;
         gameManagerRef.UpdateMasterClientPointsEvent -= UpdatePointsLabel;
         gameManagerRef.UpdateCountdownTimeEvent -= UpdateCountdownLabel;
