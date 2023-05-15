@@ -42,6 +42,7 @@ public class MenuMediator : MonoBehaviour
     private UserProfile currentUser= null;
 
     private bool confirmationAccepted = false;
+    public bool isBackToMenu = false;
 
     /* Metodo de inicio, primero se vera el menu de Login */
 
@@ -68,10 +69,11 @@ public class MenuMediator : MonoBehaviour
     /* Metodos para movernos entre menus */
 
     public void BackToMainMenu(){
+        Debug.Log("Menu Mediator: Back to Main Menu");
+        isBackToMenu = true;
         hideAll();
         mainMenu.Show();
         PhotonNetwork.Disconnect(); //Desconectar del server al salir del menú. 
-        Debug.Log("Menu Mediator: Back to Main Menu");
     }
 
     public void ShowMessagePanel(string message){
@@ -132,10 +134,13 @@ public class MenuMediator : MonoBehaviour
     }
 
     public void QuitGame(){
+        Debug.Log("Menu Mediator: Quit Game");
         this.hideAll();
 
-        databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
-        Debug.Log("Menu Mediator: Quit Game");
+        if(currentUser != null){
+            databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
+        }
+        
         music1.Stop();
         music2.Stop();
         Application.Quit();
@@ -196,6 +201,7 @@ public class MenuMediator : MonoBehaviour
     }
 
     public void OpenCreateRoomMenu(){
+        isBackToMenu = false;
         this.hideAll();
         createRoomMenu.Show();
         PlayMusic2();
@@ -402,6 +408,10 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
 
     public UserProfile GetCurrentUser(){
         return currentUser;
+    }
+
+    public bool getIsBackToMenu(){
+        return isBackToMenu;
     }
 
     public List<UserProfile> RetrieveRanking(string parameter){

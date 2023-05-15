@@ -91,6 +91,23 @@ public class UserProfile
         this.deaths = deaths;
     }
 
+/* Metodos a los que recurrir para entrar estadisticas del nuevo juego */
+    public void AddMatchWon(){
+        matchesWon++;
+    }
+
+    public void AddMatchLost(){
+        matchesLost++;
+    }
+
+    public void AddEnemiesKilled(int enemiesKilledMatch){
+        enemiesKilled = enemiesKilled + enemiesKilledMatch;
+    }
+
+    public void AddDeaths(int deathsMatch){
+        deaths = deaths + deathsMatch;
+    }
+
 
     public string ToString(){
         return "id: "+ userId + "User: " + userName + " Password: " + userPassword + " Matches Won: " + matchesWon +" Matches Lost: " + matchesLost + " Enemies Killed: " + enemiesKilled + " Deaths: " + deaths;

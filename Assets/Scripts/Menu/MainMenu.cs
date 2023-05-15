@@ -35,7 +35,6 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Main Menu: Show");
         enableButtons();
         gameObject.SetActive(true);
-        
     }
 
     public void Hide()

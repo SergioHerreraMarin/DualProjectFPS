@@ -20,8 +20,12 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.LogWarning("No se ha podido conectar al servidor master, causa: " + cause.ToString());
-        menuMediator.ShowMessagePanel("No se ha podido conectar al servidor");
+        if (menuMediator.getIsBackToMenu() == false)
+        {
+            Debug.LogWarning("No se ha podido conectar al servidor master, causa: " + cause.ToString());
+            menuMediator.ShowMessagePanel("Couldn't connect to the server");
+        }
+
     }
 
 

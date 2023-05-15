@@ -349,6 +349,7 @@ MonoBehaviour:
   buttonSound: {fileID: 361354796}
   inputSound: {fileID: 2001767160}
   exitSound: {fileID: 93926728}
+  isBackToMenu: 0
 --- !u!114 &63146848 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6024723630268395760, guid: c7dcecdebdb233f4a98568e188ef4954,
@@ -7808,7 +7809,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2427615955256335531, guid: 4d4b08e43803aa04f8a98c8a26397d48, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d4b08e43803aa04f8a98c8a26397d48, type: 3}
 --- !u!114 &868089456 stripped
 MonoBehaviour:
@@ -18033,7 +18035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &944030192182159400
 GameObject:
   m_ObjectHideFlags: 0
