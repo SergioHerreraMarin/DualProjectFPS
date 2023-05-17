@@ -108,7 +108,6 @@ public class UserProfile
         deaths = deaths + deathsMatch;
     }
 
-
     public string ToString(){
         return "id: "+ userId + "User: " + userName + " Password: " + userPassword + " Matches Won: " + matchesWon +" Matches Lost: " + matchesLost + " Enemies Killed: " + enemiesKilled + " Deaths: " + deaths;
     }

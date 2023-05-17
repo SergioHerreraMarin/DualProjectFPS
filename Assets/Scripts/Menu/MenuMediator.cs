@@ -39,7 +39,7 @@ public class MenuMediator : MonoBehaviour
     /* Aparte de tener los menus, tendra también un objeto de la clase usuario
     que se instancia o bien creando usuario o haciendo login,
     este es el usuario que jugara, o bien se obtiene con un login o se crea */
-    private UserProfile currentUser= null;
+    public static UserProfile currentUser= null;
 
     private bool confirmationAccepted = false;
     public bool isBackToMenu = false;
@@ -47,6 +47,12 @@ public class MenuMediator : MonoBehaviour
     /* Metodo de inicio, primero se vera el menu de Login */
 
     private void Awake(){
+        Debug.Log("Menu Mediator: Awake");
+
+        if(MenuMediator.currentUser != null){
+            updateStatistics();
+        }
+
         mainMenu.Configure(this);
         settingsMenu.Configure(this);
         profileMenu.Configure(this);
@@ -62,8 +68,6 @@ public class MenuMediator : MonoBehaviour
 
         hideAll();
         loginMenu.Show();
-        Debug.Log("Menu Mediator: Awake");
-
     }
 
     /* Metodos para movernos entre menus */
@@ -122,7 +126,7 @@ public class MenuMediator : MonoBehaviour
     }
 
     public void StartGame(){
-        if(currentUser != null)
+        if(MenuMediator.currentUser != null)
         {
             hideAll();
 
@@ -137,7 +141,8 @@ public class MenuMediator : MonoBehaviour
         Debug.Log("Menu Mediator: Quit Game");
         this.hideAll();
 
-        if(currentUser != null){
+        if(MenuMediator.currentUser != null){
+            updateStatistics();
             databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
         }
         
@@ -147,10 +152,12 @@ public class MenuMediator : MonoBehaviour
     }
 
     public void OpenProfileMenu(){
-        if(currentUser != null)
+        if(MenuMediator.currentUser != null)
         {
             this.hideAll();
             profileMenu.Show();
+
+            updateStatistics();
 
             Debug.Log("Menu Mediator: Open Profile Menu");
         }else{
@@ -306,14 +313,14 @@ si alguno de estos es nulo, se usara el valor actual (y en la practica no se act
         Debug.Log("MenuMediator: ModifyAccount: New Username: " + newUsername + " New Password: " + newPassword);
         bool nameExists = false;
         if(newUsername == ""){
-            newUsername = currentUser.GetUserName();
+            newUsername = MenuMediator.currentUser.GetUserName();
         }
         if(newPassword == ""){
-            newPassword = currentUser.GetUserPassword();
+            newPassword = MenuMediator.currentUser.GetUserPassword();
         }
         nameExists = databaseMediator.CheckUserExists(newUsername);
         if (nameExists == false || newUsername == oldName){
-            databaseMediator.updateUser(currentUser, newUsername, newPassword, currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
+            databaseMediator.updateUser(MenuMediator.currentUser, newUsername, newPassword, MenuMediator.currentUser.GetMatchesWon(), MenuMediator.currentUser.GetMatchesLost(), MenuMediator.currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
             startUser(databaseMediator.retrieveUserByName(false, newUsername));
             ShowMessagePanel("User with name "+oldName+" modified successfully");
         }else{
@@ -338,8 +345,8 @@ si la confirmación es OK, entonces tenemos que llevar a cabo la accion de borra
         }
         Debug.Log("confirmationAccepted: " + confirmationAccepted);
         if(confirmationAccepted == true){
-            if(databaseMediator.deleteUser(currentUser)){
-                currentUser = null;
+            if(databaseMediator.deleteUser(MenuMediator.currentUser)){
+                MenuMediator.currentUser = null;
                 hideAll();
                 loginMenu.Show();
                 loginMenu.DisableBackButton();
@@ -364,10 +371,10 @@ si la confirmación es OK, entonces tenemos que llevar a cabo la accion de borra
 
             if(databaseMediator.CheckUserExists(username) == true){
                 if(databaseMediator.CheckUserPassword(username, password) == true){
-                    if(currentUser != null){
+                    if(MenuMediator.currentUser != null){
                         /*Si hace esto cuando ya se ha logeado previamente, es decir cambio de usuario,
                          vamos a indicar que el antiguo usuario ya no esta logeado */
-                        databaseMediator.SetUserLoggedOut(currentUser.GetUserName());
+                        databaseMediator.SetUserLoggedOut(MenuMediator.currentUser.GetUserName());
                     }
                     if(startUser(databaseMediator.retrieveUserByName(true, username))){
                         ShowMessagePanel("Welcome "+username+"!");
@@ -389,14 +396,14 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
     private bool startUser(UserProfile userLogged){
         bool startedCorrectly = false;
         if(userLogged != null){
-            currentUser = userLogged;
+            MenuMediator.currentUser = userLogged;
             loginMenu.EnableBackButton();
             BackToMainMenu();
-            profileMenu.setNameValue(currentUser.GetUserName());
-            profileMenu.setMatchesWonValue(currentUser.GetMatchesWon());
-            profileMenu.setMatchesLostValue(currentUser.GetMatchesLost());
-            profileMenu.setEnemiesKilledValue(currentUser.GetEnemiesKilled());
-            profileMenu.setDeathsValue(currentUser.GetDeaths());
+            profileMenu.setNameValue(MenuMediator.currentUser.GetUserName());
+            profileMenu.setMatchesWonValue(MenuMediator.currentUser.GetMatchesWon());
+            profileMenu.setMatchesLostValue(MenuMediator.currentUser.GetMatchesLost());
+            profileMenu.setEnemiesKilledValue(MenuMediator.currentUser.GetEnemiesKilled());
+            profileMenu.setDeathsValue(MenuMediator.currentUser.GetDeaths());
 
             startedCorrectly = true;
         }else{
@@ -406,8 +413,8 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
         return startedCorrectly;
     }
 
-    public UserProfile GetCurrentUser(){
-        return currentUser;
+    public static UserProfile GetCurrentUser(){
+        return MenuMediator.currentUser;
     }
 
     public bool getIsBackToMenu(){
@@ -420,28 +427,19 @@ desbloquearemos el boton dle menu login para ir al menu principal y en el menu d
     }
 
     /* Metodos para actualizar datos cuando termine una partida */
-    public void increaseMatchesWon(){
-        currentUser.SetMatchesWon(currentUser.GetMatchesWon() + 1);
-        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
-        profileMenu.setMatchesWonValue(currentUser.GetMatchesWon());
-    }
-
-    public void increaseMatchesLost(){
-        currentUser.SetMatchesLost(currentUser.GetMatchesLost() + 1);
-        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
-        profileMenu.setMatchesLostValue(currentUser.GetMatchesLost());
-    }
-
-    public void increaseEnemiesKilled(){
-        currentUser.SetEnemiesKilled(currentUser.GetEnemiesKilled() + 1);
-        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
-        profileMenu.setEnemiesKilledValue(currentUser.GetEnemiesKilled());
-    }
-
-    public void increaseDeaths(){
-        currentUser.SetDeaths(currentUser.GetDeaths() + 1);
-        databaseMediator.updateUser(currentUser, currentUser.GetUserName(), currentUser.GetUserPassword(), currentUser.GetMatchesWon(), currentUser.GetMatchesLost(), currentUser.GetEnemiesKilled(), currentUser.GetDeaths());
-        profileMenu.setDeathsValue(currentUser.GetDeaths());
+    public void updateStatistics(){
+        Debug.Log("Menu Mediator: Update Statistics");
+        if(databaseMediator == null){
+            Debug.Log("Menu Mediator: Update Statistics: Database Mediator is null");
+        }else{
+            databaseMediator.updateUser(MenuMediator.GetCurrentUser(), MenuMediator.currentUser.GetUserName(), MenuMediator.currentUser.GetUserPassword(), MenuMediator.currentUser.GetMatchesWon(), MenuMediator.currentUser.GetMatchesLost(), MenuMediator.currentUser.GetEnemiesKilled(), MenuMediator.currentUser.GetDeaths());
+        }
+        
+        profileMenu.setNameValue(MenuMediator.currentUser.GetUserName());
+        profileMenu.setMatchesWonValue(MenuMediator.currentUser.GetMatchesWon());
+        profileMenu.setMatchesLostValue(MenuMediator.currentUser.GetMatchesLost());
+        profileMenu.setEnemiesKilledValue(MenuMediator.currentUser.GetEnemiesKilled());
+        profileMenu.setDeathsValue(MenuMediator.currentUser.GetDeaths());
     }
 
     /* En este metodo crearia una sala de juego con el nombre que ha pasado el jugador */

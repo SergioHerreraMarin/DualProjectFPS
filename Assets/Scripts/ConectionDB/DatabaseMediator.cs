@@ -398,7 +398,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
 
     public void setMatchesWon(int matchesWon){
         Debug.Log("DatabaseMediator: setMatchesWon");
-        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        string nameProfile =MenuMediator.GetCurrentUser().GetUserName();
         try{
             connection.Open();
             command = connection.CreateCommand();
@@ -417,7 +417,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
 
     public void setMatchesLost(int matchesLost){
         Debug.Log("DatabaseMediator: setMatchesLost");
-        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        string nameProfile =MenuMediator.GetCurrentUser().GetUserName();
         try{
             connection.Open();
             command = connection.CreateCommand();
@@ -436,7 +436,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
 
     public void setEnemiesKilled(int enemiesKilled){
         Debug.Log("DatabaseMediator: setEnemiesKilled");
-        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        string nameProfile =MenuMediator.GetCurrentUser().GetUserName();
         try{
             connection.Open();
             command = connection.CreateCommand();
@@ -455,7 +455,7 @@ Si no encontrara al usuario (se ha borrado de la BBDD por cualquier error) lo vo
 
     public void setDeathsValue(int deaths){
         Debug.Log("DatabaseMediator: setDeathsValue");
-        string nameProfile =menuMediator.GetCurrentUser().GetUserName();
+        string nameProfile =MenuMediator.GetCurrentUser().GetUserName();
         try{
             connection.Open();
             command = connection.CreateCommand();
