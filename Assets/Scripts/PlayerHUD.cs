@@ -159,32 +159,47 @@ public class PlayerHUD : MonoBehaviourPun
         }
 
         if(gameManagerRef.GetCurrentRound() == gameManagerRef.GetRounds()){
+            Debug.Log("*** Finishing match");
+            Debug.Log("Is mine:"+ target.GetComponent<PhotonView>().IsMine);
 
             finishGamePanelDone.SetActive(true);
             finishPanelCanvasGroup.DOFade(1, 3f);
-
-            if(masterClientPoints > secondClientPoints){
+                if(masterClientPoints > secondClientPoints){
                 if(PhotonNetwork.IsMasterClient){
                     finishGamePanelTitle.color = victoryLabelColor;
                     finishGamePanelTitle.text = "VICTORY";
-                    Debug.Log("Deberia de Ganar");
+                    Debug.Log("master: Deberia de Ganar");
+                    if(target.GetComponent<PhotonView>().IsMine){
+                        MenuMediator.currentUser.AddMatchWon();
+                    }
+                    
                 }else{
                     finishGamePanelTitle.color = defeatLabelColor;
                     finishGamePanelTitle.text = "DEFEAT";
-                    Debug.Log("Deberia de Perder");
+                    Debug.Log("second: Deberia de Perder");
+                    if(target.GetComponent<PhotonView>().IsMine){
+                       MenuMediator.currentUser.AddMatchLost();
+                    }
                 }
             }else{
                 if(PhotonNetwork.IsMasterClient){
                     finishGamePanelTitle.color = defeatLabelColor;
                     finishGamePanelTitle.text = "DEFEAT";
-                    Debug.Log("Deberia de Ganar");
+                    Debug.Log("master: Deberia de Perder");
+                    if(target.GetComponent<PhotonView>().IsMine){
+                       MenuMediator.currentUser.AddMatchLost();
+                    }
                 }else{
                     finishGamePanelTitle.color = victoryLabelColor;
                     finishGamePanelTitle.text = "VICTORY";
-                    Debug.Log("Deberia de Perder");
+                    Debug.Log("second: Deberia de Ganar");
+                    if(target.GetComponent<PhotonView>().IsMine){
+                        MenuMediator.currentUser.AddMatchWon();
+                    }
                 }
 
             }
+
             Cursor.visible = true;
         }
 

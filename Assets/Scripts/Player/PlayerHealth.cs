@@ -59,6 +59,11 @@ public class PlayerHealth : MonoBehaviourPun
                     {
                         gameManagerPhotonView.RPC("UpdatePlayerPoints", RpcTarget.All, currentPlayerId);
                     }
+                    /**/
+
+                    MenuMediator.currentUser.AddDeaths(1);
+                    
+                    /**/
                 }
             }
 

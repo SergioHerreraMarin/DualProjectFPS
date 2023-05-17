@@ -93,18 +93,22 @@ public class UserProfile
 
 /* Metodos a los que recurrir para entrar estadisticas del nuevo juego */
     public void AddMatchWon(){
+        Debug.Log("AddMatchWon");
         matchesWon++;
     }
 
     public void AddMatchLost(){
+        Debug.Log("AddMatchLost");
         matchesLost++;
     }
 
     public void AddEnemiesKilled(int enemiesKilledMatch){
+        Debug.Log("AddEnemiesKilled "+enemiesKilledMatch);
         enemiesKilled = enemiesKilled + enemiesKilledMatch;
     }
 
     public void AddDeaths(int deathsMatch){
+        Debug.Log("AddDeaths "+deathsMatch);
         deaths = deaths + deathsMatch;
     }
 
